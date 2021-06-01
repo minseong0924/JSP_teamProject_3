@@ -4,9 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>SSANG YOUNG BOX</title>
 </head>
 <body>
-
+	<jsp:include page="include/mheader.jsp" />
+	
+	<jsp:include page="include/mfooter.jsp" />
 </body>
 </html>
