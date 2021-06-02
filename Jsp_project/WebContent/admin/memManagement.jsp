@@ -24,6 +24,7 @@ td {
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
+	
 	<div align="center">
 		<div class="userList">
 			<h2>사용자 목록</h2>
@@ -84,6 +85,7 @@ td {
 			<c:if test="${empty List}">
 				<tr>
 					<td colspan="7" align="center">검색된 데이터가 없습니다.</td>
+				</tr>
 			</c:if>
 		</table>
 		<br><br>

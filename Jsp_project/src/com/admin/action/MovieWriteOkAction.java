@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.admin.model.AdminDAO;
 import com.cinema.controller.Action;
 import com.cinema.controller.ActionForward;
-import com.movie.model.MovieDTO;
+import com.cinema.model.MovieDTO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -89,17 +89,17 @@ public class MovieWriteOkAction implements Action {
 			
 		}
 
-		dto.setTitle_kor(movie_title_kor);
-		dto.setTitle_eng(movie_title_eng);
+		dto.setTitle_ko(movie_title_kor);
+		dto.setTitle_en(movie_title_eng);
 		dto.setAge(movie_age);
 		dto.setActor(movie_actor);
 		dto.setDirector(movie_director);
 		dto.setGenre(movie_genre);
-		dto.setMovie_state(movie_state);
-		dto.setMovie_type(movie_type);
+		dto.setMstate(movie_state);
+		dto.setMtype(movie_type);
 		dto.setNation(movie_nation);
-		dto.setOpenDate(movie_opendate);
-		dto.setRunningTime(movie_runningtime);
+		dto.setOpendate(movie_opendate);
+		dto.setRunning_time(movie_runningtime);
 		dto.setSummary(movie_summary);
 		
 		AdminDAO dao = AdminDAO.getInstance();

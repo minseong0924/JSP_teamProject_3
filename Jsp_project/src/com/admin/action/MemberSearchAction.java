@@ -16,7 +16,7 @@ public class MemberSearchAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String search_field = request.getParameter("search_field").trim();
+		String search_field = request.getParameter("search_field");
 		String search_name = request.getParameter("search_name").trim();
 		
 		// 페이징 작업
@@ -76,7 +76,9 @@ public class MemberSearchAction implements Action {
 		request.setAttribute("startBlock", startBlock);
 		request.setAttribute("endBlock", endBlock);
 		request.setAttribute("List", searchList);
-		
+		if(searchList == null) {
+			System.out.println("null");
+		}
 		
 		ActionForward forward = new ActionForward();
 		

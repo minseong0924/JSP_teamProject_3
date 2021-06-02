@@ -11,8 +11,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
+import com.cinema.model.MovieDTO;
 import com.member.model.MemberDTO;
-import com.movie.model.MovieDTO;
 
 public class AdminDAO {
 	Connection con = null;              // DB 연결하는 객체.
@@ -205,19 +205,19 @@ public class AdminDAO {
 			pstmt = con.prepareStatement(sql);
 			
 			pstmt.setInt(1, count);
-			pstmt.setString(2, dto.getTitle_kor());
-			pstmt.setString(3, dto.getTitle_eng());
+			pstmt.setString(2, dto.getTitle_ko());
+			pstmt.setString(3, dto.getTitle_en());
 			pstmt.setString(4, dto.getPoster());
 			pstmt.setString(5, dto.getGenre());
 			pstmt.setString(6, dto.getDirector());
 			pstmt.setString(7, dto.getActor());
 			pstmt.setString(8, dto.getSummary());
-			pstmt.setInt(9, dto.getRunningTime());
+			pstmt.setInt(9, dto.getRunning_time());
 			pstmt.setString(10, dto.getAge());
 			pstmt.setString(11, dto.getNation());
-			pstmt.setString(12, dto.getOpenDate());
-			pstmt.setString(13, dto.getMovie_state());
-			pstmt.setString(14, dto.getMovie_type());
+			pstmt.setString(12, dto.getOpendate());
+			pstmt.setString(13, dto.getMstate());
+			pstmt.setString(14, dto.getMtype());
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
