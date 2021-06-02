@@ -6,7 +6,7 @@
 <head>
 <meta charset="EUC-KR">
 <style type="text/css">
-
+	
 	#head_inout {
 		text-align: right;
 	}
@@ -28,7 +28,7 @@
 </style>
 </head>
 <body>
-	<div id="head">
+	<div id="head" align="center">
 	   	<section id="head_inout">
 	   		<!-- 세션에 이름이 있으면 이름 출력 / 없으면 로그인 버튼 출력 -->
 	   		
@@ -45,9 +45,9 @@
 	   	
 	   	<div id="head_menu">
 	   		   <a id="menu" href="<%=request.getContextPath() %>/allmenu.do" >
-	   		   		<img src="image/menu_icon.png" width="20" height="20"></a>
+	   		   		<img src="../image/menu_icon.png" width="20" height="20"></a>
 	   		   <a href="<%=request.getContextPath() %>/mian.do" >
-	   		   		<img src="image/main_logo.png" width="50" height="50"></a>
+	   		   		<img src="../image/main_logo.png" width="50" height="50"></a>
 	           <a href="<%=request.getContextPath() %>/movie.do" >영화</a>
 	           <a href="<%=request.getContextPath() %>/booking.do">예매</a>
 	           <a href="<%=request.getContextPath() %>/screen.do">시간표</a>
@@ -56,7 +56,7 @@
 	           
 	           <span align="right">
 		           <a href="<%=request.getContextPath() %>/mypage.do" >
-		   		   		<img src="image/mypage_icon.png" width="20" height="20"></a>
+		   		   		<img src="../image/mypage_icon.png" width="20" height="20"></a>
 	           </span>
 	           
 	    </div>
