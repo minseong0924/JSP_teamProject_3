@@ -77,7 +77,10 @@ td {
 			</c:if>
 		</table>
 		<br><br>
-
+		<div class="search">
+			<input type="button" value="등록"
+				onclick="location.href='movieWrite.jsp'">
+		</div>
 			<c:if test="${page > block }">
 				<a href="board_search.do?page=1&search_field=${search_field }&search_name=${search_name }">[맨처음]</a>
 				<a href="board_search.do?page=${startBlock - 1 }&search_field=${search_field }&search_name=${search_name }">◀</a>

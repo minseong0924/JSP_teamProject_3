@@ -3,48 +3,50 @@ package com.member.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
 public class MemberDAO {
-	Connection con = null;              // DB ¿¬°áÇÏ´Â °´Ã¼.
-	PreparedStatement pstmt = null;     // DB¿¡ SQL¹®À» Àü¼ÛÇÏ´Â °´Ã¼.
-	ResultSet rs = null;                // SQL¹®À» ½ÇÇà ÈÄ °á°ú °ªÀ» °¡Áö°í ÀÖ´Â °´Ã¼.
+	Connection con = null;              // DB ì—°ê²°í•˜ëŠ” ê°ì²´.
+	PreparedStatement pstmt = null;     // DBì— SQLë¬¸ì„ ì „ì†¡í•˜ëŠ” ê°ì²´.
+	ResultSet rs = null;                // SQLë¬¸ì„ ì‹¤í–‰ í›„ ê²°ê³¼ ê°’ì„ ê°€ì§€ê³  ìˆëŠ” ê°ì²´.
 	
-	String sql = null;                  // Äõ¸®¹®À» ÀúÀåÇÒ °´Ã¼.
+	String sql = null;                  // ì¿¼ë¦¬ë¬¸ì„ ì €ì¥í•  ê°ì²´.
 
-	// ½Ì±ÛÅæ ¹æ½ÄÀ¸·Î MemberDAO °´Ã¼¸¦ ¸¸µéÀÚ.
-	// 1´Ü°è : ½Ì±ÛÅæ ¹æ½ÄÀ¸·Î °´Ã¼¸¦ ¸¸µé±â À§ÇØ¼­´Â ¿ì¼±ÀûÀ¸·Î 
-	//       ±âº»»ı¼ºÀÚÀÇ Á¢±ÙÁ¦¾îÀÚ¸¦  private À¸·Î ¼±¾ğÀ» ÇØ¾ß ÇÔ.
-	// 2´Ü°è : Á¤Àû ¸â¹ö·Î ¼±¾ğÀ» ÇØ¾ß ÇÔ - static À¸·Î ¼±¾ğÀ» ÇÑ´Ù´Â ÀÇ¹Ì.
+	// ì‹±ê¸€í†¤ ë°©ì‹ìœ¼ë¡œ BoardDAO ê°ì²´ë¥¼ ë§Œë“¤ì.
+	// 1ë‹¨ê³„ : ì‹±ê¸€í†¤ ë°©ì‹ìœ¼ë¡œ ê°ì²´ë¥¼ ë§Œë“¤ê¸° ìœ„í•´ì„œëŠ” ìš°ì„ ì ìœ¼ë¡œ 
+	//       ê¸°ë³¸ìƒì„±ìì˜ ì ‘ê·¼ì œì–´ìë¥¼  private ìœ¼ë¡œ ì„ ì–¸ì„ í•´ì•¼ í•¨.
+	// 2ë‹¨ê³„ : ì •ì  ë©¤ë²„ë¡œ ì„ ì–¸ì„ í•´ì•¼ í•¨ - static ìœ¼ë¡œ ì„ ì–¸ì„ í•œë‹¤ëŠ” ì˜ë¯¸.
 	private static MemberDAO instance = null;
 	
-	// 3´Ü°è : ¿ÜºÎ¿¡¼­ °´Ã¼ »ı¼ºÀ» ÇÏÁö ¸øÇÏ°Ô Á¢±ÙÀ» Á¦¾î - private ±âº» »ı¼ºÀÚ¸¦ ¸¸µë.
+	// 3ë‹¨ê³„ : ì™¸ë¶€ì—ì„œ ê°ì²´ ìƒì„±ì„ í•˜ì§€ ëª»í•˜ê²Œ ì ‘ê·¼ì„ ì œì–´ - private ê¸°ë³¸ ìƒì„±ìë¥¼ ë§Œë“¬.
 	private MemberDAO() { }
 	
-	// 4´Ü°è : ±âº» »ı¼ºÀÚ ´ë½Å¿¡ ½ÌƒPÅÏ °´Ã¼¸¦ returnÀ» ÇØ ÁÖ´Â getInstance()
-	//        ¸Ş¼­µå¸¦ ¸¸µé¾î¼­ ¿©±â¿¡ Á¢±ÙÇÏ°Ô ÇÏ´Â ¹æ¹ı
+	// 4ë‹¨ê³„ : ê¸°ë³¸ ìƒì„±ì ëŒ€ì‹ ì— ì‹±ê¸‘í„´ ê°ì²´ë¥¼ returnì„ í•´ ì£¼ëŠ” getInstance()
+	//        ë©”ì„œë“œë¥¼ ë§Œë“¤ì–´ì„œ ì—¬ê¸°ì— ì ‘ê·¼í•˜ê²Œ í•˜ëŠ” ë°©ë²•
 	public static MemberDAO getInstance() {
 		if(instance == null) {
 			instance = new MemberDAO();
 		}
 		return instance;
-	}  // getInstance() ¸Ş¼­µå end
+	}  // getInstance() ë©”ì„œë“œ end
 	
-	// DB ¿¬µ¿ÇÏ´Â ÀÛ¾÷À» ÁøÇàÇÏ´Â ¸Ş¼­µå - DBCP¹æ½ÄÀ¸·Î ¿¬°á ÁøÇà
+	
+	// DB ì—°ë™í•˜ëŠ” ì‘ì—…ì„ ì§„í–‰í•˜ëŠ” ë©”ì„œë“œ - DBCPë°©ì‹ìœ¼ë¡œ ì—°ê²° ì§„í–‰
 	public void openConn() {
 		
 		try {
-			// 1´Ü°è : JNDI ¼­¹ö °´Ã¼ »ı¼º.
+			// 1ë‹¨ê³„ : JNDI ì„œë²„ ê°ì²´ ìƒì„±.
 			Context ctx = new InitialContext();
 			
-			// 2´Ü°è : lookup() ¸Ş¼­µå¸¦ ÀÌ¿ëÇÏ¿© ¸ÅÄªµÇ´Â Ä¿³Ø¼ÇÀ» Ã£´Â´Ù.
+			// 2ë‹¨ê³„ : lookup() ë©”ì„œë“œë¥¼ ì´ìš©í•˜ì—¬ ë§¤ì¹­ë˜ëŠ” ì»¤ë„¥ì…˜ì„ ì°¾ëŠ”ë‹¤.
 			DataSource ds = 
 				(DataSource)ctx.lookup("java:comp/env/jdbc/myoracle");
 			
-			// 3´Ü°è : DataSource °´Ã¼¸¦ ÀÌ¿ëÇÏ¿© Ä¿³Ø¼Ç °´Ã¼¸¦ ÇÏ³ª °¡Á®¿Â´Ù.
+			// 3ë‹¨ê³„ : DataSource ê°ì²´ë¥¼ ì´ìš©í•˜ì—¬ ì»¤ë„¥ì…˜ ê°ì²´ë¥¼ í•˜ë‚˜ ê°€ì ¸ì˜¨ë‹¤.
 			con = ds.getConnection();
 			
 		} catch (Exception e) {
@@ -52,6 +54,20 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 		
+	}  // openConn() ë©”ì„œë“œ end
+	
+	// DBì— ì—°ê²°ëœ ê°ì²´ë¥¼ ì¢…ë£Œí•˜ëŠ” ë©”ì„œë“œ
+	public void closeConn(ResultSet rs,
+			PreparedStatement pstmt, Connection con)  {
 		
-	}  // openConn() ¸Ş¼­µå end
+			try {
+				if(rs != null) rs.close();
+				if(pstmt != null) pstmt.close();
+				if(con != null) con.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+	}  // closeConn() ë©”ì„œë“œ end
 }

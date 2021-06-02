@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="jquery-3.4.1.min.js"></script>
 <style type="text/css">
 .title {
 	text-align: left;
@@ -15,25 +16,6 @@
 }
 </style>
 
-<script type="text/javascript">
-	function setImg(event) {
-		
-
-		var reader = new FileReader();
-		
-		reader.onload = function(event) { 
-			
-			var img = document.createElement("img");
-			img.setAttribute("src", event.target.result);
-			document.querySelector("td#poster").appendChild(img); 
-		
-		}; 
-			
-			reader.readAsDataURL(event.target.files[0]);
-		
-		
-	}
-</script>
 </head>
 <body>	
 	<jsp:include page="../include/mheader.jsp" />
@@ -46,13 +28,8 @@
 		
 		
 		<form method="post" enctype="multipart/form-data" 
-			action="<%=request.getContextPath() %>/movieWrite.do">
+			action="<%=request.getContextPath() %>/movieWriteOk.do">
 			<table class="movieWrite">
-				<tr>
-					<th>영화   코드 : </th>
-					<td> <input name="movie_code"></td>
-				</tr>
-				
 				<tr>
 					<th>영화명(국문) : </th>
 					<td><input name="movie_title_kor"></td>
@@ -66,9 +43,8 @@
 				<tr>
 					<th>대표   포스터 : </th>
 					<td rowspan="2" id="poster"></td>
-					<td> <input type="file" name="movie_poster" 
-							accept="image/*" value="이미지 찾기"
-							onchange="setImg(event)"></td>
+					<td> <input type="file"  id="upload" name="movie_poster" 
+							accept="image/*" onchange="setImg(event)"></td>
 				</tr>
 				
 				<tr>
@@ -79,7 +55,7 @@
 				<tr>
 					<th>장   르 : </th>
 					<td> 
-						<select name="genre">
+						<select name="movie_genre">
 							<option value="드라마">드라마</option>
 							<option value="로맨스">로맨스</option>
 							<option value="코미디">코미디</option>
@@ -100,11 +76,11 @@
 				
 				<tr>
 					<th>줄 거 리 : </th>
-					<td> <textarea rows="7" cols="30" name="moive_summary"></textarea></td>
+					<td> <textarea rows="7" cols="30" name="movie_summary"></textarea></td>
 				</tr>
 				
 				<tr>
-					<th>상영시간 : </th>
+					<th>상영시간 (분) : </th>
 					<td> <input name="movie_runningtime"></td>
 				</tr>
 				
@@ -154,18 +130,34 @@
 					</td>
 				</tr>	
 				<tr>
-					<td colspan="4" align="center">
-						<input type="submit" value="등록" align="right">
+					  <td colspan="4" align="center">
+						<input type="submit" value="등록">
 					</td>
-			</table>
-			<br><br>
-			
+				</tr>
+			</table>			
 		</form>
 		
 		</div>
 	</div>
-	
-
 	<jsp:include page="../include/mfooter.jsp" />
 </body>
+<script>	
+	function setImg(event) {
+		var reader = new FileReader();
+		
+		reader.onload = function(event) { 
+			var img = document.createElement("img");
+			img.setAttribute("src", event.target.result);
+			document.querySelector("#poster").appendChild(img); 
+		
+		}; 
+				reader.readAsDataURL(event.target.files[0]);	
+	}
+	
+	
+</script>
 </html>
+
+
+
+

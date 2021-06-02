@@ -1,14 +1,14 @@
 package com.member.model;
 
 public class MemberDTO {
-	private String id;			// È¸¿ø ¾ÆÀÌµğ
-	private String pwd;			// È¸¿ø ºñ¹Ğ¹øÈ£
-	private String name; 		// È¸¿ø ÀÌ¸§
-	private String phone; 		// È¸¿ø ÀüÈ­¹øÈ£
-	private int point;			// È¸¿ø Æ÷ÀÎÆ®
-	private String permission; // È¸¿ø ±ÇÇÑ
-	private String birth;		// È¸¿ø »ıÀÏ
-	private String regdate;		// È¸¿ø °¡ÀÔÀÏ
+	private String id;			// íšŒì› ì•„ì´ë””
+	private String pwd;			// íšŒì› ë¹„ë°€ë²ˆí˜¸
+	private String name; 		// íšŒì› ì´ë¦„
+	private String phone; 		// íšŒì› ì „í™”ë²ˆí˜¸ 
+	private int point;			// íšŒì› í¬ì¸íŠ¸
+	private String permission;  // íšŒì› ê¶Œí•œ
+	private String birth;		// íšŒì› ìƒì¼
+	private String regdate;		// íšŒì› ê°€ì…ì¼
 	
 	
 	public String getId() {

@@ -16,45 +16,44 @@ public class MemberSearchAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String search_field = request.getParameter("search_field");
-		String search_name = request.getParameter("search_name");
+		String search_field = request.getParameter("search_field").trim();
+		String search_name = request.getParameter("search_name").trim();
 		
+		// í˜ì´ì§• ì‘ì—…
+		int rowsize = 5;      // í•œ í˜ì´ì§€ë‹¹ ë³´ì—¬ì§ˆ ê²Œì‹œë¬¼ì˜ ìˆ˜
+		int block = 5;        // ì•„ë˜ì— ë³´ì—¬ì§ˆ í˜ì´ì§€ì˜ ìµœëŒ€ ìˆ˜ - ì˜ˆ) [1][2][3] / [4][5][6]
+		int totalRecord = 0;  // DB ìƒì˜ ê²Œì‹œë¬¼ ì „ì²´ ìˆ˜
+		int allPage = 0;      // ì „ì²´ í˜ì´ì§€ ìˆ˜
 		
-		// ÆäÀÌÂ¡ ÀÛ¾÷
-		int rowsize = 5;      // ÇÑ ÆäÀÌÁö´ç º¸¿©Áú °Ô½Ã¹°ÀÇ ¼ö
-		int block = 5;        // ¾Æ·¡¿¡ º¸¿©Áú ÆäÀÌÁöÀÇ ÃÖ´ë ¼ö - ¿¹) [1][2][3] / [4][5][6]
-		int totalRecord = 0;  // DB »óÀÇ °Ô½Ã¹° ÀüÃ¼ ¼ö
-		int allPage = 0;      // ÀüÃ¼ ÆäÀÌÁö ¼ö
-		
-		int page = 0;         // ÇöÀç ÆäÀÌÁö º¯¼ö
+		int page = 0;         // í˜„ì¬ í˜ì´ì§€ ë³€ìˆ˜
 		
 		if(request.getParameter("page") != null) {
 			page = Integer.parseInt(request.getParameter("page"));
 		}else {
-			page = 1;   // Ã³À½À¸·Î "ÀüÃ¼ °Ô½Ã¹°" a ÅÂ±×¸¦ Å¬¸¯ÇÑ °æ¿ì
+			page = 1;   // ì²˜ìŒìœ¼ë¡œ "ì „ì²´ ê²Œì‹œë¬¼" a íƒœê·¸ë¥¼ í´ë¦­í•œ ê²½ìš°
 		}
 		
 		
-		// ÇØ´ç ÆäÀÌÁö¿¡¼­ ½ÃÀÛ ¹øÈ£
+		// í•´ë‹¹ í˜ì´ì§€ì—ì„œ ì‹œì‘ ë²ˆí˜¸
 		int startNo = (page * rowsize) - (rowsize - 1);
 		
-		// ÇØ´ç ÆäÀÌÁö¿¡¼­ ¸¶Áö¸· ¹øÈ£
+		// í•´ë‹¹ í˜ì´ì§€ì—ì„œ ë§ˆì§€ë§‰ ë²ˆí˜¸
 		int endNo = (page * rowsize);
 		
-		// ÇØ´ç ÆäÀÌÁöÀÇ ½ÃÀÛ ºí·°
+		// í•´ë‹¹ í˜ì´ì§€ì˜ ì‹œì‘ ë¸”ëŸ­
 		int startBlock = (((page - 1) / block) * block) + 1;
 		
-		// ÇØ´ç ÆäÀÌÁöÀÇ ¸¶Áö¸· ºí·°
+		// í•´ë‹¹ í˜ì´ì§€ì˜ ë§ˆì§€ë§‰ ë¸”ëŸ­
 		int endBlock = (((page - 1) / block) * block) + block;
 		
 		AdminDAO dao = AdminDAO.getInstance();
 		
-		// DB»óÀÇ ÀüÃ¼ °Ô½Ã¹°ÀÇ ¼ö¸¦ È®ÀÎÇÏ´Â ¸Ş¼­µå
+		// DBìƒì˜ ì „ì²´ ê²Œì‹œë¬¼ì˜ ìˆ˜ë¥¼ í™•ì¸í•˜ëŠ” ë©”ì„œë“œ
 		totalRecord = dao.getListCount();
 		
-		// ÀüÃ¼ °Ô½Ã¹°ÀÇ ¼ö¸¦ ÇÑ ÆäÀÌÁö´ç º¸¿©Áú °Ô½Ã¹°ÀÇ ¼ö·Î ³ª´©¾î ÁÖ¾î¾ß ÇÔ.
-		// ÀÌ °úÁ¤À» °ÅÄ¡¸é ÀüÃ¼ ÆäÀÌÁö ¼ö°¡ ³ª¿À°Ô µÊ.
-		// ÀüÃ¼ ÆäÀÌÁö ¼ö°¡ ³ª¿Ã ¶§ ³Ê¸ÓÁö°¡ ÀÖÀ¸¸é ¹«Á¶°Ç ÆäÀÌÁö ¼ö¸¦ ÇÏ³ª ¿Ã·ÁÁÖ¾î¾ß ÇÔ.
+		// ì „ì²´ ê²Œì‹œë¬¼ì˜ ìˆ˜ë¥¼ í•œ í˜ì´ì§€ë‹¹ ë³´ì—¬ì§ˆ ê²Œì‹œë¬¼ì˜ ìˆ˜ë¡œ ë‚˜ëˆ„ì–´ ì£¼ì–´ì•¼ í•¨.
+		// ì´ ê³¼ì •ì„ ê±°ì¹˜ë©´ ì „ì²´ í˜ì´ì§€ ìˆ˜ê°€ ë‚˜ì˜¤ê²Œ ë¨.
+		// ì „ì²´ í˜ì´ì§€ ìˆ˜ê°€ ë‚˜ì˜¬ ë•Œ ë„ˆë¨¸ì§€ê°€ ìˆìœ¼ë©´ ë¬´ì¡°ê±´ í˜ì´ì§€ ìˆ˜ë¥¼ í•˜ë‚˜ ì˜¬ë ¤ì£¼ì–´ì•¼ í•¨.
 		allPage = (int)Math.ceil(totalRecord / (double)rowsize);
 		
 		System.out.println("page >>> " + Math.ceil(totalRecord / (double)rowsize));
@@ -63,9 +62,10 @@ public class MemberSearchAction implements Action {
 			endBlock = allPage;
 		}
 		
+		// í˜ì´ì§€ì— í•´ë‹¹í•˜ëŠ” ê²Œì‹œë¬¼ì„ ê°€ì ¸ì˜¤ëŠ” ë©”ì„œë“œ í˜¸ì¶œ
 		List<MemberDTO> searchList = dao.searchMember(search_field, search_name);
 		
-		// Áö±İ±îÁö ÆäÀÌÂ¡ Ã³¸® ½Ã ÀÛ¾÷Çß´ø ¸ğµç °ªµéÀ» Å°·Î ÀúÀåÇÏÀÚ.
+		// ì§€ê¸ˆê¹Œì§€ í˜ì´ì§• ì²˜ë¦¬ ì‹œ ì‘ì—…í–ˆë˜ ëª¨ë“  ê°’ë“¤ì„ í‚¤ë¡œ ì €ì¥í•˜ì.
 		request.setAttribute("page", page);
 		request.setAttribute("rowsize", rowsize);
 		request.setAttribute("block", block);
@@ -76,7 +76,8 @@ public class MemberSearchAction implements Action {
 		request.setAttribute("startBlock", startBlock);
 		request.setAttribute("endBlock", endBlock);
 		request.setAttribute("List", searchList);
-
+		
+		
 		ActionForward forward = new ActionForward();
 		
 		forward.setRedirect(false);

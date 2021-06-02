@@ -4,7 +4,7 @@ create table member1(
     name varchar2(20) not null,
     phone varchar2(20) not null,
     point number(10) default 0,
-    permission varchar2(10) default 'È¸¿ø',
+    permission varchar2(10) default 'íšŒì›',
     birth date not null,
     regdate date
 );
