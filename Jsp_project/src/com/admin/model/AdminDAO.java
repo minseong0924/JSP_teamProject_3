@@ -83,7 +83,7 @@ public class AdminDAO {
 			try {
 				openConn();
 				
-				if(field.equals("Admin_id")) {
+				if(field.equals("member_id")) {
 					sql = "select * from member1 where id like ? order by regdate desc";
 					
 					pstmt = con.prepareStatement(sql);
@@ -104,7 +104,7 @@ public class AdminDAO {
 						
 						list.add(dto);
 					}
-				}else if(field.equals("Admin_name")) {
+				}else if(field.equals("member_name")) {
 					sql = "select * from member1 where name like ? order by regdate desc";
 					
 					pstmt = con.prepareStatement(sql);
@@ -125,7 +125,7 @@ public class AdminDAO {
 						
 						list.add(dto);
 					}
-				}else if(field.equals("Admin_phone")) {
+				}else if(field.equals("member_phone")) {
 					sql = "select * from member1 where phone like ? order by regdate desc";
 					
 					pstmt = con.prepareStatement(sql);

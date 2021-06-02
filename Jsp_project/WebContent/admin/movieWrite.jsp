@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="jquery-3.4.1.min.js"></script>
 <style type="text/css">
 .title {
 	text-align: left;
@@ -18,7 +17,7 @@
 
 </head>
 <body>	
-	<jsp:include page="../include/mheader.jsp" />
+	<jsp:include page="../include/mheader.jsp"/>
 	
 	<div align="center">
 		<div class="title">
