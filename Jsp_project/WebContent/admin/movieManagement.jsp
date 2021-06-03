@@ -6,26 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-.movieList {
-	text-align: left;
-	margin-left: 500px;
-}
+<link rel="stylesheet" href="../css/style.css">
 
-.search {
-	text-align: right;
-	margin-right: 500px;
-}
-
-td {
-	text-align: center;
-}
-</style>
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
 	<div align="center">
-		<div class="movieList">
+		<div class="title">
 			<h2>영화 목록</h2>
 			<br>
 			<br>
@@ -46,7 +33,7 @@ td {
 		<br>
 		<br>
 
-		<table border="1" cellspacing="0" width="900">
+		<table border="1" cellspacing="0" width="950">
 			<tr>
 				<th>영화제목</th>
 				<th>상태</th>
@@ -78,7 +65,7 @@ td {
 		</table>
 		<br><br>
 		<div class="search">
-			<input type="button" value="등록"
+			<input type="button" value="영화등록"
 				onclick="location.href='movieWrite.jsp'">
 		</div>
 			<c:if test="${page > block }">

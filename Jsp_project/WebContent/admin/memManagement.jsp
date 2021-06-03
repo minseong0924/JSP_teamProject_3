@@ -6,27 +6,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-.userList {
-	text-align: left;
-	margin-left: 500px;
-}
+<link rel="stylesheet" href="../css/style.css">
 
-.search {
-	text-align: right;
-	margin-right: 500px;
-}
-
-td {
-	text-align: center;
-}
-</style>
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
 	
 	<div align="center">
-		<div class="userList">
+		<div class="title">
 			<h2>사용자 목록</h2>
 			<br>
 			<br>
@@ -46,7 +33,7 @@ td {
 		<br>
 		<br>
 
-		<table border="1" cellspacing="0" width="900">
+		<table border="1" cellspacing="0" width="900" text-align="center">
 			<tr>
 				<th>ID</th>
 				<th>이름</th>

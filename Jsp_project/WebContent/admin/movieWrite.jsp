@@ -5,15 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<style type="text/css">
-.title {
-	text-align: left;
-	margin-left: 500px;
-}
-.movieWrite{
-	border-spacing: 30px;
-}
-</style>
+<link rel="stylesheet" href="../css/style.css">
 
 </head>
 <body>	
@@ -24,8 +16,7 @@
 			<h2>영화 정보 등록/수정</h2>
 			<br>
 			<br>
-		
-		
+				
 		<form method="post" enctype="multipart/form-data" 
 			action="<%=request.getContextPath() %>/movieWriteOk.do">
 			<table class="movieWrite">
