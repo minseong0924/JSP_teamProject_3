@@ -12,6 +12,8 @@ import com.cinema.model.CinemaDAO;
 import com.cinema.model.CinemaDTO;
 import com.cinema.model.MovieDAO;
 import com.cinema.model.MovieDTO;
+import com.cinema.model.ScreenDAO;
+import com.cinema.model.ScreenDTO;
 
 public class ScreenSettingAction implements Action {
 
@@ -29,10 +31,15 @@ public class ScreenSettingAction implements Action {
 		
 		request.setAttribute("cinemalist", clist);
 		
+		ScreenDAO sdao = ScreenDAO.getInstance();
+		List<ScreenDTO> slist = sdao.screenOpen();
+		
+		request.setAttribute("screenlist", slist);
+		
 		ActionForward forward = new ActionForward();
 		
 		forward.setRedirect(false);
-		forward.setPath("admin/movie_screen_setting.jsp");
+		forward.setPath("admin/movieScreenSetting.jsp");
 		
 		return forward;
 	}

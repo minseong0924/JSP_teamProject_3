@@ -114,4 +114,42 @@ public class MovieDAO {
 		}
 		return list;
 	}
+	
+	public MovieDTO movieDetailOpen(int moviecode) {
+		MovieDTO dto = new MovieDTO();
+		
+		try {
+			openConn();
+			
+			sql = "select * from movie where moviecode =" + moviecode;
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setTitle_en(rs.getString("title_en"));
+				dto.setTitle_ko(rs.getString("title_ko"));
+				dto.setPoster(rs.getString("poster"));
+				dto.setGenre(rs.getString("genre"));
+				dto.setDirector(rs.getString("director"));
+				dto.setActor(rs.getString("actor"));
+				dto.setSummary(rs.getString("summary"));
+				dto.setRunning_time(rs.getInt("running_time"));
+				dto.setAge(rs.getString("age"));
+				dto.setNation(rs.getString("nation"));
+				dto.setOpendate(rs.getString("opendate").substring(0,8));
+				dto.setMstate(rs.getString("mstate"));
+				dto.setMtype(rs.getString("mtype"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return dto;
+	}
 }
