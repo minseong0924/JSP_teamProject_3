@@ -56,8 +56,8 @@ a.menu:after, .dropdown-toggle:after {
 	margin-right: 500px;
 }
 
-.localWrite{
-	border-spacing: 30px;
+.localWrite th, td{
+	padding: 10px;
 }
 
 .sideBar ul{list-style: none;}	/* .제거 */
