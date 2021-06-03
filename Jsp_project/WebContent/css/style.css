@@ -1,1 +1,42 @@
 @charset "UTF-8";
+
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css');
+@import url('https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css');
+@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css');
+
+
+/* ### main header css start ### */
+/* menu mouseover auto drop */
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+
+/* menu interval */
+.nav-item {
+	padding-right: 30px;
+}
+
+/* login, join button */
+.navbar-right li {
+	margin-left: 5px;
+	margin-top: 7px;
+}
+
+/* toggle switch hide */
+a.menu:after, .dropdown-toggle:after {
+   	content: none;
+}
+/* ### main header css end ### */
+
+/* ### main css start ### */
+.box_movie {
+	float: left;
+}
+
+.box_movie ul {
+	list-style:none;
+}
+/* ### main css end ###*/

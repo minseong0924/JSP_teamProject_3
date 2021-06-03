@@ -5,30 +5,14 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<style type="text/css">
+<link href="../css/style.css" rel="stylesheet" type="text/css" />
 
-	.dropdown:hover .dropdown-menu {
-	    display: block;
-	    margin-top: 0;
-	}
-	
-	.dropdown-menu li{
-		float: left;
-	}
-	
-	.navbar-right li {
-		margin-right: 5px;
-		margin-top: 7px;
-	}
-	
-</style>
 </head>
+
 <body>
 	<div style="margin:20px;">
 		<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -41,7 +25,9 @@
 						<span class="icon-bar"></span>
 					</button>
 					<!-- 타이틀임. -->
-					<a class="navbar-brand" href="#"><img src="../image/main_logo.png" width="25" height="25"></a>
+					<a class="navbar-brand" href="#">
+						<img src="https://ifh.cc/g/d9o1KQ.png" width="25" height="25">
+					</a>
 				</div>
 				
 				<!-- 메뉴 설정 -->
@@ -100,8 +86,8 @@
 				   		
 				   		<c:if test="${empty session_name }">
 				   			<!-- onClick()메소드 추가할것 -->
-				   			<li class="nav-item"><button type="button" class="btn btn-outline-dark m-1">로그인</button></li>
-				   			<li class="nav-item"><button type="button" class="btn btn-outline-dark m-1">회원가입</button></li>
+				   			<li class="nav-item"><button type="button" class="btn btn-secondary">로그인</button></li>
+				   			<li class="nav-item"><button type="button" class="btn btn-secondary">회원가입</button></li>
 				   		</c:if>
 					</ul>
 				</div>
