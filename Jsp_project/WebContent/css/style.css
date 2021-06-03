@@ -47,11 +47,30 @@ a.menu:after, .dropdown-toggle:after {
 	margin-left: 500px;
 }
 
-.movieWrite{
-	border-spacing: 30px;
+.movieWrite, .movieWrite tr, .movieWrite td{
+	border : 1px solid red;
+	padding : 10px 5px;
+	width : 800px;
 }
 
 .search {
 	text-align: right;
 	margin-right: 500px;
+}
+
+.movieList, .moviList tr, .movieList th, .movieList td{
+	border : 1px solid red;
+	text-align: center;
+	width: 950px;
+}
+
+.memberList, .memberList th, .memberList td{
+	text-align: center;
+	border : 1px solid red;
+	width: 950px;
+}
+
+#upload{
+	width:100px;
+	height:100px;
 }

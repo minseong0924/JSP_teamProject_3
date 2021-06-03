@@ -1,12 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%	
+	Object list = request.getAttribute("List");
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" href="../css/style.css">
+<title>영화 관리</title>
+<link rel="stylesheet" href="./css/style.css">
+<script>
+
+</script>
 
 </head>
 <body>
@@ -21,11 +27,10 @@
 			action="<%=request.getContextPath()%>/movieSearch.do">
 			<div class="search">
 				<select name="search_field">
-					<option value="movie_name">영화 제목</option>
+					<option value="movie_name">영화 제목(한글)</option>
 					<option value="movie_state">상태</option>
 				</select> 
-					<input name="search_name" value="검색할 내용을 입력하세요"
-							onFocus="this.value=''"> 
+					<input name="search_name" placeholder="내용을 입력하세요"> 
 					<input type="submit" value="검색">
 			</div>
 		</form>
@@ -33,7 +38,7 @@
 		<br>
 		<br>
 
-		<table border="1" cellspacing="0" width="950">
+		<table class="movieList">
 			<tr>
 				<th>영화제목</th>
 				<th>상태</th>
@@ -41,19 +46,19 @@
 				<th>수정</th>
 				<th>삭제</th>
 			</tr>
-
+			
 			<c:set var="list" value="${List }" />
 			<c:if test="${!empty List}">
 				<c:forEach items="${List }" var="dto">
 					<tr>
-						<td>${dto.getMname() }</td>
+						<td>${dto.getTitle_ko() }</td>
 						<td>${dto.getMstate() }</td>
 						<td><input type="button" value="관리"
-							onclick="location.href='moiveManage.do?movieCode=${dto.getMovieCode()}'"></td>
+							onclick="location.href='moiveManage.do?movieCode=${dto.getMoviecode()}'"></td>
 						<td><input type="button" value="수정"
-							onclick="location.href='movieEdit.do?movieCode=${dto.getMovieCode()}'"></td>
+							onclick="location.href='movieEdit.do?movieCode=${dto.getMoviecode()}'"></td>
 						<td><input type="button" value="삭제"
-							onclick="location.href='movieDelete.do?movieCode=${dto.getMovieCode()}'"></td>
+							onclick="location.href='movieDelete.do?movieCode=${dto.getMoviecode()}'"></td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -66,7 +71,7 @@
 		<br><br>
 		<div class="search">
 			<input type="button" value="영화등록"
-				onclick="location.href='movieWrite.jsp'">
+				onclick="location.href='admin/movieWrite.jsp'">
 		</div>
 			<c:if test="${page > block }">
 				<a href="board_search.do?page=1&search_field=${search_field }&search_name=${search_name }">[맨처음]</a>
@@ -75,13 +80,11 @@
 
 			<c:forEach begin="${startBlock }" end="${endBlock }" var="i">
 				<c:if test="${i == page }">
-					<b><a
-						href="board_search.do?page=${i }&search_field=${search_field }&search_name=${search_name }">[${i }]</a></b>
+					<b><a href="board_search.do?page=${i }&search_field=${search_field }&search_name=${search_name }">[${i }]</a></b>
 				</c:if>
 
 				<c:if test="${i != page }">
-					<a
-						href="board_search.do?page=${i }&search_field=${search_field }&search_name=${search_name }">[${i }]</a>
+					<a href="board_search.do?page=${i }&search_field=${search_field }&search_name=${search_name }">[${i }]</a>
 				</c:if>
 			</c:forEach>
 

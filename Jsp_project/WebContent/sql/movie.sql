@@ -7,10 +7,12 @@ create table movie(
     director varchar2(30) not null,
     actor varchar2(50) not null,
     summary varchar2(1000) not null,
-    runningTime number(20) not null,
+    runningtime number(20) not null,
     age varchar2(20) not null,
     nation varchar2(20) not null,
-    openDate date not null,
-    movie_state varchar2(20) not null,
-    movie_type varchar2(20) not null
+    opendate date not null,
+    mstate varchar2(20) not null,
+    mtype varchar2(20) not null
 );
+
+insert into movie values(1, '크루엘라', 'cruella', , default, default, '1996-09-24', sysdate);

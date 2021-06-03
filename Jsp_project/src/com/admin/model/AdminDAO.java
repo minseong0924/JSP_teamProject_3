@@ -75,7 +75,41 @@ public class AdminDAO {
 			}
 			
 	}  // closeConn() 메서드 end
+	
+	public List<MemberDTO> MemberList() {
+		List<MemberDTO> list = new ArrayList<MemberDTO>();
+		MemberDTO dto = new MemberDTO();
 		
+		try {
+			openConn();
+			
+			sql = "select * from member1 order by name desc";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				dto.setId(rs.getString("id"));
+				dto.setPwd(rs.getString("pwd"));
+				dto.setName(rs.getString("name"));
+				dto.setPhone(rs.getString("phone"));
+				dto.setPoint(rs.getInt("point"));
+				dto.setPermission(rs.getString("permission"));
+				dto.setBirth(rs.getString("birth"));
+				dto.setRegdate(rs.getString("regdate"));
+				
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return list;
+	}
+	
 	// 회원 관리 폼에서 회원 리스트를 가져오는 메서드
 	public List<MemberDTO> searchMember(String field, String name) {
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
@@ -92,18 +126,6 @@ public class AdminDAO {
 					
 					rs = pstmt.executeQuery();
 					
-					while(rs.next()) {
-						dto.setId(rs.getString("id"));
-						dto.setPwd(rs.getString("pwd"));
-						dto.setName(rs.getString("name"));
-						dto.setPhone(rs.getString("phone"));
-						dto.setPoint(rs.getInt("point"));
-						dto.setPermission(rs.getString("permission"));
-						dto.setBirth(rs.getString("birth"));
-						dto.setRegdate(rs.getString("regdate"));
-						
-						list.add(dto);
-					}
 				}else if(field.equals("member_name")) {
 					sql = "select * from member1 where name like ? order by regdate desc";
 					
@@ -113,18 +135,6 @@ public class AdminDAO {
 					
 					rs = pstmt.executeQuery();
 					
-					while(rs.next()) {
-						dto.setId(rs.getString("id"));
-						dto.setPwd(rs.getString("pwd"));
-						dto.setName(rs.getString("name"));
-						dto.setPhone(rs.getString("phone"));
-						dto.setPoint(rs.getInt("point"));
-						dto.setPermission(rs.getString("permission"));
-						dto.setBirth(rs.getString("birth"));
-						dto.setRegdate(rs.getString("regdate"));
-						
-						list.add(dto);
-					}
 				}else if(field.equals("member_phone")) {
 					sql = "select * from member1 where phone like ? order by regdate desc";
 					
@@ -133,20 +143,21 @@ public class AdminDAO {
 					pstmt.setString(1, "%" + name +"%");
 					
 					rs = pstmt.executeQuery();
-					
-					while(rs.next()) {
-						dto.setId(rs.getString("id"));
-						dto.setPwd(rs.getString("pwd"));
-						dto.setName(rs.getString("name"));
-						dto.setPhone(rs.getString("phone"));
-						dto.setPoint(rs.getInt("point"));
-						dto.setPermission(rs.getString("permission"));
-						dto.setBirth(rs.getString("birth"));
-						dto.setRegdate(rs.getString("regdate"));
-						
-						list.add(dto);
-					}
 				}
+				
+				while(rs.next()) {
+					dto.setId(rs.getString("id"));
+					dto.setPwd(rs.getString("pwd"));
+					dto.setName(rs.getString("name"));
+					dto.setPhone(rs.getString("phone"));
+					dto.setPoint(rs.getInt("point"));
+					dto.setPermission(rs.getString("permission"));
+					dto.setBirth(rs.getString("birth"));
+					dto.setRegdate(rs.getString("regdate"));
+					
+					list.add(dto);
+				}
+					
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -179,47 +190,24 @@ public class AdminDAO {
 		}finally {
 			closeConn(rs, pstmt, con);
 		}
-		
 		return count;
-		
 	}
 	
-	public int movieWriteOk(MovieDTO dto) {
-		int result = 0, count = 0;
+	// 회원의 권한을 바꾸는 메서드
+	public int memApply(String id, String per) {
+		int result = 0;
 		
 		try {
 			openConn();
 			
-			sql = "select count(*) from movie";
+			sql = "update member1 set permission = ? where id=?";
 			
 			pstmt = con.prepareStatement(sql);
-			
-			rs = pstmt.executeQuery();
-			
-			if(rs.next()) {
-				count = rs.getInt(1) + 1;
-			}
-			
-			sql = "insert into movie values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-			
-			pstmt = con.prepareStatement(sql);
-			
-			pstmt.setInt(1, count);
-			pstmt.setString(2, dto.getTitle_ko());
-			pstmt.setString(3, dto.getTitle_en());
-			pstmt.setString(4, dto.getPoster());
-			pstmt.setString(5, dto.getGenre());
-			pstmt.setString(6, dto.getDirector());
-			pstmt.setString(7, dto.getActor());
-			pstmt.setString(8, dto.getSummary());
-			pstmt.setInt(9, dto.getRunning_time());
-			pstmt.setString(10, dto.getAge());
-			pstmt.setString(11, dto.getNation());
-			pstmt.setString(12, dto.getOpendate());
-			pstmt.setString(13, dto.getMstate());
-			pstmt.setString(14, dto.getMtype());
+			pstmt.setString(1, per);
+			pstmt.setString(2, id);
 			
 			result = pstmt.executeUpdate();
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -228,4 +216,28 @@ public class AdminDAO {
 		}
 		return result;
 	}
+	
+	//회원을 삭제하는 메서드
+		public int memDelete(String id) {
+			int result = 0;
+			
+			try {
+				openConn();
+				
+				sql = "delete from member1 where id= ?";
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, id);
+				
+				result = pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				closeConn(rs, pstmt, con);
+			}
+			return result;
+		}
+	
 }

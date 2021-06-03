@@ -8,9 +8,9 @@ import java.util.Calendar;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.admin.model.AdminDAO;
 import com.cinema.controller.Action;
 import com.cinema.controller.ActionForward;
+import com.cinema.model.MovieDAO;
 import com.cinema.model.MovieDTO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -23,7 +23,7 @@ public class MovieWriteOkAction implements Action {
 		
 		// 첨부파일이 저장될 경로(위치)
 		String saveFolder =
-				"C:\\Users\\sist\\git\\JSP_teamProject_3\\Jsp_project\\WebContent\\upload";
+				"C:\\Users\\kmsol\\git\\JSP_teamProject_3\\Jsp_project\\WebContent\\upload";
 		
 		// 첨부파일의 최대 크기
 		int fileSize = 10 * 1024 * 1024;  // 10MB
@@ -102,7 +102,7 @@ public class MovieWriteOkAction implements Action {
 		dto.setRunning_time(movie_runningtime);
 		dto.setSummary(movie_summary);
 		
-		AdminDAO dao = AdminDAO.getInstance();
+		MovieDAO dao = MovieDAO.getInstance();
 		
 		int res = dao.movieWriteOk(dto);
 		
