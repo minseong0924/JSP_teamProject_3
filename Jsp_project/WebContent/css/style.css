@@ -55,3 +55,27 @@ a.menu:after, .dropdown-toggle:after {
 	text-align: right;
 	margin-right: 500px;
 }
+
+.localWrite{
+	border-spacing: 30px;
+}
+
+.sideBar ul{list-style: none;}	/* .제거 */
+.sideBar a{text-decoration: none;}	/* 밑줄 제거 */
+.sideBar{
+	width: 20%;
+	height: 800px;
+	border-right: 2px solid gray;
+	float: left;
+}
+.side_nav ul li{
+	font-size: 20px;
+	text-align: center;
+	padding-top: 35px;
+	padding-bottom: 35px;
+}
+
+.content{
+	height: 800px;
+	background-color: yellow;
+}
