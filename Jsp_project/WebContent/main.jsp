@@ -5,20 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>SSANG YOUNG BOX</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<style type="text/css">
-
-	.box_movie {
-		float: left;
-	}
-	
-	.box_movie ul {
-		list-style:none;
-	}
-
-</style>
+<link href="css/style.css" rel="stylesheet" type="text/css" />
 </head>
+
 <body>
 	<jsp:include page="include/mheader.jsp" />
 	<div align="center" class="main_body_title">
@@ -37,10 +26,12 @@
 		</div>
 		
 		<div class="box_movie">
-			<li><img src="https://movie-phinf.pstatic.net/20210421_37/1618971733493B4ykS_JPEG/movie_image.jpg"
-				width="200" height="300"></li>
-			
-			<li><button onclick="booking()" value="예매"></button></li>
+			<ul>
+				<li><img src="https://movie-phinf.pstatic.net/20210421_37/1618971733493B4ykS_JPEG/movie_image.jpg"
+					width="200" height="300"></li>
+				
+				<li><button onclick="booking()" value="예매"></button></li>
+			</ul>
 		</div>
 		
 	</div>
