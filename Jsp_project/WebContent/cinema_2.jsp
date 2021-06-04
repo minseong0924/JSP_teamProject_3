@@ -1,78 +1,93 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
-<style type="text/css">
-	.selectbox {
-		width: 10em;
-	}
-	
-	.wrap {
-		margin: 30px;
-	}
-
-	textarea {
-		resize: none;
-	}
-	
-	#intro-text {
-		width: 300px;
-		height: 100px;
-	}
-	
-	#address-text {
-		width: 300px;
-	}
-	
-	#name-text {
-		width: 300px;
-	}
-</style>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-
-	<div class="wrap">
-		<form>
-			<h1>지점 정보 등록/수정</h1>
+	<jsp:include page="include/mheader.jsp" />
+	
+	<div align="center">
+		<div class="title">
+			<h2>지점 정보 등록/수정</h2>
 			<br>
-			<div class="wrap2">
-				<div>
-					분류 :&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <select
-						class="selectbox">
-						<option>서울</option>
-						<option>경기</option>
-						<option>인천</option>
-					</select>
-				</div>
-				<br>
-				<div>
-					<label>지점명 :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input
-						type="text" id="name-text">
-				</div>
-				<br> <label id="intro-label">지점 소개 :</label>&nbsp;&nbsp; <input
-					type="text" id="intro-text" placeholder="TextArea"> <br>
-				<br>
-				<div>
-					<label>주소 :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<input type="text" id="address-text">
-				</div>
-				<br>
-				<div>
-					사용할 관 :&nbsp;&nbsp;&nbsp; <input type="checkbox"> 1관 <input
-						type="checkbox"> 2관<br>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox">
-					3관 <input type="checkbox"> 4관<br>
-					<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type="checkbox"> 5관 <input
-						type="checkbox"> 6관
-				</div>
-			</div>
+			<br>
+		<form method="post" action="<%=request.getContextPath() %>/localWriteOk.do">
+			<table class="localWrite">
+				<tr>
+					<th>분 류 : </th>
+					<td>
+						<select name="local_code">
+							<c:if test="${empty locallist }">
+								<option value="">:::저장된 지역 없음:::</option>
+				          	</c:if>
+				          	
+				          	<c:if test="${!empty locallist }">
+				          		<c:forEach items="${locallist }" var="ldto">
+				          			<option value="${ldto.localcode }">${ldto.localname }</option>
+				          		</c:forEach>
+			             	</c:if>
+						</select>
+					</td>
+				</tr>
+				
+				<tr>
+					<th>지 점 명 : </th>
+					<td><input type="text" name="cinemaname"></td>			
+				</tr>
+				
+				<tr>
+					<th>지점 소개 : </th>
+					<td> <textarea rows="5" cols="50" name="cinema_intro"></textarea> </td>
+				</tr>
+				
+				<tr>
+					<th>주 소 : </th>
+					<td><input type="text" name="cinema_addr"> </td>
+				</tr>
+				
+				<tr>
+					<th>사용할 관 : </th>
+					<td>
+						<input type="checkbox" name="cin_check" value="1"> 1관
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="cin_check" value="2"> 2관
+					</td>
+				</tr>
+				
+				<tr>
+					<th></th>
+					<td>
+						<input type="checkbox" name="cin_check" value="3"> 3관
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="cin_check" value="4"> 4관
+					</td>
+				</tr>
+				
+				<tr>
+					<th></th>
+					<td>
+						<input type="checkbox" name="cin_check" value="5"> 5관
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="checkbox" name="cin_check" value="6"> 6관
+					</td>
+				</tr>
+				
+				<tr>
+					<td colspan="4" align="right">
+						<input type="submit" value="등록">
+					</td>
+				</tr>
+				
+			</table>
 		</form>
+		</div>
 	</div>
+	<jsp:include page="include/mfooter.jsp" />
 
 </body>
 </html>
