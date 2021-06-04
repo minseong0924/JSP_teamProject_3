@@ -81,7 +81,7 @@ public class CinemaDAO {
 		try {
 			openConn();
 			
-			sql = "select * from cinema order by cinemacode desc";
+			sql = "select * from cinema";
 			
 			pstmt = con.prepareStatement(sql);
 			
