@@ -25,8 +25,8 @@
 					<option value="member_id">ID</option>
 					<option value="member_name">이름</option>
 					<option value="member_phone">전화번호</option>
-				</select> <input name="search_name" value="검색할 내용을 입력하세요"
-					onFocus="this.value=''"> <input type="submit" value="검색">
+				</select> <input name="search_name" placeholder="내용을 입력하세요">
+					 <input type="submit" value="검색">
 			</div>
 		</form>
 		<br>

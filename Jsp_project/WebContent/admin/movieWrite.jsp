@@ -6,68 +6,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="./css/style.css">
-<script>
-	function checkValue(){
-		var movieInfo = document.movieInfo;
-		var kor_title = movieInfo.movie_title_kor.value;
-		var eng_title = movieInfo.movie_title_eng.value;
-		var poster = movieInfo.movie_poster.value;
-		var genre = movieInfo.movie_genre.value;
-		var director = movieInfo.movie_director.value;
-		var actor = movieInfo.movie_actor.value;
-		var summary = movieInfo.movie_summary.value;
-		var runningtime = movieInfo.movie_runningtime.value;
-		var age = movieInfo.movie_age.value;
-		var nation = movieInfo.movie_nation.value;
-		var opendate = movieInfo.movie_opendate.value;
-		var state = movieInfo.movie_state.value;
-		var type = movieInfo.movie_type.value;
-		var today = new Date();
-		var day = new Date(opendate);
-
-		if(!kor_title) {
-			alert('국문명을 입력해주세요.');
-			movieInfo.movie_title_kor.focus();
-			return false;
-		}else if(!eng_title) {
-			alert('영문명을 입력해주세요');
-			movieInfo.movie_title_eng.focus();
-			return false;
-		}else if(!poster) {
-			alert('포스터를 등록해주세요');
-			return false;
-		}else if(!director) {
-			alert('감독명을 입력해주세요');
-			movieInfo.movie_director.focus();
-			return false;
-		}else if(!actor) {
-			alert('출연 배우를 입력해주세요');
-			movieInfo.movie_actor.focus();
-			return false;
-		}else if(!summary) {
-			alert('개요를 입력해주세요');
-			movieInfo.movie_summary.focus();
-			return false;
-		}else if(!runningtime) {
-			alert('상영시간을 입력해주세요');
-			movieInfo.movie_runningtime.focus();
-			return false;
-		}else if(!nation) {
-			alert('제작 국가를  입력해주세요');
-			movieInfo.movie_nation.focus();
-			return false;
-		}else if(!opendate) {
-			alert('개봉일을 등록해주세요');
-			movieInfo.movie_opendate.focus();
-			return false;
-		}else if(today < day) {
-			if(state == '상영중') {
-				alert('상태를 확인해주세요');
-				return false;
-			}
-		}
-	}
-</script>
 </head>
 <body>	
 	<jsp:include page="../include/mheader.jsp"/>
@@ -207,7 +145,66 @@
 				reader.readAsDataURL(event.target.files[0]);	
 	}
 	
-	
+	function checkValue(){
+		var movieInfo = document.movieInfo;
+		var kor_title = movieInfo.movie_title_kor.value;
+		var eng_title = movieInfo.movie_title_eng.value;
+		var poster = movieInfo.movie_poster.value;
+		var genre = movieInfo.movie_genre.value;
+		var director = movieInfo.movie_director.value;
+		var actor = movieInfo.movie_actor.value;
+		var summary = movieInfo.movie_summary.value;
+		var runningtime = movieInfo.movie_runningtime.value;
+		var age = movieInfo.movie_age.value;
+		var nation = movieInfo.movie_nation.value;
+		var opendate = movieInfo.movie_opendate.value;
+		var state = movieInfo.movie_state.value;
+		var type = movieInfo.movie_type.value;
+		var today = new Date();
+		var day = new Date(opendate);
+
+		if(!kor_title) {
+			alert('국문명을 입력해주세요.');
+			movieInfo.movie_title_kor.focus();
+			return false;
+		}else if(!eng_title) {
+			alert('영문명을 입력해주세요');
+			movieInfo.movie_title_eng.focus();
+			return false;
+		}else if(!poster) {
+			alert('포스터를 등록해주세요');
+			return false;
+		}else if(!director) {
+			alert('감독명을 입력해주세요');
+			movieInfo.movie_director.focus();
+			return false;
+		}else if(!actor) {
+			alert('출연 배우를 입력해주세요');
+			movieInfo.movie_actor.focus();
+			return false;
+		}else if(!summary) {
+			alert('개요를 입력해주세요');
+			movieInfo.movie_summary.focus();
+			return false;
+		}else if(!runningtime) {
+			alert('상영시간을 입력해주세요');
+			movieInfo.movie_runningtime.focus();
+			return false;
+		}else if(!nation) {
+			alert('제작 국가를  입력해주세요');
+			movieInfo.movie_nation.focus();
+			return false;
+		}else if(!opendate) {
+			alert('개봉일을 등록해주세요');
+			movieInfo.movie_opendate.focus();
+			return false;
+		}else if(today < day) {
+			if(state == '상영중') {
+				alert('상태를 확인해주세요');
+				return false;
+			}
+		}
+	}
 </script>
 </html>
 

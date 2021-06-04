@@ -28,7 +28,7 @@
 				<!-- 메뉴는 왼쪽으로 두개 설정 -->
 				<ul class="nav navbar-nav">
 					<li class="nav-item"> 
-						<a class="nav-link active" href="#">홈</a> 
+						<a class="nav-link active" href="<%=request.getContextPath() %>/main.jsp">홈</a> 
 					</li> 
 					
 					<li class="nav-item dropdown">
@@ -61,8 +61,8 @@
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> 홈페이지관리 </a> 
 						<ul class="dropdown-menu"> 
-							<li><a class="dropdown-item" href="#">전체 영화 목록</a></li>
-							<li><a class="dropdown-item" href="#">영화 등록</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieList.do">전체 영화 목록</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieWrite.do">영화 등록</a></li>
 							<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieScreenSetting.do">영화 상영 설정</a></li>
 						</ul> 
 					</li>
