@@ -47,9 +47,9 @@ a.menu:after, .dropdown-toggle:after {
 	margin-left: 500px;
 }
 
-.movieWrite, .movieWrite tr, .movieWrite td{
-	border : 1px solid red;
-	padding : 10px 5px;
+.movieWrite, .movieWrite tr, .movieWrite td, .movieWrite th{
+	border-bottom : 1px solid black;
+	padding : 10px 10px;
 	width : 800px;
 }
 
@@ -64,15 +64,19 @@ a.menu:after, .dropdown-toggle:after {
 	width: 950px;
 }
 
-.memberList, .memberList th, .memberList td{
-	text-align: center;
-	border : 1px solid red;
-	width: 950px;
+.table td, th{
+	text-align:center;
 }
 
-#upload{
-	width:100px;
-	height:100px;
+#poster{
+	width:200px;
+	height:150px;
+}
+
+textarea{
+	resize:none;
+	
+}
 
 .localWrite th, td{
 	padding: 10px;

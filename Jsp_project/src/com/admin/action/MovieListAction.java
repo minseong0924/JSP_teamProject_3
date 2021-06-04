@@ -60,10 +60,8 @@ public class MovieListAction implements Action {
 		}
 		
 		// 페이지에 해당하는 게시물을 가져오는 메서드 호출
-		List<MovieDTO> list = mdao.movieOpen();
-		for(Object k : list) {
-			System.out.println(k);
-		}
+		List<MovieDTO> list = mdao.movieList(page, rowsize);
+
 		// 지금까지 페이징 처리 시 작업했던 모든 값들을 키로 저장하자.
 		request.setAttribute("page", page);
 		request.setAttribute("rowsize", rowsize);

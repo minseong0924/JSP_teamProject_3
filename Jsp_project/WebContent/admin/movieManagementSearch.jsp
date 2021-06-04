@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%	
+	Object list = request.getAttribute("List");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -57,7 +59,7 @@
 							onclick="location.href='movieEdit.do?movieCode=${dto.getMoviecode()}'"></td>
 						<td><input type="button" value="삭제"
 							onclick="if(confirm('정말 삭제하시겠습니까?')){location.href='movieDelete.do?movieCode=${dto.getMoviecode()}'}
-										else{return;}"></td>
+										else{return false}"></td>
 					</tr>
 				</c:forEach>
 			</c:if>
@@ -75,24 +77,25 @@
 				onclick="location.href='<%=request.getContextPath()%>/movieWrite.do'">
 		</div>
 			<c:if test="${page > block }">
-		      <a href="movieList.do?page=1">[맨처음]</a>
-		      <a href="movieList.do?page=${startBlock - 1 }">◀</a>
-		   </c:if>
-		   
-		   <c:forEach begin="${startBlock }" end="${endBlock }" var="i">
-		      <c:if test="${i == page }">
-		         <b><a href="movieList.do?page=${i }">[${i }]</a></b>
-		      </c:if>
-		      
-		      <c:if test="${i != page }">
-		         <a href="movieList.do?page=${i }">[${i }]</a>
-		      </c:if>
-		   </c:forEach>
-		   
-		   <c:if test="${endBlock < allPage }">
-		      <a href="movieList.do?page=${endBlock + 1 }">▶</a>
-		      <a href="movieList.do?page=${allPage }">[마지막]</a>
-		   </c:if>
+				<a href="movieSearch.do?page=1&search_field=${search_field }&search_name=${search_name }">[맨처음]</a>
+				<a href="movieSearch.do?page=${startBlock - 1 }&search_field=${search_field }&search_name=${search_name }">◀</a>
+			</c:if>
+
+			<c:forEach begin="${startBlock }" end="${endBlock }" var="i">
+				<c:if test="${i == page }">
+					<b><a href="movieSearch.do?page=${i }&search_field=${search_field }&search_name=${search_name }">[${i }]</a></b>
+				</c:if>
+
+				<c:if test="${i != page }">
+					<a
+						href="movieSearch.do?page=${i }&search_field=${search_field }&search_name=${search_name }">[${i }]</a>
+				</c:if>
+			</c:forEach>
+
+			<c:if test="${endBlock < allPage }">
+				<a href="movieSearch.do?page=${endBlock + 1 }&search_field=${search_field }&search_name=${search_name }">▶</a>
+				<a href="movieSearch.do?page=${allPage }&search_field=${search_field }&search_name=${search_name }">[마지막]</a>
+			</c:if>
 		</div>
 		<jsp:include page="../include/mfooter.jsp" />
 </body>

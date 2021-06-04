@@ -15,7 +15,7 @@ import com.cinema.model.MovieDTO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
-public class MovieWriteOkAction implements Action {
+public class MovieEditOkAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -50,7 +50,7 @@ public class MovieWriteOkAction implements Action {
 		String movie_opendate= multi.getParameter("movie_opendate").trim();
 		String movie_state= multi.getParameter("movie_state").trim();
 		String movie_type= multi.getParameter("movie_type").trim();
-		
+		int moviecode = Integer.parseInt(multi.getParameter("moviecode").trim());
 		// 자료실 폼에서 type="file" 로 되어 있으면
 		// getFile() 메서드로 받아 주어야 함.
 		File movie_poster= multi.getFile("movie_poster");
@@ -88,7 +88,7 @@ public class MovieWriteOkAction implements Action {
 			dto.setPoster(fileDBName);
 			
 		}
-
+		dto.setMoviecode(moviecode);
 		dto.setTitle_ko(movie_title_kor);
 		dto.setTitle_en(movie_title_eng);
 		dto.setAge(movie_age);
@@ -103,8 +103,7 @@ public class MovieWriteOkAction implements Action {
 		dto.setSummary(movie_summary);
 		
 		MovieDAO dao = MovieDAO.getInstance();
-		
-		int res = dao.movieWriteOk(dto);
+		int res = dao.movieEditOk(dto);
 		
 		ActionForward forward = new ActionForward();
 		PrintWriter out = response.getWriter();
@@ -114,11 +113,10 @@ public class MovieWriteOkAction implements Action {
 			forward.setPath("movieList.do");
 		}else {
 			out.println("<script>");
-			out.println("alert('등록 실패하였습니다.'");
+			out.println("alert('수정 실패하였습니다.'");
 			out.println("history.back()");
 			out.println("</script>");
 		}
-		
 		return forward;
 	}
 

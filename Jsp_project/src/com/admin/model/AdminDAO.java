@@ -76,20 +76,32 @@ public class AdminDAO {
 			
 	}  // closeConn() 메서드 end
 	
-	public List<MemberDTO> MemberList() {
+	public List<MemberDTO> MemberList(int page, int rowsize) {
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
-		MemberDTO dto = new MemberDTO();
+		
+		// 해당 페이지에서 시작 번호
+		int startNo = (page * rowsize) - (rowsize - 1);
+								
+		// 해당 페이지에서 마지막 번호
+		int endNo = (page * rowsize);
 		
 		try {
 			openConn();
 			
-			sql = "select * from member1 order by name desc";
+			sql = "select * from "
+					+ " (select row_number() "
+					+ " over(order by name) rnum, "
+					+ " b.*  from member1 b) "
+					+ " where rnum >= ? and rnum <= ?";
 			
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, startNo);
+			pstmt.setInt(2, endNo);
 			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
+				MemberDTO dto = new MemberDTO();
 				dto.setId(rs.getString("id"));
 				dto.setPwd(rs.getString("pwd"));
 				dto.setName(rs.getString("name"));
@@ -111,41 +123,48 @@ public class AdminDAO {
 	}
 	
 	// 회원 관리 폼에서 회원 리스트를 가져오는 메서드
-	public List<MemberDTO> searchMember(String field, String name) {
+	public List<MemberDTO> searchMember(String field, String name, int page, int rowsize) {
 		List<MemberDTO> list = new ArrayList<MemberDTO>();
-		MemberDTO dto = new MemberDTO();
+			
+		// 해당 페이지에서 시작 번호
+		int startNo = (page * rowsize) - (rowsize - 1);
+						
+		// 해당 페이지에서 마지막 번호
+		int endNo = (page * rowsize);
+		
 			try {
 				openConn();
 				
 				if(field.equals("member_id")) {
-					sql = "select * from member1 where id like ? order by regdate desc";
-					
-					pstmt = con.prepareStatement(sql);
-				
-					pstmt.setString(1, "%" + name +"%");
-					
-					rs = pstmt.executeQuery();
-					
+					sql = "select * from "
+							+ " (select row_number() "
+							+ " over(order by name) rnum, "
+							+ " b.*  from member1 b where id like ?)"
+							+ " where rnum >= ? and rnum <= ?";
 				}else if(field.equals("member_name")) {
-					sql = "select * from member1 where name like ? order by regdate desc";
-					
-					pstmt = con.prepareStatement(sql);
-				
-					pstmt.setString(1, "%" + name +"%");
-					
-					rs = pstmt.executeQuery();
-					
+					sql = "select * from "
+							+ " (select row_number() "
+							+ " over(order by name) rnum, "
+							+ " b.*  from member1 b where name like ?)"
+							+ " where rnum >= ? and rnum <= ?";
 				}else if(field.equals("member_phone")) {
-					sql = "select * from member1 where phone like ? order by regdate desc";
-					
-					pstmt = con.prepareStatement(sql);
-				
-					pstmt.setString(1, "%" + name +"%");
-					
-					rs = pstmt.executeQuery();
+					sql = "select * from "
+							+ " (select row_number() "
+							+ " over(order by name) rnum, "
+							+ " b.*  from member1 b where id phone ?)"
+							+ " where rnum >= ? and rnum <= ?";
 				}
 				
+				pstmt = con.prepareStatement(sql);
+			
+				pstmt.setString(1, "%" + name +"%");
+				pstmt.setInt(2, startNo);
+				pstmt.setInt(3, endNo);
+				rs = pstmt.executeQuery();
+				
 				while(rs.next()) {
+					MemberDTO dto = new MemberDTO();
+					
 					dto.setId(rs.getString("id"));
 					dto.setPwd(rs.getString("pwd"));
 					dto.setName(rs.getString("name"));
@@ -177,6 +196,39 @@ public class AdminDAO {
 			sql = "select count(*) from member1";
 			
 			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return count;
+	}
+	
+	// 검색된 회원의 수를 가져오는 메서드
+	public int getSearchListCount(String field, String name) {
+		int count = 0;
+		
+		try {
+			openConn();
+			
+			if(field.equals("member_id")) {
+				sql = "select count(*) from member1 where id like ?";
+			}else if(field.equals("member_name")){
+				sql = "select count(*) from member1 where name like ?";
+			}else if(field.equals("member_phone")) {
+				sql = "select count(*) from member1 where phone like ?";
+			}
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%"+name+"%");
 			
 			rs = pstmt.executeQuery();
 			

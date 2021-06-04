@@ -75,6 +75,7 @@ public class MovieDAO {
 			
 	}  // closeConn() 메서드 end
 	
+	
 	public List<MovieDTO> movieOpen() {
 		List<MovieDTO> list = new ArrayList<>();
 		
@@ -89,6 +90,7 @@ public class MovieDAO {
 			
 			while(rs.next()) {
 				MovieDTO dto = new MovieDTO();
+				
 				dto.setMoviecode(rs.getInt("moviecode"));
 				dto.setTitle_en(rs.getString("title_en"));
 				dto.setTitle_ko(rs.getString("title_ko"));
@@ -115,34 +117,33 @@ public class MovieDAO {
 		return list;
 	}
 	
-	public List<MovieDTO> movieSearch(String field, String name) {
+	public List<MovieDTO> movieList(int page, int rowsize) {
 		List<MovieDTO> list = new ArrayList<>();
+		
+		// 해당 페이지에서 시작 번호
+		int startNo = (page * rowsize) - (rowsize - 1);
+										
+		// 해당 페이지에서 마지막 번호
+		int endNo = (page * rowsize);
 		
 		try {
 			openConn();
 			
-			if(field.equals("영화 제목")) {
-				
-				sql = "select * from movie where title_ko like ? order by movieCode desc";
-				
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, "%"+name+"%");
-				
-				rs = pstmt.executeQuery();
+			sql = "select * from "
+					+ " (select row_number() "
+					+ " over(order by moviecode) rnum, "
+					+ " b.*  from movie b) "
+					+ " where rnum >= ? and rnum <= ?";
 			
-			}else if(field.equals("상태")) {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, startNo);
+			pstmt.setInt(2, endNo);
 			
-				sql = "select * from movie where movie_state like ? order by movieCode desc";
-			
-				pstmt = con.prepareStatement(sql);
-				pstmt.setString(1, "%"+name+"%");
-			
-				rs = pstmt.executeQuery();
-				
-			}
+			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
 				MovieDTO dto = new MovieDTO();
+				
 				dto.setMoviecode(rs.getInt("moviecode"));
 				dto.setTitle_en(rs.getString("title_en"));
 				dto.setTitle_ko(rs.getString("title_ko"));
@@ -155,6 +156,70 @@ public class MovieDAO {
 				dto.setAge(rs.getString("age"));
 				dto.setNation(rs.getString("nation"));
 				dto.setOpendate(rs.getString("opendate").substring(0,8));
+				dto.setMstate(rs.getString("mstate"));
+				dto.setMtype(rs.getString("mtype"));
+				
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return list;
+	}
+	
+	public List<MovieDTO> movieSearch(String field, String name, int page, int rowsize) {
+		List<MovieDTO> list = new ArrayList<>();
+		
+		// 해당 페이지에서 시작 번호
+		int startNo = (page * rowsize) - (rowsize - 1);
+										
+		// 해당 페이지에서 마지막 번호
+		int endNo = (page * rowsize);
+		
+		try {
+			openConn();
+			
+			if(field.equals("movie_name")) {
+				
+				sql = "select * from "
+						+ " (select row_number() "
+						+ " over(order by moviecode) rnum, "
+						+ " b.*  from movie b where title_ko like ?)"
+						+ " where rnum >= ? and rnum <= ?";
+			}else if(field.equals("movie_state")) {
+				sql = "select * from "
+						+ " (select row_number() "
+						+ " over(order by moviecode) rnum, "
+						+ " b.*  from movie b where mstate like ?)"
+						+ " where rnum >= ? and rnum <= ?";
+			}
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%" + name +"%");
+			pstmt.setInt(2, startNo);
+			pstmt.setInt(3, endNo);
+			
+			rs = pstmt.executeQuery();
+		
+			
+			while(rs.next()) {
+				MovieDTO dto = new MovieDTO();
+				
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setTitle_en(rs.getString("title_en"));
+				dto.setTitle_ko(rs.getString("title_ko"));
+				dto.setPoster(rs.getString("poster"));
+				dto.setGenre(rs.getString("genre"));
+				dto.setDirector(rs.getString("director"));
+				dto.setActor(rs.getString("actor"));
+				dto.setSummary(rs.getString("summary"));
+				dto.setRunning_time(rs.getInt("runningtime"));
+				dto.setAge(rs.getString("age"));
+				dto.setNation(rs.getString("nation"));
+				dto.setOpendate(rs.getString("opendate").substring(0,10));
 				dto.setMstate(rs.getString("mstate"));
 				dto.setMtype(rs.getString("mtype"));
 				
@@ -239,6 +304,8 @@ public class MovieDAO {
 		}
 		return count;
 	}
+	
+	//moviecode가 ?인 영화 정보를 가져오는 메서드
 	public MovieDTO movieDetailOpen(int moviecode) {
 		MovieDTO dto = new MovieDTO();
 		
@@ -260,10 +327,10 @@ public class MovieDAO {
 				dto.setDirector(rs.getString("director"));
 				dto.setActor(rs.getString("actor"));
 				dto.setSummary(rs.getString("summary"));
-				dto.setRunning_time(rs.getInt("running_time"));
+				dto.setRunning_time(rs.getInt("runningtime"));
 				dto.setAge(rs.getString("age"));
 				dto.setNation(rs.getString("nation"));
-				dto.setOpendate(rs.getString("opendate").substring(0,8));
+				dto.setOpendate(rs.getString("opendate").substring(0,10));
 				dto.setMstate(rs.getString("mstate"));
 				dto.setMtype(rs.getString("mtype"));
 			}
@@ -274,5 +341,83 @@ public class MovieDAO {
 			closeConn(rs, pstmt, con);
 		}
 		return dto;
+	}
+	
+	public int movieEditOk(MovieDTO dto) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "update movie set title_ko=?, title_en=?, poster=?, genre=?, director=?,"
+					+ "actor=?, summary=?, runningtime=?, age=?, nation=?, opendate=?, mstate=?,"
+					+ " mtype=? where moviecode=?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, dto.getTitle_ko());
+			pstmt.setString(2, dto.getTitle_en());
+			pstmt.setString(3, dto.getPoster());
+			pstmt.setString(4, dto.getGenre());
+			pstmt.setString(5, dto.getDirector());
+			pstmt.setString(6, dto.getActor());
+			pstmt.setString(7, dto.getSummary());
+			pstmt.setInt(8, dto.getRunning_time());
+			pstmt.setString(9, dto.getAge());
+			pstmt.setString(10, dto.getNation());
+			pstmt.setString(11, dto.getOpendate());
+			pstmt.setString(12, dto.getMstate());
+			pstmt.setString(13, dto.getMtype());
+			pstmt.setInt(14, dto.getMoviecode());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	// 영화를 삭제하는 메서드
+	public int movieDelete(int code) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "delete from movie where moviecode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	// 삭제한 영화보다 code값이 큰 영화들의 code값을 -1 해주는 메서드
+	public void movieCodeDown(int code) {
+		try {
+			openConn();
+			
+			sql = "update movie set moviecode = moviecode - 1 where moviecode > ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
 	}
 }

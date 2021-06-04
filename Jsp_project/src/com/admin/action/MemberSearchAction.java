@@ -48,8 +48,8 @@ public class MemberSearchAction implements Action {
 		
 		AdminDAO dao = AdminDAO.getInstance();
 		
-		// DB상의 전체 게시물의 수를 확인하는 메서드
-		totalRecord = dao.getListCount();
+		// DB상의 검색된 전체 게시물의 수를 확인하는 메서드
+		totalRecord = dao.getSearchListCount(search_field, search_name);
 		
 		// 전체 게시물의 수를 한 페이지당 보여질 게시물의 수로 나누어 주어야 함.
 		// 이 과정을 거치면 전체 페이지 수가 나오게 됨.
@@ -63,7 +63,7 @@ public class MemberSearchAction implements Action {
 		}
 		
 		// 페이지에 해당하는 게시물을 가져오는 메서드 호출
-		List<MemberDTO> searchList = dao.searchMember(search_field, search_name);
+		List<MemberDTO> searchList = dao.searchMember(search_field, search_name, page, rowsize);
 		
 		// 지금까지 페이징 처리 시 작업했던 모든 값들을 키로 저장하자.
 		request.setAttribute("page", page);
@@ -75,12 +75,14 @@ public class MemberSearchAction implements Action {
 		request.setAttribute("endNo", endNo);
 		request.setAttribute("startBlock", startBlock);
 		request.setAttribute("endBlock", endBlock);
+		request.setAttribute("search_field", search_field);
+		request.setAttribute("search_name", search_name);
 		request.setAttribute("List", searchList);
 		
 		ActionForward forward = new ActionForward();
 		
 		forward.setRedirect(false);
-		forward.setPath("admin/memManagement.jsp");
+		forward.setPath("admin/memManagementSearch.jsp");
 		
 		return forward;
 	}

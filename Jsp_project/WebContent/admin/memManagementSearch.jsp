@@ -32,8 +32,8 @@
 		<br>
 		<br>
 		<br>
-		<form method="post"
-			action="<%=request.getContextPath()%>/memApply.do">
+		
+		<form method="post"	action="<%=request.getContextPath()%>/memApply.do">
 		<div style="width:900px;" align="center">
 		<table class="table table-striped table-hover">
 			<tr >			
@@ -46,14 +46,13 @@
 			</tr>
 						
 			<c:set var="list" value="${List }" />
-			<c:if test="${!empty list}">
-				<c:forEach items="${list }" var="dto" varStatus="status">
-				<input type="hidden" name="id" value="${dto.getId() }">
+			<c:if test="${!empty List}">
+				<c:forEach items="${List }" var="dto" varStatus="status">
 					<tr>
-						<td>${dto.getId() }</td>
+						<td><input name="id" value="${dto.getId() }">${dto.getId() }</td>
 						<td>${dto.getName() }</td>
 						<td>${dto.getPhone() }</td>
-						<td><select id="perchange" name="perchange">
+						<td><select name="perchange">
 								<c:if test="${dto.getPermission() == '관리자' }">
 									<option value="관리자">관리자</option>
 									<option value="회원">회원</option>
@@ -63,14 +62,15 @@
 									<option value="관리자">관리자</option>
 								</c:if>
 						</select></td>
-						 <td><input type="submit" value="적용"></td>
+						<td><input type="button" value="적용1"
+							onclick="loction.href='memApply.do?id=${dto[status].id}&per=${dto[status].perchange }'"></td>
+						<!--  <td><input type="submit" value="적용"></td>-->
 						<td><input type="button" value="삭제"
 							onclick="location.href='memDelete.do?id=${dto.getId()}'"></td>
 					</tr>
 				</c:forEach>
 			</c:if>
 
-			
 			<c:if test="${empty List}">
 				<tr>
 					<td colspan="7" align="center">검색된 데이터가 없습니다.</td>
@@ -82,27 +82,30 @@
 		
 		<br><br>
 
-				<c:if test="${page > block }">
-			      <a href="memberManagement.do?page=1">[맨처음]</a>
-			      <a href="memberManagement.do?page=${startBlock - 1 }">◀</a>
-			   </c:if>
-			   
-			   <c:forEach begin="${startBlock }" end="${endBlock }" var="i">
-			      <c:if test="${i == page }">
-			         <b><a href="memberManagement.do?page=${i }">[${i }]</a></b>
-			      </c:if>
-			      
-			      <c:if test="${i != page }">
-			         <a href="memberManagement.do?page=${i }">[${i }]</a>
-			      </c:if>
-			   </c:forEach>
-			   
-			   <c:if test="${endBlock < allPage }">
-			      <a href="memberManagement.do?page=${endBlock + 1 }">▶</a>
-			      <a href="memberManagement.do?page=${allPage }">[마지막]</a>
-			   </c:if>
+			<c:if test="${page > block }">
+				<a href="memberSearch.do?page=1&search_field=${search_field }&search_name=${search_name }">[맨처음]</a>
+				<a href="memberSearch.do?page=${startBlock - 1 }&search_field=${search_field }&search_name=${search_name }">◀</a>
+			</c:if>
+
+			<c:forEach begin="${startBlock }" end="${endBlock }" var="i">
+				<c:if test="${i == page }">
+					<b><a href="memberSearch.do?page=${i }&search_field=${search_field }&search_name=${search_name }">[${i }]</a></b>
+				</c:if>
+
+				<c:if test="${i != page }">
+					<a
+						href="memberSearch.do?page=${i }&search_field=${search_field }&search_name=${search_name }">[${i }]</a>
+				</c:if>
+			</c:forEach>
+
+			<c:if test="${endBlock < allPage }">
+				<a href="memberSearch.do?page=${endBlock + 1 }&search_field=${search_field }&search_name=${search_name }">▶</a>
+				<a href="memberSearch.do?page=${allPage }&search_field=${search_field }&search_name=${search_name }">[마지막]</a>
+			</c:if>
 		</div>
 		
 		<jsp:include page="../include/mfooter.jsp" />
+		
+		
 </body>
 </html>

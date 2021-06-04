@@ -1,12 +1,16 @@
+<%@page import="com.cinema.model.MovieDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+	MovieDTO list = (MovieDTO)request.getAttribute("List");
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="./css/style.css">
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
 function fn_checkByte(obj){
     var maxByte = 1000; //최대 1000바이트
@@ -36,6 +40,7 @@ function fn_checkByte(obj){
         }
     }
 </script>
+
 </head>
 <body>	
 	<jsp:include page="../include/mheader.jsp"/>
@@ -45,23 +50,24 @@ function fn_checkByte(obj){
 			<h2>영화 정보 등록/수정</h2>
 			<br>
 			<br>
-				
+			
 		<form name="movieInfo" method="post" enctype="multipart/form-data" 
-			action="<%=request.getContextPath() %>/movieWriteOk.do"
+			action="<%=request.getContextPath() %>/movieEditOk.do" 
 			onsubmit="return checkValue()">
+		<c:set var="dto" value="${List }"/>
+
+		<input type="hidden" name="moviecode" value="${dto.getMoviecode() }">
 			<table class="movieWrite">
 				<tr>
 					<th>영화명(국문) : </th>
-					<td><input name="movie_title_kor" placeholder="내용을 입력하세요" required pattern="^[가-힣1-50000]{1,30}$">
-					 <div class="valid-feedback">
-					      Looks good!
-					    </div>
-					</td>
+					<td><input name="movie_title_kor" value="${dto.getTitle_ko() }"
+						placeholder="내용을 입력하세요" required pattern="^[가-힣1-50000]{1,30}$"></td>
 				</tr>
 				
 				<tr>
 					<th>영화명(영문) : </th>
-					<td><input name="movie_title_eng" placeholder="내용을 입력하세요" required pattern="^[a-zA-Z1-50000]{1,50}$"></td>
+					<td><input name="movie_title_eng" value="${dto.getTitle_en() }" 
+						placeholder="내용을 입력하세요" placeholder="내용을 입력하세요" required pattern="^[a-zA-Z1-50000]{1,50}$"></td>
 				</tr>
 				
 				<tr>
@@ -71,28 +77,29 @@ function fn_checkByte(obj){
 							accept="image/*" required>jpg,png 파일만 첨부가 가능합니다.</td>
 				</tr>
 				
-				
 				<tr>
 					<th>장   르 : </th>
 					<td> 
 						<select name="movie_genre" required>
 							<option selected disabled value="">:::선택:::</option>
-							<option value="드라마">드라마</option>
-							<option value="로맨스">로맨스</option>
-							<option value="코미디">코미디</option>
-							<option value="스릴러">스릴러</option>
+							<option value="드라마" <% if(list.getGenre().equals("드라마")) {%>selected<%} %>>드라마</option>
+							<option value="로맨스" <% if(list.getGenre().equals("로맨스")) {%>selected<%} %>>로맨스</option>
+							<option value="코미디" <% if(list.getGenre().equals("코미디")) {%>selected<%} %>>코미디</option>
+							<option value="스릴러" <% if(list.getGenre().equals("스릴러")) {%>selected<%} %>>스릴러</option>
 						</select>
 					</td>
 				</tr>
 				
 				<tr>
 					<th>감   독 : </th>
-					<td><input name="movie_director" placeholder="내용을 입력하세요" required></td>
+					<td><input name="movie_director" value="${dto.getDirector() }"
+						placeholder="내용을 입력하세요" required></td>
 				</tr>
 				
 				<tr>
 					<th>출   연 : </th>
-					<td><input name="movie_actor" placeholder="내용을 입력하세요" required></td>
+					<td><input name="movie_actor" value="${dto.getActor() }"
+						placeholder="내용을 입력하세요" required></td>
 				</tr>
 				
 				<tr>
@@ -103,7 +110,8 @@ function fn_checkByte(obj){
 				
 				<tr>
 					<th>상영시간 (분) : </th>
-					<td> <input name="movie_runningtime" placeholder="숫자만 입력해주세요" required pattern="^[1-50000]{1,3}$"></td>
+					<td> <input name="movie_runningtime" value="${dto.getRunning_time() }"
+						placeholder="숫자만 입력해주세요" required pattern="^[1-50000]{1,3}$"></td>
 				</tr>
 				
 				<tr>
@@ -111,23 +119,24 @@ function fn_checkByte(obj){
 					<td> 
 						<select name="movie_age" required>
 							<option selected disabled value="">:::선택:::</option>
-							<option value="전체연령가">전체연령가</option>
-							<option value="12세">12세</option>
-							<option value="15세">15세</option>
-							<option value="청소년 관람불가">청소년 관람불가</option>
+							<option value="전체연령가" <% if(list.getAge().equals("전체연령가")) {%>selected<%} %>>전체연령가</option>
+							<option value="12세" <% if(list.getAge().equals("12세")) {%>selected<%} %>>12세</option>
+							<option value="15세" <% if(list.getAge().equals("전체연령가")) {%>selected<%} %>>15세</option>
+							<option value="청소년 관람불가" <% if(list.getAge().equals("전체연령가")) {%>selected<%} %>>청소년 관람불가</option>
 						</select>
-					</td>
-				</tr> 
-				
-				<tr>
-					<th>제작 국가 : </th>
-					<td> <input name="movie_nation" placeholder="내용을 입력하세요" required>
 					</td>
 				</tr>
 				
 				<tr>
+					<th>제작 국가 : </th>
+					<td> <input name="movie_nation" value="${dto.getNation() }"
+						placeholder="내용을 입력하세요"></td>
+				</tr>
+				
+				<tr>
 					<th>개 봉 일 : </th>
-					<td> <input type="date" name="movie_opendate" required>
+					<td> <input type="date"
+										value='${dto.getOpendate() }' name="movie_opendate" >
 					</td>	
 				</tr>
 				
@@ -136,8 +145,8 @@ function fn_checkByte(obj){
 					<td> 
 						<select name="movie_state" required>
 							<option selected disabled value="">:::선택:::</option>
-							<option value="상영중">상영중</option>
-							<option value="개봉 예정">개봉예정</option>
+							<option value="상영중" <% if(list.getMstate().equals("상영중")) {%>selected<%} %>>상영중</option>
+							<option value="개봉 예정" <% if(list.getMstate().equals("상영중")) {%>selected<%} %>>개봉예정</option>
 						</select>
 					</td>
 				</tr>
@@ -147,10 +156,10 @@ function fn_checkByte(obj){
 					<td>
 						<select name="movie_type" required>
 							<option selected disabled value="">:::선택:::</option>
-							<option value="2D">2D</option>
-							<option value="3D">3D</option>
-							<option value="4D">4D</option>
-							<option value="IMAX">IMAX</option>
+							<option value="2D" <% if(list.getMtype().equals("2D")) {%>selected<%} %>>2D</option>
+							<option value="3D" <% if(list.getMtype().equals("3D")) {%>selected<%} %>>3D</option>
+							<option value="4D" <% if(list.getMtype().equals("4D")) {%>selected<%} %>>4D</option>
+							<option value="IMAX" <% if(list.getMtype().equals("IMAX")) {%>selected<%} %>>IMAX</option>
 						</select>
 					</td>
 				</tr>	
@@ -168,26 +177,27 @@ function fn_checkByte(obj){
 </body>
 <script>	
 	
-	$('#upload').change(function(){
-	    setImageFromFile(this, '#poster');
-	});
-	
-	function setImageFromFile(input, expression) {
-	    if (input.files && input.files[0]) {
-	        var reader = new FileReader();
-	        reader.onload = function (e) {
-	            $(expression).attr('src', e.target.result);
-	        }
-	        reader.readAsDataURL(input.files[0]);
-	    }
+	function setImg(event) {
+		var reader = new FileReader();
+		
+		reader.onload = function(event) { 
+			var img = document.createElement("img");
+			img.setAttribute("src", event.target.result);
+			document.querySelector("#poster").appendChild(img); 
+		
+		}; 
+				reader.readAsDataURL(event.target.files[0]);	
 	}
-	
+
+</script>
+<script>
 	function checkValue(){
 		var opendate = movieInfo.movie_opendate.value;
 		var state = movieInfo.movie_state.value;
+		var type = movieInfo.movie_type.value;
 		var today = new Date();
 		var day = new Date(opendate);
-
+		
 		if(today < day) {
 			if(state == '상영중') {
 				alert('상영중이 아닙니다. 날짜를 확인해주세요');
@@ -202,8 +212,5 @@ function fn_checkByte(obj){
 		}
 	}
 </script>
+
 </html>
-
-
-
-
