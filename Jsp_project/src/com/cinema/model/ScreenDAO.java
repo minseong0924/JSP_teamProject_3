@@ -89,14 +89,14 @@ public class ScreenDAO {
 			
 			if(rs.next()) {
 				if(rs.getInt(1) != 0) {
-					count = rs.getInt(1) + 1;
+ 					count = rs.getInt(1) + 1;
 				}
 			}
 			
 			sql = "select * from screen where cinemacode = ? "+ 
 					"and cincode = ? " +
-					"and ? between start_time and end_time "+
-					"or ? between start_time and end_time";
+					"and (? between start_time and end_time "+
+					"or ? between start_time and end_time)";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, dto.getCinemacode());
@@ -169,6 +169,35 @@ public class ScreenDAO {
 		
 	}
 	
+	public ScreenDTO screenDetailOpen(int screencode) {
+		ScreenDTO dto = new ScreenDTO();
+		
+		try {
+			openConn();
+			
+			sql = "select * from screen where screencode =?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, screencode);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setScreencode(screencode);
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCincode(rs.getInt("cincode"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return dto;
+		
+	}
+	
 	public int deleteScreen(int screencode) {
 		int result = 0;
 		
@@ -190,6 +219,56 @@ public class ScreenDAO {
 		}
 		
 		return result;
+	}
+	
+	public int updateScreen(ScreenDTO dto) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "select * from screen where screencode != ? "+
+					"and cinemacode = ? "+ 
+					"and cincode = ? " +
+					"and ( ? between start_time and end_time "+
+					"or ? between start_time and end_time)";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, dto.getScreencode());
+			pstmt.setInt(2, dto.getCinemacode());
+			pstmt.setInt(3, dto.getCincode());
+			pstmt.setInt(4, dto.getStart_time());
+			pstmt.setInt(5, dto.getEnd_time());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = -2;
+			} else {
+			
+				sql = "update screen set " + 
+						"start_time = ?, " + 
+						"end_time = ? " + 
+						"where screencode = ? ";
+				
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setInt(1, dto.getStart_time());
+				pstmt.setInt(2, dto.getEnd_time());
+				pstmt.setInt(3, dto.getScreencode());
+				
+				result = pstmt.executeUpdate();
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return result;
+		
+		
 	}
 	
 }

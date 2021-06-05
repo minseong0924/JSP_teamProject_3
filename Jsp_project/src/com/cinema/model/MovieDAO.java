@@ -260,7 +260,7 @@ public class MovieDAO {
 				dto.setDirector(rs.getString("director"));
 				dto.setActor(rs.getString("actor"));
 				dto.setSummary(rs.getString("summary"));
-				dto.setRunning_time(rs.getInt("running_time"));
+				dto.setRunning_time(rs.getInt("runningtime"));
 				dto.setAge(rs.getString("age"));
 				dto.setNation(rs.getString("nation"));
 				dto.setOpendate(rs.getString("opendate").substring(0,8));
