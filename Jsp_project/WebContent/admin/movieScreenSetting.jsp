@@ -139,19 +139,10 @@
 		var etime = $("#new_e_time_"+code).val();
 		
 		var sform = document.getElementById("sform");
-		
-		var i_stime = document.createElement('input');
-		var i_etime = document.createElement('input');
-		i_stime.setAttribute("type","hidden");
-		i_stime.setAttribute("name","start_time");
-		i_stime.setAttribute("value",stime);
-		i_etime.setAttribute("type","hidden");
-		i_etime.setAttribute("name","end_time");
-		i_etime.setAttribute("value",etime);
-		
-		sform.appendChild(i_stime);
-		sform.appendChild(i_etime);
+
 		$("#screencode").val(code);
+		$("#start_time").val(stime);
+		$("#end_time").val(etime);
 	    sform.submit();
 	    
 	    $("#sc_modify_ok"+code).hide();
@@ -465,10 +456,9 @@
 			               		<input type="button" id="sc_modify_ok${screen.screencode }" class="sc_modify_ok"
 			               			value="확인" onclick="screen_modify_ok(${screen.screencode })">
 		               		
-		               			<input type="hidden" name="moviecode" value="${screen.moviecode }">
 		               			<input type="hidden" name="screencode" id="screencode"> 
-		               			<input type="hidden" name="cincode" value="${screen.cincode }"> 
-		               			<input type="hidden" name="cinemacode" value="${screen.cinemacode }"> 
+		               			<input type="hidden" name="start_time" id="start_time"> 
+		               			<input type="hidden" name="end_time" id="end_time"> 
 		               	</td>
 		               	<td>
 	               			<input type="button" value="삭제" onclick="screen_delete(${screen.screencode })">
