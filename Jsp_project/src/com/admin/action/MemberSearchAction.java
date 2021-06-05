@@ -16,9 +16,16 @@ public class MemberSearchAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String search_field = request.getParameter("search_field");
-		String search_name = request.getParameter("search_name").trim();
-		
+			String id = null;
+			String per = null;
+			if(request.getParameter("id") != null) {
+				id = request.getParameter("id");
+				per = request.getParameter("perchange");
+			}
+			
+			String search_field = request.getParameter("search_field");
+			String search_name = request.getParameter("search_name");
+			
 		// 페이징 작업
 		int rowsize = 5;      // 한 페이지당 보여질 게시물의 수
 		int block = 5;        // 아래에 보여질 페이지의 최대 수 - 예) [1][2][3] / [4][5][6]
@@ -47,6 +54,8 @@ public class MemberSearchAction implements Action {
 		int endBlock = (((page - 1) / block) * block) + block;
 		
 		AdminDAO dao = AdminDAO.getInstance();
+		
+		dao.memApply(id, per);
 		
 		// DB상의 검색된 전체 게시물의 수를 확인하는 메서드
 		totalRecord = dao.getSearchListCount(search_field, search_name);

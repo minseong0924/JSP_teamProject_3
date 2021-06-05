@@ -7,7 +7,17 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="./css/style.css">
-
+<script>
+function getSelectValue(index)
+{
+	if(confirm('적용하시겠습니까?')){
+		var p_id= $('#id'+index).text();
+		var p_perchange = $('#perchange'+index).val();
+		document.form.action='<%=request.getContextPath()%>/memberSearch.do?id='+p_id +'&perchange='+p_perchange;
+		document.form.submit();
+	}
+}
+</script>
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
@@ -33,7 +43,8 @@
 		<br>
 		<br>
 		
-		<form method="post"	action="<%=request.getContextPath()%>/memApply.do">
+		<form name="form" method="post"
+			action="<%=request.getContextPath()%>/memApply.do">
 		<div style="width:900px;" align="center">
 		<table class="table table-striped table-hover">
 			<tr >			
@@ -46,13 +57,15 @@
 			</tr>
 						
 			<c:set var="list" value="${List }" />
-			<c:if test="${!empty List}">
-				<c:forEach items="${List }" var="dto" varStatus="status">
+			<c:if test="${!empty list}">
+				<c:forEach items="${list }" var="dto" varStatus="status">
+				<input type="hidden" name="search_field" value="${search_field}">
+				<input type="hidden" name="search_name" value="${search_name}">
 					<tr>
-						<td><input name="id" value="${dto.getId() }">${dto.getId() }</td>
+						<td id="id${status.index}">${dto.getId() }</td>
 						<td>${dto.getName() }</td>
 						<td>${dto.getPhone() }</td>
-						<td><select name="perchange">
+						<td><select id="perchange${status.index}" name="perchange">
 								<c:if test="${dto.getPermission() == '관리자' }">
 									<option value="관리자">관리자</option>
 									<option value="회원">회원</option>
@@ -62,12 +75,11 @@
 									<option value="관리자">관리자</option>
 								</c:if>
 						</select></td>
-						<td><input type="button" value="적용1"
-							onclick="loction.href='memApply.do?id=${dto[status].id}&per=${dto[status].perchange }'"></td>
-						<!--  <td><input type="submit" value="적용"></td>-->
+						<td><input type="button" onclick="getSelectValue(${status.index})" value="적용"></td>
 						<td><input type="button" value="삭제"
 							onclick="location.href='memDelete.do?id=${dto.getId()}'"></td>
 					</tr>
+					
 				</c:forEach>
 			</c:if>
 

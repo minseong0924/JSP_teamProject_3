@@ -2,6 +2,7 @@ package com.admin.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,9 +24,7 @@ public class MemberApplyAction implements Action {
 		int res = dao.memApply(id, per);
 		ActionForward forward = new ActionForward();
 		PrintWriter out = response.getWriter();
-		System.out.println("res>>>" + res);
-		System.out.println("id>>>" + id);
-		System.out.println("per>>>" + per);
+
 		if(res > 0) {
 			forward.setRedirect(true);
 			forward.setPath("memberManagement.do");
@@ -37,6 +36,7 @@ public class MemberApplyAction implements Action {
 		}
 		
 		return forward;
+		}
 	}
 
-}
+
