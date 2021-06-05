@@ -16,11 +16,14 @@ public class MemberSearchAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		AdminDAO dao = AdminDAO.getInstance();
+		
 			String id = null;
 			String per = null;
 			if(request.getParameter("id") != null) {
 				id = request.getParameter("id");
 				per = request.getParameter("perchange");
+				dao.memApply(id, per);
 			}
 			
 			String search_field = request.getParameter("search_field");
@@ -53,9 +56,6 @@ public class MemberSearchAction implements Action {
 		// 해당 페이지의 마지막 블럭
 		int endBlock = (((page - 1) / block) * block) + block;
 		
-		AdminDAO dao = AdminDAO.getInstance();
-		
-		dao.memApply(id, per);
 		
 		// DB상의 검색된 전체 게시물의 수를 확인하는 메서드
 		totalRecord = dao.getSearchListCount(search_field, search_name);
