@@ -155,8 +155,10 @@ function fn_checkByte(obj){
 					</td>
 				</tr>	
 				<tr>
-					  <td colspan="4" align="right">
+					  <td colspan="4" align="center">
 						<button type="submit" class="btn btn-success">등록</button>
+						<button type="button" class="btn btn-success" 
+							onclick="history.back()">취소</button>
 					</td>
 				</tr>
 			</table>			

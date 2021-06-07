@@ -76,7 +76,8 @@ function getSelectValue(index)
 						</select></td>
 						<td><input type="button" onclick="getSelectValue(${status.index})" value="적용"></td>
 						<td><input type="button" value="삭제"
-							onclick="location.href='memDelete.do?id=${dto.getId()}'"></td>
+							onclick="if(confirm('정말 삭제하시겠습니까?')) {
+							location.href='memDelete.do?id=${dto.getId()}'}else{return;}"></td>
 					</tr>
 					
 				</c:forEach>
