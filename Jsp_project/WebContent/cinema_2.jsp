@@ -16,8 +16,8 @@
 			<h2>지점 정보 등록/수정</h2>
 			<br>
 			<br>
-		<form method="post" action="<%=request.getContextPath() %>/localWriteOk.do">
-			<table class="localWrite">
+		<form method="post" action="<%=request.getContextPath() %>/cinemaWriteOk.do">
+			<table class="movieWrite">
 				<tr>
 					<th>분 류 : </th>
 					<td>
@@ -37,7 +37,7 @@
 				
 				<tr>
 					<th>지 점 명 : </th>
-					<td><input type="text" name="cinemaname"></td>			
+					<td><input type="text" name="cinema_name"></td>			
 				</tr>
 				
 				<tr>
@@ -47,7 +47,7 @@
 				
 				<tr>
 					<th>주 소 : </th>
-					<td><input type="text" name="cinema_addr"> </td>
+					<td><input type="text" name="cinema_address"> </td>
 				</tr>
 				
 				<tr>
