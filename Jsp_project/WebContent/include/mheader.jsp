@@ -27,13 +27,13 @@
 				<!-- 메뉴는 왼쪽으로 두개 설정 -->
 				<ul class="nav navbar-nav">
 					<li class="nav-item"> 
-						<a class="nav-link active" href="<%=request.getContextPath() %>/main.jsp">홈</a> 
+						<a class="nav-link active" href="<%=request.getContextPath()%>/mainList.do">홈</a> 
 					</li> 
 					
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> 영화 </a> 
 						<ul class="dropdown-menu"> 
-							<li><a class="dropdown-item" href="#">전체영화</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieChart.do">전체영화</a></li>
 							<li><a class="dropdown-item" href="#">N스크린</a></li>
 							<li><a class="dropdown-item" href="#">무비포스트</a></li>
 						</ul> 

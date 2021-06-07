@@ -32,14 +32,49 @@ a.menu:after, .dropdown-toggle:after {
 /* ### main header css end ### */
 
 /* ### main css start ### */
-.box_movie {
-	float: left;
+.box_movie{
+	align:center;
 }
 
-.box_movie ul {
-	list-style:none;
+.main_body_box{
+	width:900px;
+	align:center;
+	padding-left:32.5%;
 }
 /* ### main css end ###*/
+
+/* 영화 차트 start*/
+.movie-list-info {
+    position: relative;
+    margin: 20px;
+    padding: 0;
+    width:200px;
+    height:300px;
+    background-color: #fff;
+    align:center;
+}
+
+.movie-list , .movie-list a{
+	position: absolute;
+	align:center;
+}
+.summary{
+	position: absolute;
+	width:200px;
+	height:300px;
+	text-align:left;
+}
+.summary a {
+	position: absolute;
+	align:left;
+	text-align:center;
+
+}
+
+.title-area {
+	position: relative;
+}
+/* 영화 차트 end */
 
 /* 관리 페이지 	*/
 .title {
@@ -64,7 +99,7 @@ a.menu:after, .dropdown-toggle:after {
 	width: 950px;
 }
 
-.table td, th{
+.table td, .table th{
 	text-align:center;
 }
 

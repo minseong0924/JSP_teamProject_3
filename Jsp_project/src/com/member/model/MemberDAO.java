@@ -4,10 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+
+import com.cinema.model.MovieDTO;
 
 public class MemberDAO {
 	Connection con = null;              // DB 연결하는 객체.
@@ -70,4 +74,164 @@ public class MemberDAO {
 			}
 			
 	}  // closeConn() 메서드 end
+	
+	public List<MovieDTO> movieList() {
+		List<MovieDTO> list = new ArrayList<>();
+		
+		try {
+			openConn();
+			
+			sql = "select * from movie"; 
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				MovieDTO dto = new MovieDTO();
+				
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setTitle_en(rs.getString("title_en"));
+				dto.setTitle_ko(rs.getString("title_ko"));
+				dto.setPoster(rs.getString("poster"));
+				dto.setGenre(rs.getString("genre"));
+				dto.setDirector(rs.getString("director"));
+				dto.setActor(rs.getString("actor"));
+				dto.setSummary(rs.getString("summary"));
+				dto.setRunning_time(rs.getInt("runningtime"));
+				dto.setAge(rs.getString("age"));
+				dto.setNation(rs.getString("nation"));
+				dto.setOpendate(rs.getString("opendate").substring(0,8));
+				dto.setMstate(rs.getString("mstate"));
+				dto.setMtype(rs.getString("mtype"));
+				
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return list;
+	}
+	
+	public List<MovieDTO> NowmovieList() {
+		List<MovieDTO> list = new ArrayList<>();
+		
+		try {
+			openConn();
+			
+			sql = "select * from movie where mstate='상영중'"; 
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				MovieDTO dto = new MovieDTO();
+				
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setTitle_en(rs.getString("title_en"));
+				dto.setTitle_ko(rs.getString("title_ko"));
+				dto.setPoster(rs.getString("poster"));
+				dto.setGenre(rs.getString("genre"));
+				dto.setDirector(rs.getString("director"));
+				dto.setActor(rs.getString("actor"));
+				dto.setSummary(rs.getString("summary"));
+				dto.setRunning_time(rs.getInt("runningtime"));
+				dto.setAge(rs.getString("age"));
+				dto.setNation(rs.getString("nation"));
+				dto.setOpendate(rs.getString("opendate").substring(0,8));
+				dto.setMstate(rs.getString("mstate"));
+				dto.setMtype(rs.getString("mtype"));
+				
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return list;
+	}
+	
+	public List<MovieDTO> comingmovieList() {
+		List<MovieDTO> list = new ArrayList<>();
+		
+		try {
+			openConn();
+			
+			sql = "select * from movie where mstate='개봉 예정'"; 
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				MovieDTO dto = new MovieDTO();
+				
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setTitle_en(rs.getString("title_en"));
+				dto.setTitle_ko(rs.getString("title_ko"));
+				dto.setPoster(rs.getString("poster"));
+				dto.setGenre(rs.getString("genre"));
+				dto.setDirector(rs.getString("director"));
+				dto.setActor(rs.getString("actor"));
+				dto.setSummary(rs.getString("summary"));
+				dto.setRunning_time(rs.getInt("runningtime"));
+				dto.setAge(rs.getString("age"));
+				dto.setNation(rs.getString("nation"));
+				dto.setOpendate(rs.getString("opendate").substring(0,8));
+				dto.setMstate(rs.getString("mstate"));
+				dto.setMtype(rs.getString("mtype"));
+				
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return list;
+	}
+	
+	public MovieDTO MovieContent(int moviecode) {
+		MovieDTO dto = new MovieDTO();
+		
+		try {
+			openConn();
+			
+			sql = "select * from movie where moviecode =" + moviecode;
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setTitle_en(rs.getString("title_en"));
+				dto.setTitle_ko(rs.getString("title_ko"));
+				dto.setPoster(rs.getString("poster"));
+				dto.setGenre(rs.getString("genre"));
+				dto.setDirector(rs.getString("director"));
+				dto.setActor(rs.getString("actor"));
+				dto.setSummary(rs.getString("summary"));
+				dto.setRunning_time(rs.getInt("runningtime"));
+				dto.setAge(rs.getString("age"));
+				dto.setNation(rs.getString("nation"));
+				dto.setOpendate(rs.getString("opendate").substring(0,8));
+				dto.setMstate(rs.getString("mstate"));
+				dto.setMtype(rs.getString("mtype"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return dto;
+	}
 }

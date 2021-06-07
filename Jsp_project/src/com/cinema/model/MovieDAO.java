@@ -305,6 +305,57 @@ public class MovieDAO {
 		return count;
 	}
 	
+	// 개봉 예정인 영화 수 확인하는 메서드 getcomingmovieCount
+	public int getcomingmovieCount() {
+		int count = 0;
+		
+		try {
+			openConn();
+			
+			sql = "select count(*) from movie where mstate='개봉 예정'";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return count;
+	}
+	
+	// 현재 상영중인 영화의 수를 가져오는 메서드
+	public int getNowmovieCount() {
+		int count = 0;
+		
+		try {
+			openConn();
+			
+			sql = "select count(*) from movie where mstate='상영중'";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return count;
+	}
 	//moviecode가 ?인 영화 정보를 가져오는 메서드
 	public MovieDTO movieDetailOpen(int moviecode) {
 		MovieDTO dto = new MovieDTO();
