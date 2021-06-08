@@ -1,4 +1,4 @@
-package com.member.model;
+package com.cinema.model;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,29 +11,28 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
 
-import com.cinema.model.MovieDTO;
-
-public class MemberDAO {
+public class ReviewDAO {
 	Connection con = null;              // DB 연결하는 객체.
 	PreparedStatement pstmt = null;     // DB에 SQL문을 전송하는 객체.
 	ResultSet rs = null;                // SQL문을 실행 후 결과 값을 가지고 있는 객체.
 	
 	String sql = null;                  // 쿼리문을 저장할 객체.
 
+	
 	// 싱글톤 방식으로 BoardDAO 객체를 만들자.
 	// 1단계 : 싱글톤 방식으로 객체를 만들기 위해서는 우선적으로 
 	//       기본생성자의 접근제어자를  private 으로 선언을 해야 함.
 	// 2단계 : 정적 멤버로 선언을 해야 함 - static 으로 선언을 한다는 의미.
-	private static MemberDAO instance = null;
+	private static ReviewDAO instance = null;
 	
 	// 3단계 : 외부에서 객체 생성을 하지 못하게 접근을 제어 - private 기본 생성자를 만듬.
-	private MemberDAO() { }
+	private ReviewDAO() { }
 	
 	// 4단계 : 기본 생성자 대신에 싱긑턴 객체를 return을 해 주는 getInstance()
 	//        메서드를 만들어서 여기에 접근하게 하는 방법
-	public static MemberDAO getInstance() {
+	public static ReviewDAO getInstance() {
 		if(instance == null) {
-			instance = new MemberDAO();
+			instance = new ReviewDAO();
 		}
 		return instance;
 	}  // getInstance() 메서드 end
@@ -60,6 +59,7 @@ public class MemberDAO {
 		
 	}  // openConn() 메서드 end
 	
+	
 	// DB에 연결된 객체를 종료하는 메서드
 	public void closeConn(ResultSet rs,
 			PreparedStatement pstmt, Connection con)  {
@@ -75,58 +75,75 @@ public class MemberDAO {
 			
 	}  // closeConn() 메서드 end
 	
-
-	
-	public int memJoinIdCheck(String id) {
-		int result = 0;
-		
+	// 리뷰 작성하는 메서드
+	public int reviewWriteOk(int moviecode, String title_ko, String cont, String id) {
+		int result = 0, count = 0;
 		
 		try {
 			openConn();
 			
-			sql = "Select * from member1 where id = ?";
+			sql = "select count(*) from review";
 			
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, id);
-			rs = pstmt.executeQuery();
 			
+			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				result = 1;
+				count = rs.getInt(1) + 1;
 			}
 			
-			rs.close(); pstmt.close(); con.close();
+			sql = "insert into review values(?,?,?,?,?,sysdate)";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, count);
+			pstmt.setString(2, id);
+			pstmt.setInt(3, moviecode);
+			pstmt.setString(4, title_ko);
+			pstmt.setString(5, cont);
+			
+			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
 		}
-		
 		return result;
 	}
 	
-	public int insertMember(MemberDTO dto) {
-		int result = 0;
+	//moviecode가 ?인 리뷰 리스트를 가져오는 메서드
+	public List<ReviewDTO> ReviewList(int moviecode) {
+		List<ReviewDTO> list = new ArrayList<>();
 		
 		try {
 			openConn();
 			
-				sql = "insert into member1 values(?,?,?,?,default,default,?,sysdate)";
+			sql = "select * from review where moviecode=?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, moviecode);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ReviewDTO dto = new ReviewDTO();
 				
-				pstmt = con.prepareStatement(sql);
+				dto.setNo(rs.getInt("no"));
+				dto.setId(rs.getString("id"));
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setTitle_ko(rs.getString("title_ko"));
+				dto.setContent(rs.getString("content"));
+				dto.setRegdate(rs.getString("regdate").substring(0,10));
 				
-				pstmt.setString(1, dto.getId());
-				pstmt.setString(2, dto.getPwd());
-				pstmt.setString(3, dto.getName());
-				pstmt.setString(4, dto.getPhone());
-				pstmt.setString(5, dto.getBirth());
-				
-				result = pstmt.executeUpdate();
-
+				list.add(dto);
+			}
 		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
+		}finally {
 			closeConn(rs, pstmt, con);
 		}
-		
-		return result;
-
+		return list;
 	}
 }

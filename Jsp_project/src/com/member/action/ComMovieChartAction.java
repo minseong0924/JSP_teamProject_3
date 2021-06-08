@@ -10,14 +10,13 @@ import com.cinema.controller.Action;
 import com.cinema.controller.ActionForward;
 import com.cinema.model.MovieDAO;
 import com.cinema.model.MovieDTO;
-import com.member.model.MemberDAO;
 
 public class ComMovieChartAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
-		MemberDAO dao = MemberDAO.getInstance();
+		MovieDAO dao = MovieDAO.getInstance();
 		
 		// 개봉 예정인 영화 리스트를 가져오는 메서드
 		List<MovieDTO> list = dao.comingmovieList();
