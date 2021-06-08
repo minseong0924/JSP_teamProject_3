@@ -70,16 +70,14 @@
 				
 				<!-- 메뉴를 오른쪽 정렬로 설정 가능 -->
 				<ul class="nav navbar-nav navbar-right">
-				<!-- 메뉴 이름은 Right!로 서브 옵션은 Test5와 Test6가 있다. -->
 					<c:if test="${!empty session_name }">
 			   			<li class="nav-item"><a href="#">${session_name }님 환영합니다.</a></li>
 			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/logout.do">로그아웃</a><li>
 			   		</c:if>
 			   		
 			   		<c:if test="${empty session_name }">
-			   			<!-- onClick()메소드 추가할것 -->
-			   			<li class="nav-item"><button type="button" class="btn btn-secondary">로그인</button></li>
-			   			<li class="nav-item"><button type="button" class="btn btn-secondary">회원가입</button></li>
+			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberLogin.do">로그인</a></li>
+			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberJoinReady.do">회원가입</a></li>
 			   		</c:if>
 				</ul>
 			</div>

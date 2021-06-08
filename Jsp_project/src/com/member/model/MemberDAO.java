@@ -75,6 +75,7 @@ public class MemberDAO {
 			
 	}  // closeConn() 메서드 end
 	
+
 	public List<MovieDTO> movieList() {
 		List<MovieDTO> list = new ArrayList<>();
 		
@@ -233,5 +234,57 @@ public class MemberDAO {
 			closeConn(rs, pstmt, con);
 		}
 		return dto;
+	}
+	public int memJoinIdCheck(String id) {
+		int result = 0;
+		
+		
+		try {
+			openConn();
+			
+			sql = "Select * from member1 where id = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 1;
+			}
+			
+			rs.close(); pstmt.close(); con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public int insertMember(MemberDTO dto) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+				sql = "insert into member1 values(?,?,?,?,default,default,?,sysdate)";
+				
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setString(1, dto.getId());
+				pstmt.setString(2, dto.getPwd());
+				pstmt.setString(3, dto.getName());
+				pstmt.setString(4, dto.getPhone());
+				pstmt.setString(5, dto.getBirth());
+				
+				result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return result;
+
 	}
 }
