@@ -1,14 +1,32 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script>
+
+	function onClick() {
+	    document.querySelector('.modal_wrap').style.display ='block';
+	    document.querySelector('.black_bg').style.display ='block';
+	}
+	
+	function offClick() {
+	    document.querySelector('.modal_wrap').style.display ='none';
+	    document.querySelector('.black_bg').style.display ='none';
+	}
+	
+    window.onload = function() {
+	    //document.getElementById('modal_btn').addEventListener('click', onClick);
+	    document.querySelector('.modal_close').addEventListener('click', offClick);
+
+	};
+</script>
 
 <div style="margin:20px;">
 	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-			<!-- ³×ºñ°ÔÀÌ¼Ç(nav)ÀÇ ±âº» ¼³Á¤À¸·Î ¸ğ¹ÙÀÏÀÏ ¶§, ¸Ş´º ¹öÆ°ÀÌ ³ª¿Â´Ù. -->
+			<!-- ë„¤ë¹„ê²Œì´ì…˜(nav)ì˜ ê¸°ë³¸ ì„¤ì •ìœ¼ë¡œ ëª¨ë°”ì¼ì¼ ë•Œ, ë©”ë‰´ ë²„íŠ¼ì´ ë‚˜ì˜¨ë‹¤. -->
 			<div class="navbar-header">
 				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
 					<span class="sr-only">Toggle navigation</span>
@@ -16,72 +34,71 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<!-- Å¸ÀÌÆ²ÀÓ. -->
+				<!-- íƒ€ì´í‹€ì„. -->
 				<a class="navbar-brand" href="#">
 					<img src="https://ifh.cc/g/d9o1KQ.png" width="25" height="25">
 				</a>
 			</div>
 			
-			<!-- ¸Ş´º ¼³Á¤ -->
+			<!-- ë©”ë‰´ ì„¤ì • -->
 			<div class="collapse navbar-collapse">
-				<!-- ¸Ş´º´Â ¿ŞÂÊÀ¸·Î µÎ°³ ¼³Á¤ -->
+				<!-- ë©”ë‰´ëŠ” ì™¼ìª½ìœ¼ë¡œ ë‘ê°œ ì„¤ì • -->
 				<ul class="nav navbar-nav">
 					<li class="nav-item"> 
-						<a class="nav-link active" href="<%=request.getContextPath()%>/mainList.do">È¨</a> 
+						<a class="nav-link active" href="<%=request.getContextPath()%>/mainList.do">í™ˆ</a> 
 					</li> 
 					
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> ¿µÈ­ </a> 
+						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> ì˜í™” </a> 
 						<ul class="dropdown-menu"> 
-							<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieChart.do">ÀüÃ¼¿µÈ­</a></li>
-							<li><a class="dropdown-item" href="#">N½ºÅ©¸°</a></li>
-							<li><a class="dropdown-item" href="#">¹«ºñÆ÷½ºÆ®</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieChart.do">ì „ì²´ì˜í™”</a></li>
+							<li><a class="dropdown-item" href="#">NìŠ¤í¬ë¦°</a></li>
+							<li><a class="dropdown-item" href="#">ë¬´ë¹„í¬ìŠ¤íŠ¸</a></li>
 						</ul> 
 					</li>
 					
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> ¿¹¸Å </a> 
+						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> ì˜ˆë§¤ </a> 
 						<ul class="dropdown-menu"> 
-							<li><a class="dropdown-item" href="#">ºü¸¥¿¹¸Å</a></li>
-							<li><a class="dropdown-item" href="#">´õÇÁ¶óÀÌºø ¿¹¸Å</a></li>
+							<li><a class="dropdown-item" href="#">ë¹ ë¥¸ì˜ˆë§¤</a></li>
+							<li><a class="dropdown-item" href="#">ë”í”„ë¼ì´ë¹— ì˜ˆë§¤</a></li>
 						</ul> 
 					</li>
 					
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> »ó¿µ½Ã°£Ç¥ </a> 
+						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> ìƒì˜ì‹œê°„í‘œ </a> 
 					</li>
 					
 					
-					<!-- °ü¸®ÀÚÀÏ ¶§ if¹® Ãß°¡ -->
+					<!-- ê´€ë¦¬ìì¼ ë•Œ ifë¬¸ ì¶”ê°€ -->
 					<li class="nav-item">
-						<a class="nav-link" href="<%=request.getContextPath() %>/memberManagement.do"> »ç¿ëÀÚ°ü¸® </a> 
+						<a class="nav-link" href="<%=request.getContextPath() %>/memberManagement.do"> ì‚¬ìš©ìê´€ë¦¬ </a> 
 					</li>
 					
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> È¨ÆäÀÌÁö°ü¸® </a> 
+						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> í™ˆí˜ì´ì§€ê´€ë¦¬ </a> 
 						<ul class="dropdown-menu"> 
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieList.do">ÀüÃ¼ ¿µÈ­ ¸ñ·Ï</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieWrite.do">¿µÈ­ µî·Ï</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieScreenSetting.do">¿µÈ­ »ó¿µ ¼³Á¤</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieList.do">ì „ì²´ ì˜í™” ëª©ë¡</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieWrite.do">ì˜í™” ë“±ë¡</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieScreenSetting.do">ì˜í™” ìƒì˜ ì„¤ì •</a></li>
 						</ul> 
 					</li>
 					
 				</ul>
 				
-				<!-- ¸Ş´º¸¦ ¿À¸¥ÂÊ Á¤·Ä·Î ¼³Á¤ °¡´É -->
+				<!-- ë©”ë‰´ë¥¼ ì˜¤ë¥¸ìª½ ì •ë ¬ë¡œ ì„¤ì • ê°€ëŠ¥ -->
 				<ul class="nav navbar-nav navbar-right">
-				<!-- ¸Ş´º ÀÌ¸§Àº Right!·Î ¼­ºê ¿É¼ÇÀº Test5¿Í Test6°¡ ÀÖ´Ù. -->
-					<c:if test="${!empty session_name }">
-			   			<li class="nav-item"><a href="#">${session_name }´Ô È¯¿µÇÕ´Ï´Ù.</a></li>
-			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/logout.do">·Î±×¾Æ¿ô</a><li>
+					<c:if test="${!empty memSession }">
+			   			<li class="nav-item"><a href="#">${memSession.name }ë‹˜ í™˜ì˜í•©ë‹ˆë‹¤.</a></li>
+			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberLogout.do">ë¡œê·¸ì•„ì›ƒ</a><li>
 			   		</c:if>
 			   		
-			   		<c:if test="${empty session_name }">
-			   			<!-- onClick()¸Ş¼Òµå Ãß°¡ÇÒ°Í -->
-			   			<li class="nav-item"><button type="button" class="btn btn-secondary">·Î±×ÀÎ</button></li>
-			   			<li class="nav-item"><button type="button" class="btn btn-secondary">È¸¿ø°¡ÀÔ</button></li>
+			   		<c:if test="${empty memSession }">
+			   			<li class="nav-item"><a href="javascript:onClick()">ë¡œê·¸ì¸</a></li>
+			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberJoinReady.do">íšŒì›ê°€ì…</a></li>
 			   		</c:if>
 				</ul>
 			</div>
 	</nav>
 </div>
+<jsp:include page="../view/memLogin.jsp"/>

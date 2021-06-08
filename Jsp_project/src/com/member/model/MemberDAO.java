@@ -75,6 +75,7 @@ public class MemberDAO {
 			
 	}  // closeConn() 메서드 end
 	
+
 	public List<MovieDTO> movieList() {
 		List<MovieDTO> list = new ArrayList<>();
 		
@@ -234,4 +235,203 @@ public class MemberDAO {
 		}
 		return dto;
 	}
+	public int memJoinIdCheck(String id) {
+		int result = 0;
+		
+		
+		try {
+			openConn();
+			
+			sql = "Select * from member1 where id = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 1;
+			}
+			
+			rs.close(); pstmt.close(); con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public int insertMember(MemberDTO dto) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+				sql = "insert into member1 values(?,?,?,?,default,default,?,sysdate)";
+				
+				pstmt = con.prepareStatement(sql);
+				
+				pstmt.setString(1, dto.getId());
+				pstmt.setString(2, dto.getPwd());
+				pstmt.setString(3, dto.getName());
+				pstmt.setString(4, dto.getPhone());
+				pstmt.setString(5, dto.getBirth());
+				
+				result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return result;
+
+	}
+	
+	public int memberLogin(String id, String pwd) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "Select * from member1 where id = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				if(rs.getString("pwd").equals(pwd)) {
+					result = 1;
+				} else {
+					result = -1;
+				}
+			}
+			
+			rs.close(); pstmt.close(); con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	public MemberSession getMember(String id, String pwd) {
+		MemberSession ms = new MemberSession();
+		
+		try {
+			openConn();
+			
+			sql = "Select * from member1 where id = ? and pwd = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			pstmt.setString(2, pwd);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				ms.setId(rs.getString("id"));
+				ms.setPwd(rs.getString("pwd"));
+				ms.setName(rs.getString("name"));
+				ms.setPhone(rs.getString("phone"));
+				ms.setPoint(rs.getInt("point"));
+				ms.setPermission(rs.getString("permission"));
+				ms.setBirth(rs.getString("birth"));
+				ms.setRegdate(rs.getString("regdate"));
+			}
+			
+			rs.close(); pstmt.close(); con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return ms;
+	}
+	
+	public String memberFindId(MemberDTO dto) {
+		String findResult = "";
+		
+		try {
+			openConn();
+
+			sql = "Select * from member1 where name = ? and birth =? and phone =?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getBirth());
+			pstmt.setString(3, dto.getPhone());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				findResult = "id:"+rs.getString("id");
+			} else {
+				findResult = "noExist:noExist";
+			}
+			
+			rs.close(); pstmt.close(); con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return findResult;
+	}
+	
+	public String memberFindPwd(MemberDTO dto) {
+		String findResult = "";
+		
+		try {
+			openConn();
+
+			sql = "Select * from member1 where name = ? and birth =? and phone =? and id = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, dto.getName());
+			pstmt.setString(2, dto.getBirth());
+			pstmt.setString(3, dto.getPhone());
+			pstmt.setString(4, dto.getId());
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				findResult = "pwd:"+rs.getString("pwd");
+			} else {
+				findResult = "noExist:noExist";
+			}
+			
+			rs.close(); pstmt.close(); con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return findResult;
+	}
+	
+	public int memPhoneCheck(String phone) {
+		int result = 0;
+		
+		try {
+			openConn();
+			System.out.println("MemberDAO:"+phone);
+			
+			sql = "Select * from member1 where phone = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, phone);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 1;
+			} else {
+				result = 0;
+			}
+			
+			rs.close(); pstmt.close(); con.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
 }
