@@ -135,16 +135,20 @@ public class ScreenDAO {
 		
 	}
 	
-	public List<ScreenDTO> screenOpen() {
+	public List<ScreenDTO> screenOpen(int page, int rowsize) {
 		List<ScreenDTO> list = new ArrayList<>();
+		
+		int startNo = (page * rowsize) - (rowsize - 1);
+		int endNo = (page * rowsize);
 		
 		try {
 			openConn();
 			
-			sql = "select * from screen order by screencode desc";
+			sql = "select * from(SELECT b.*, ROW_NUMBER() OVER(ORDER BY screencode DESC) rn FROM screen b) where rn >= ? and rn <= ?";
 			
 			pstmt = con.prepareStatement(sql);
-			
+			pstmt.setInt(1, startNo);
+			pstmt.setInt(2, endNo);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -269,6 +273,34 @@ public class ScreenDAO {
 		return result;
 		
 		
+	}
+	
+	public int getListCount() {
+		int count = 0;
+		
+		try {
+			
+			openConn();
+			
+			sql = "select count(*) from screen";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+			rs.close(); pstmt.close(); con.close();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return count;
 	}
 	
 }

@@ -22,6 +22,14 @@
 	    document.querySelector('.modal_close').addEventListener('click', offClick);
 
 	};
+	
+	function goLogout() {
+		var con_res = confirm("로그아웃 하시겠습니까?");
+		
+		if(con_res == true){
+			location.href = "<%=request.getContextPath() %>/memberLogout.do";
+		}
+	}
 </script>
 
 <div style="margin:20px;">
@@ -91,7 +99,7 @@
 
 					<c:if test="${!empty memSession }">
 			   			<li class="nav-item"><a href="#">${memSession.name }님 환영합니다.</a></li>
-			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberLogout.do">로그아웃</a><li>
+			   			<li class="nav-item"><a href="javascript:goLogout()">로그아웃</a><li>
 			   		</c:if>
 
 			   		<c:if test="${empty memSession }">

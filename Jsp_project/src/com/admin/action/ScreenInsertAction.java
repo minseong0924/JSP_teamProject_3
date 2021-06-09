@@ -48,25 +48,10 @@ public class ScreenInsertAction implements Action {
 		int res = sdao.insertScreen(sdto);
 		
 		PrintWriter out = response.getWriter();
-		ActionForward forward = new ActionForward();
 		
+		out.println(res);
 		
-		if(res > 0) {
-			forward.setRedirect(true);
-			forward.setPath("movieScreenSetting.do");
-		} else if(res == -2) {
-			out.println("<script>");
-			out.println("alert('해당 시간에 이미 상영 중인 영화가 있습니다.')");
-			out.println("history.back()");
-			out.println("</script>");
-		} else {
-			out.println("<script>");
-			out.println("alert('영화 상영 등록에 실패했습니다.')");
-			out.println("history.back()");
-			out.println("</script>");
-		}
-		
-		return forward;
+		return null;
 	}
 
 }

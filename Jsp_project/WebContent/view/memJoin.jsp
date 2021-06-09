@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>SSANG YOUNG BOX</title>
 <link rel="stylesheet" href="./css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -44,6 +44,12 @@
       	//연락처체크 여부
 		if ($("#phcheck_hidden").val() != "1") {
 			alert("연락처를 확인해주십시오.");
+        	return false;
+        }
+      	
+		//생년월일체크 여부
+		if ($("#birthcheck_hidden").val() != "1") {
+			alert("생년월일을 확인해주십시오.");
         	return false;
         }
 	    
@@ -189,9 +195,63 @@
 		
 	});
 	
-	$(document).ready(function() {
-		$("#userbirth").val(new Date().toISOString().slice(0, 10));
-    });
+	//생년월일 유효성 체크
+	function isValidDate(dateStr) {
+	     var year = Number(dateStr.substr(0,4)); 
+	     var month = Number(dateStr.substr(4,2));
+	     var day = Number(dateStr.substr(6,2));
+	     var today = new Date();
+	     var yearNow = today.getFullYear();
+	 
+	     if (year < 1900){
+	    	 $("#birthcheck").text("잘못된 연도입니다.");
+	          return false;
+	     }
+	     if (month < 1 || month > 12) { 
+	    	 $("#birthcheck").text("달은 1월부터 12월까지 입력 가능합니다.");
+	          return false;
+	     }
+	     if (day < 1 || day > 31) {
+	    	 $("#birthcheck").text("일은 1일부터 31일까지 입력가능합니다.");
+	          return false;
+	     }
+	     if ((month==4 || month==6 || month==9 || month==11) && day==31) {
+	    	 $("#birthcheck").text(month+"월은 31일이 존재하지 않습니다.");
+	          return false;
+	     }
+	     if (month == 2) {
+	          var isleap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+	          if (day>29 || (day==29 && !isleap)) {
+	        	  $("#birthcheck").text(year + "년 2월은  " + day + "일이 없습니다.");
+	               return false;
+	          }
+	     }
+	     return true;
+	}
+	
+	$(function () {
+		$("#userbirth").keyup(function() {
+			//생년월일 유효성 체크
+			if($.trim($("#userbirth").val()).length == 8) {
+				if(isValidDate($("#userbirth").val()))	{
+					$("#birthcheck").text('');
+					$("#birthcheck").hide();
+					$("#birthcheck_hidden").val("1");
+				} else {
+					$("#userbirth").focus();
+					$("#birthcheck_hidden").val("");
+				}
+			} else {
+				let warningTxt = '<font color="red">생년월일은 8자여야합니다.</font>';
+				$("#birthcheck").text('');
+				$("#birthcheck").show();
+				$("#birthcheck").append(warningTxt);
+				$("#userbirth").focus();
+			}
+		});
+		
+	});
+
 </script>
 </head>
 <body>
@@ -199,8 +259,7 @@
 	<br><br>
 	<div align="center">
 		<form name="memJoin" method="post" onsubmit="return allCheck()" 
-			action="<%=request.getContextPath() %>/memberJoinOk.do" 
-			onsubmit="return checkValue()">
+			action="<%=request.getContextPath() %>/memberJoinOk.do">
 
 			<table class="memJoin">
 				<tr>
@@ -236,13 +295,17 @@
 				
 				<tr>
 					<td>생년월일</td>
-					<td><input type="date" id="userbirth" name="userbirth" class="form-control" required></td>
+					<td>
+						<input id="userbirth" name="userbirth" class="form-control" maxlength="8" placeholder="생년월일 앞8자리 예)19901212" required>
+						<span id="birthcheck"></span>
+						<input type="hidden" id="birthcheck_hidden">
+					</td>
 				</tr>
 				
 				<tr>
 					<td>연락처</td>
 					<td>
-						<input placeholder="예) 01012341234" maxlength="11" id="userphone" name="userphone" class="form-control" required>
+						<input placeholder="'-' 제외 예) 01012341234" maxlength="11" id="userphone" name="userphone" class="form-control" required>
 						<span id="phcheck"></span>
 						<input type="hidden" id="phcheck_hidden">
 					</td>

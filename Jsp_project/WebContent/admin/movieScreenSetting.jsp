@@ -137,18 +137,30 @@
 		
 		var stime = $("#new_s_time_"+code).val();
 		var etime = $("#new_e_time_"+code).val();
-		
-		var sform = document.getElementById("sform");
 
-		$("#screencode").val(code);
-		$("#start_time").val(stime);
-		$("#end_time").val(etime);
-	    sform.submit();
-	    
-	    $("#sc_modify_ok"+code).hide();
-		$("#sc_modify_cc"+code).hide();
-		$("#sc_modify"+code).show();
-	    
+		$.ajax({
+			type:"post",
+			url: "/Jsp_project/movieScreenUpdate.do",
+			data: {
+				   "screencode" : code, 
+				   "start_time" : stime,
+				   "end_time" : etime
+				  },
+			success: function(data) {
+				if(data > 0) {
+					location.reload();
+				} else if(data == -2) {
+					alert('해당 시간에 이미 상영 중인 영화가 있습니다.');
+				} else {
+					alert('영화 상영 등록에 실패했습니다.');
+				}
+			},
+			error: function(request,status,error){
+		        alert("code:"+request.status+"\n"
+		        		+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});
+    
 	}
 	
 	// 페이지 실행 시 자동 함수
@@ -278,6 +290,36 @@
 		$("#new_e_time_"+code).timepicker('setTime', end_time);
 	}
 	
+	// 상영 정보 추가 AJAX
+	$(function () {
+		$("#insert_btn").mousedown(function() {
+			$.ajax({
+				type:"post",
+				url: "/Jsp_project/movieScreenInsert.do",
+				data: {
+					   "movie_code" : $("#select_movie").val(), 
+					   "cinema_code" : $("#select_cinema").val(),
+					   "cinema_cin" : $("#cinema_cin").val(),
+					   "start_time" : $("#timepick_start").val()
+					  },
+				success: function(data) {
+					if(data > 0) {
+						location.reload();
+					} else if(data == -2) {
+						alert('해당 시간에 이미 상영 중인 영화가 있습니다.');
+					} else {
+						alert('영화 상영 등록에 실패했습니다.');
+					}
+				},
+				error: function(request,status,error){
+			        alert("code:"+request.status+"\n"
+			        		+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+			});
+		});
+		
+	});
+	
 	$(document).ready(function() {
 		cinemaAuto();
 		
@@ -313,7 +355,7 @@
 	<!-- 새로운 상영 영화 추가 -->
 	<div class="container"> 
 	<p>영화 상영 추가</p>
-	<form method="post" action="<%=request.getContextPath() %>/movieScreenInsert.do">
+	<form method="post">
 		<table class="table table-hover"> 
 			<thead>
 				<tr> 
@@ -380,7 +422,7 @@
 	               	</td>
 	               	
 	               	<td>
-	               		<input type="submit" value="추가">
+	               		<input id="insert_btn" type="button" class="btn btn-default btn-sm" value="추가">
 	               	</td>
 	               	 
 				</tr> 
@@ -395,7 +437,7 @@
 	<!-- 현재 상영 설정된 영화 목록 -->
 	<div class="container"> 
 	<p>영화 상영 목록</p>
-	<form method="post" name="frm" id="sform" action="<%=request.getContextPath() %>/movieScreenUpdate.do">
+	<form method="post" name="frm" id="sform">
 		<table class="table table-hover"> 
 			<thead>
 				<tr>
@@ -449,11 +491,11 @@
 		               	</td>
 		               	
 		               	<td>
-			               		<input type="button" id="sc_modify${screen.screencode }"
+			               		<input type="button" id="sc_modify${screen.screencode }" class="btn btn-default btn-sm"
 			               			value="수정" onclick="screen_modify(${screen.screencode },${screen.start_time },${screen.end_time })">
-			               		<input type="button" id="sc_modify_cc${screen.screencode }" class="sc_modify_cc"
+			               		<input type="button" id="sc_modify_cc${screen.screencode }" class="sc_modify_cc btn btn-default btn-sm"
 			               			value="취소" onclick="screen_cancle(${screen.screencode },${screen.start_time },${screen.end_time })">
-			               		<input type="button" id="sc_modify_ok${screen.screencode }" class="sc_modify_ok"
+			               		<input type="button" id="sc_modify_ok${screen.screencode }" class="sc_modify_ok btn btn-default btn-sm"
 			               			value="확인" onclick="screen_modify_ok(${screen.screencode })">
 		               		
 		               			<input type="hidden" name="screencode" id="screencode"> 
@@ -461,13 +503,35 @@
 		               			<input type="hidden" name="end_time" id="end_time"> 
 		               	</td>
 		               	<td>
-	               			<input type="button" value="삭제" onclick="screen_delete(${screen.screencode })">
+	               			<input type="button" value="삭제" class="btn btn-default btn-sm" onclick="screen_delete(${screen.screencode })">
 		               	</td>
 					</tr> 
 				</c:forEach>
 			</tbody>
 		</table>
 		</form>
+	</div>
+	
+	<div id="pagingBlock" align="center">
+		<c:if test="${page > block }">
+			<a href="movieScreenSetting.do?page=1">◀◀</a>
+			<a href="movieScreenSetting.do?page=${startBlock - 1 }">◀</a>
+		</c:if>
+		
+		<c:forEach begin="${startBlock }" end="${endBlock }" var="i">
+			<c:if test="${i == page }">
+				<b><a href="movieScreenSetting.do?page=${i }">[${i }]</a></b>
+			</c:if>
+			
+			<c:if test="${i != page }">
+				<a href="movieScreenSetting.do?page=${i }">[${i }]</a>
+			</c:if>
+		</c:forEach>
+		
+		<c:if test="${endBlock < allPage }">
+			<a href="movieScreenSetting.do?page=${endBlock + 1 }">▶</a>
+			<a href="movieScreenSetting.do?page=${allPage }">▶▶</a>
+		</c:if>
 	</div>
 	
 	

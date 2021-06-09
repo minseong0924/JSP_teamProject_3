@@ -3,7 +3,6 @@
 <meta charset="UTF-8">
 
 <link rel="stylesheet" href="./css/style.css">
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 
 <div class="black_bg"></div>
 <div class="modal_wrap">
