@@ -66,11 +66,7 @@
 					</li>
 					
 					<li class="nav-item dropdown">
-<<<<<<< HEAD
-						<a class="nav-link dropdown-toggle" href="timeTable.do" data-toggle="dropdown"> �󿵽ð�ǥ </a> 
-=======
 						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> 상영시간표 </a> 
->>>>>>> refs/remotes/origin/home_hb4
 					</li>
 					
 					
@@ -93,10 +89,11 @@
 				<!-- 메뉴를 오른쪽 정렬로 설정 가능 -->
 				<ul class="nav navbar-nav navbar-right">
 
-			   		<c:if test="${empty session_name }">
-			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberLogin.do">�α���</a></li>
-			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberJoinReady.do">ȸ������</a></li>
+					<c:if test="${!empty memSession }">
+			   			<li class="nav-item"><a href="#">${memSession.name }님 환영합니다.</a></li>
+			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberLogout.do">로그아웃</a><li>
 			   		</c:if>
+
 			   		<c:if test="${empty memSession }">
 			   			<li class="nav-item"><a href="javascript:onClick()">로그인</a></li>
 			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberJoinReady.do">회원가입</a></li>
