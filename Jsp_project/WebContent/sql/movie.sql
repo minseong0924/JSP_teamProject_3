@@ -6,7 +6,7 @@ create table movie(
     genre varchar2(20) not null,
     director varchar2(30) not null,
     actor varchar2(50) not null,
-    summary varchar2(1000) not null,
+    summary varchar2(1500) not null,
     runningtime number(20) not null,
     age varchar2(30) not null,
     nation varchar2(20) not null,

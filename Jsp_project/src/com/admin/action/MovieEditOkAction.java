@@ -23,7 +23,7 @@ public class MovieEditOkAction implements Action {
 		
 		// 첨부파일이 저장될 경로(위치)
 		String saveFolder =
-				"C:\\Users\\kmsol\\git\\JSP_teamProject_3\\Jsp_project\\WebContent\\upload";
+				"C:\\Users\\sist\\git\\JSP_teamProject_3\\Jsp_project\\WebContent\\upload";
 		
 		// 첨부파일의 최대 크기
 		int fileSize = 10 * 1024 * 1024;  // 10MB

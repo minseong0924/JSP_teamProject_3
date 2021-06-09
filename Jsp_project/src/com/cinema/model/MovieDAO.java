@@ -631,4 +631,46 @@ public class MovieDAO {
 		}
 		return dto;
 	}
+	
+	public String AMovieContent(int moviecode) {
+		String result="";
+		
+		try {
+			openConn();
+			
+			sql = "select * from movie where moviecode =" + moviecode;
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			result += "<movie>";
+			
+			if(rs.next()) {
+				result += "<code>"+rs.getInt("moviecode")+"</code>";
+				result += "<ko>"+rs.getString("title_ko")+"</ko>";
+				result += "<en>"+rs.getString("title_en")+"</en>";
+				result += "<poster>"+rs.getString("poster")+"</poster>";
+				result += "<genre>"+rs.getString("genre")+"</genre>";
+				result += "<director>"+rs.getString("director")+"</director>";
+				result += "<actor>"+rs.getString("actor")+"</actor>";
+				result += "<summary>"+rs.getString("summary")+"</summary>";
+				result += "<runningtime>"+rs.getInt("runningtime")+"</runningtime>";
+				result += "<age>"+rs.getString("age")+"</age>";
+				result += "<nation>"+rs.getString("nation")+"</nation>";
+				result += "<opendate>"+rs.getString("opendate").substring(0,10)+"</opendate>";
+				result += "<mstate>"+rs.getString("mstate")+"</mstate>";
+				result += "<mtype>"+rs.getString("mtype")+"</mtype>";
+
+			}
+				result += "</movie>";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
 }
