@@ -108,7 +108,36 @@ public class LocalDAO {
 		return list;	
 	}	// localOpen() 메서드 end
 	
-	
+	// 지역리스트 전체 검색(오름차순)
+	public List<LocalDTO> localOpenAsc() {
+		List<LocalDTO> list = new ArrayList<>();
+		
+		try {
+			openConn();
+			
+			sql = "select * from local";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				LocalDTO dto = new LocalDTO();
+				
+				dto.setLocalcode(rs.getInt("localcode"));
+				dto.setLocalname(rs.getString("localname"));
+				
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return list;	
+	}
 	
 }
 

@@ -68,7 +68,7 @@
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> 예매 </a> 
 						<ul class="dropdown-menu"> 
-							<li><a class="dropdown-item" href="#">빠른예매</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieQuickBooking.do">빠른예매</a></li>
 							<li><a class="dropdown-item" href="#">더프라이빗 예매</a></li>
 						</ul> 
 					</li>

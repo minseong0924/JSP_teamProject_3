@@ -135,6 +135,39 @@ public class ScreenDAO {
 		
 	}
 	
+	public List<ScreenDTO> screenOpen() {
+		List<ScreenDTO> list = new ArrayList<>();
+
+		try {
+			openConn();
+			
+			sql = "select * from screen";
+			
+			pstmt = con.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScreenDTO dto = new ScreenDTO();
+				dto.setScreencode(rs.getInt("screencode"));
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCincode(rs.getInt("cincode"));
+				dto.setStart_time(rs.getInt("start_time"));
+				dto.setEnd_time(rs.getInt("end_time"));
+				
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return list;
+		
+	}
+	
 	public List<ScreenDTO> screenOpen(int page, int rowsize) {
 		List<ScreenDTO> list = new ArrayList<>();
 		
