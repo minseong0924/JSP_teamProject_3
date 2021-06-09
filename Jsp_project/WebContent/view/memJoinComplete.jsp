@@ -27,7 +27,10 @@
 		<h3>${name }님, 쌍용박스에 오신 것을 환영합니다!</h3>
 		<h3>가입하신 아이디와 비밀번호로 로그인 해주세요.</h3>
 		<br>
+<<<<<<< HEAD
 		<input type="button" onclick="goLogin()" value="로그인" class="btn btn-default">
+=======
+>>>>>>> refs/remotes/origin/home_hb4
 		<input type="button" onclick="goMain()" value="메인으로" class="btn btn-default">
 	</div>
 </body>

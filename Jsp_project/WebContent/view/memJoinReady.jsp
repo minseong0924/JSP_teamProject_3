@@ -16,14 +16,18 @@
 
 			<table border="0" cellspacing="1">
 				<tr>
-					<td><h3>쌍용박스 회원가입 이용약관 동의</h3></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" name="agree" required> 이용약관 동의(필수)</td>
+					<td align="center"><h3>쌍용박스 회원가입 이용약관 동의</h3></td>
 				</tr>
 				<tr>
 					<td>
-					<textarea cols="70" rows="10" readonly>
+						<label>
+						      <input type="checkbox" required>  이용약관 동의(필수)
+						</label>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<textarea class="form-control" cols="70" rows="10" readonly>
 여러분을 환영합니다.
 쌍용박스 서비스 및 제품(이하 ‘서비스’)을 이용해 주셔서 감사합니다. 본 약관은 다양한 쌍용박스 서비스의 이용과 관련하여 쌍용박스 서비스를 제공하는 쌍용박스 주식회사(이하 ‘쌍용박스’)와 이를 이용하는 쌍용박스 서비스 회원(이하 ‘회원’) 또는 비회원과의 관계를 설명하며, 아울러 여러분의 쌍용박스 서비스 이용에 도움이 될 수 있는 유익한 정보를 포함하고 있습니다.
 
@@ -117,11 +121,15 @@
 					</td>
 				</tr>
 				<tr>
-					<td><input type="checkbox" name="agree" required> 개인정보 이용 동의(필수)</td>
+					<td>
+						<label>
+						      <input type="checkbox" required>  개인정보 이용 동의(필수)
+						</label>
+					</td>
 				</tr>
 				<tr>
 					<td>
-						<textarea cols="70" rows="10" readonly>
+						<textarea class="form-control" cols="70" rows="10" readonly>
 개인정보보호법에 따라 쌍용박스에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및 이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내 드리오니 자세히 읽은 후 동의하여 주시기 바랍니다.
 
 1. 수집하는 개인정보
@@ -183,7 +191,7 @@ NAVER 내의 개별 서비스 이용, 이벤트 응모 및 경품 신청 과정�
 							onclick="history.back()">가입취소</button>
 					</td>
 				</tr>
-			</table>			
+			</table>
 		</form>
 
 	</div>
