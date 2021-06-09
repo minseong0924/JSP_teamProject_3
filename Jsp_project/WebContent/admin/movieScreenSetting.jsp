@@ -148,7 +148,7 @@
 				  },
 			success: function(data) {
 				if(data > 0) {
-					location.reload();
+					screen_reset();
 				} else if(data == -2) {
 					alert('해당 시간에 이미 상영 중인 영화가 있습니다.');
 				} else {
@@ -304,7 +304,7 @@
 					  },
 				success: function(data) {
 					if(data > 0) {
-						location.reload();
+						screen_reset();
 					} else if(data == -2) {
 						alert('해당 시간에 이미 상영 중인 영화가 있습니다.');
 					} else {
@@ -319,6 +319,11 @@
 		});
 		
 	});
+	
+	//최신 목록 이동
+	function screen_reset() {
+		location.href = "<%=request.getContextPath() %>/movieScreenSetting.do";
+	}
 	
 	$(document).ready(function() {
 		cinemaAuto();
@@ -436,7 +441,20 @@
 	
 	<!-- 현재 상영 설정된 영화 목록 -->
 	<div class="container"> 
-	<p>영화 상영 목록</p>
+		영화 상영 목록
+		<div align="right">
+			<form method="post" action="<%=request.getContextPath() %>/movieScreenSearch.do">
+		      <select name="search_field" id="search_field">
+		         <option value="screencode" <c:if test="${search_field == 'screencode'}">selected</c:if>>상영코드</option>
+		         <option value="moviecode" <c:if test="${search_field == 'moviecode'}">selected</c:if>>영화코드+영화명</option>
+		         <option value="cinemacode" <c:if test="${search_field == 'cinemacode'}">selected</c:if>>지점코드+지점명</option>
+		      </select>
+		      
+		      <input type="text" id="search_name" name="search_name" size="15" value="${search_name }" required>
+		      <input type="submit" id="search_btn" class="btn btn-default btn-sm" value="검색">
+		      <input type="button" class="btn btn-default btn-sm" value="최신목록" onclick="screen_reset()">
+	      </form>
+		</div>
 	<form method="post" name="frm" id="sform">
 		<table class="table table-hover"> 
 			<thead>
@@ -479,13 +497,11 @@
 		               	<td> ${screen.cincode }관 </td>
 		               	
 		               	<td id="start_time_td_${screen.screencode }">
-		               		<%-- <input type="time" class="timepicker" name="start_time">--%>
 		               		<fmt:parseNumber value="${(screen.start_time / 60) }" integerOnly="true" />시
 		               		<fmt:parseNumber value="${(screen.start_time % 60) }" integerOnly="true" />분
 		               	</td>
 		               	
 		               	<td id="end_time_td_${screen.screencode }">
-		               		<%--<input type="time" class="timepicker" name="end_time">--%>
 		               		<fmt:parseNumber value="${(screen.end_time / 60) }" integerOnly="true" />시
 		               		<fmt:parseNumber value="${(screen.end_time % 60) }" integerOnly="true" />분
 		               	</td>
@@ -497,10 +513,6 @@
 			               			value="취소" onclick="screen_cancle(${screen.screencode },${screen.start_time },${screen.end_time })">
 			               		<input type="button" id="sc_modify_ok${screen.screencode }" class="sc_modify_ok btn btn-default btn-sm"
 			               			value="확인" onclick="screen_modify_ok(${screen.screencode })">
-		               		
-		               			<input type="hidden" name="screencode" id="screencode"> 
-		               			<input type="hidden" name="start_time" id="start_time"> 
-		               			<input type="hidden" name="end_time" id="end_time"> 
 		               	</td>
 		               	<td>
 	               			<input type="button" value="삭제" class="btn btn-default btn-sm" onclick="screen_delete(${screen.screencode })">
@@ -512,29 +524,54 @@
 		</form>
 	</div>
 	
-	<div id="pagingBlock" align="center">
-		<c:if test="${page > block }">
-			<a href="movieScreenSetting.do?page=1">◀◀</a>
-			<a href="movieScreenSetting.do?page=${startBlock - 1 }">◀</a>
-		</c:if>
-		
-		<c:forEach begin="${startBlock }" end="${endBlock }" var="i">
-			<c:if test="${i == page }">
-				<b><a href="movieScreenSetting.do?page=${i }">[${i }]</a></b>
+	<!-- 기본 페이징 -->
+	<c:if test="${empty search_name }">
+		<div id="pagingBlock" align="center">
+			<c:if test="${page > block }">
+				<a href="movieScreenSetting.do?page=1">◀◀</a>
+				<a href="movieScreenSetting.do?page=${startBlock - 1 }">◀</a>
 			</c:if>
 			
-			<c:if test="${i != page }">
-				<a href="movieScreenSetting.do?page=${i }">[${i }]</a>
+			<c:forEach begin="${startBlock }" end="${endBlock }" var="i">
+				<c:if test="${i == page }">
+					<b><a href="movieScreenSetting.do?page=${i }">[${i }]</a></b>
+				</c:if>
+				
+				<c:if test="${i != page }">
+					<a href="movieScreenSetting.do?page=${i }">[${i }]</a>
+				</c:if>
+			</c:forEach>
+			
+			<c:if test="${endBlock < allPage }">
+				<a href="movieScreenSetting.do?page=${endBlock + 1 }">▶</a>
+				<a href="movieScreenSetting.do?page=${allPage }">▶▶</a>
 			</c:if>
-		</c:forEach>
-		
-		<c:if test="${endBlock < allPage }">
-			<a href="movieScreenSetting.do?page=${endBlock + 1 }">▶</a>
-			<a href="movieScreenSetting.do?page=${allPage }">▶▶</a>
-		</c:if>
-	</div>
+		</div>
+	</c:if>
 	
-	
-	
+	<!-- 검색 페이징 -->
+	<c:if test="${!empty search_name }">
+		<div id="pagingBlock" align="center">
+			<c:if test="${page > block }">
+				<a href="movieScreenSearch.do?page=1&search_field=${search_field }&search_name=${search_name}">◀◀</a>
+				<a href="movieScreenSearch.do?page=${startBlock - 1 }&search_field=${search_field }&search_name=${search_name}">◀</a>
+			</c:if>
+			
+			<c:forEach begin="${startBlock }" end="${endBlock }" var="i">
+				<c:if test="${i == page }">
+					<b><a href="movieScreenSearch.do?page=${i }&search_field=${search_field }&search_name=${search_name}">[${i }]</a></b>
+				</c:if>
+				
+				<c:if test="${i != page }">
+					<a href="movieScreenSearch.do?page=${i }&search_field=${search_field }&search_name=${search_name}">[${i }]</a>
+				</c:if>
+			</c:forEach>
+			
+			<c:if test="${endBlock < allPage }">
+				<a href="movieScreenSearch.do?page=${endBlock + 1 }&search_field=${search_field }&search_name=${search_name}">▶</a>
+				<a href="movieScreenSearch.do?page=${allPage }&search_field=${search_field }&search_name=${search_name}">▶▶</a>
+			</c:if>
+		</div>
+	</c:if>
 </body>
 </html>

@@ -303,4 +303,138 @@ public class ScreenDAO {
 		return count;
 	}
 	
+	public List<ScreenDTO> searchScreenList(String field, String name, int page, int rowsize) {
+		List<ScreenDTO> list = new ArrayList<ScreenDTO>();
+		
+		//해당 페이지에서 시작 번호
+		int startNo = (page * rowsize) - (rowsize - 1);
+		
+		//해당 페이지에서 마지막 번호
+		int endNo = (page * rowsize);
+		
+		openConn();
+		
+		try {
+			if( field.equals("screencode")) {
+				// 상영코드로 검색한 경우
+				sql = "select * from "
+						+ " (select row_number() "
+						+ " over(order by screencode desc) rnum,"
+						+ " b.* from screen b "
+						+ " where screencode like ?) "
+						+ " where rnum >= ? and rnum <= ?";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%"+name+"%");
+				pstmt.setInt(2, startNo);
+				pstmt.setInt(3, endNo);
+			
+			} else if(field.equals("moviecode")) {
+				// 영화명+코드로 검색한 경우
+				sql = "select * from "+
+					  "(select row_number() over(order by screencode desc) rnum, b.* "+
+				      "from screen b inner join movie m "+
+					  "on b.moviecode = m.moviecode "+
+					  "where b.moviecode like ? "+
+					  "or m.title_ko like ?) "+
+					  "where rnum >= ? and rnum <= ? ";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%"+name+"%");
+				pstmt.setString(2, "%"+name+"%");
+				pstmt.setInt(3, startNo);
+				pstmt.setInt(4, endNo);
+			
+			} else if(field.equals("cinemacode")){
+				// 상영지점+코드로 검색한 경우
+				sql = "select * from "+
+					  "(select row_number() over(order by screencode desc) rnum, b.* "+
+					  "from screen b inner join cinema c "+
+					  "on b.cinemacode = c.cinemacode "+
+					  "where b.cinemacode like ? "+
+					  "or c.cinemaname like ?) "+
+					  "where rnum >= ? and rnum <= ? ";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%"+name+"%");
+				pstmt.setString(2, "%"+name+"%");
+				pstmt.setInt(3, startNo);
+				pstmt.setInt(4, endNo);
+				
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScreenDTO dto = new ScreenDTO();
+				dto.setScreencode(rs.getInt("screencode"));
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCincode(rs.getInt("cincode"));
+				dto.setStart_time(rs.getInt("start_time"));
+				dto.setEnd_time(rs.getInt("end_time"));
+				
+				list.add(dto);
+			}
+			
+			// open 객체 닫기
+			rs.close(); pstmt.close(); con.close();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+	
+	public int searchListCount(String field, String name) {
+		int count = 0;
+		
+		openConn();
+		
+		try {
+			if(field.equals("screencode")) { //상영코드 검색
+				sql = "select count(*) from screen "
+						+ " where screencode like ? "
+						+ " order by screencode desc";
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%"+name+"%");
+			} else if(field.equals("moviecode")) { //영화코드+영화명 검색
+				sql = "select count(*) "
+						+ "from screen s inner join movie m "
+						+ "on s.moviecode = m.moviecode "
+						+ "where s.moviecode like ? "
+						+ "or m.title_ko like ? "
+						+ "order by screencode desc";
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%"+name+"%");
+				pstmt.setString(2, "%"+name+"%");
+				
+			} else if(field.equals("cinemacode")) { //지점코드+지점명 검색
+				sql = "select count(*) "
+						+ "from screen s inner join cinema c "
+						+ "on s.cinemacode = c.cinemacode "
+						+ "where s.cinemacode like ? "
+						+ "or c.cinemaname like ? "
+						+ "order by screencode desc";
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%"+name+"%");
+				pstmt.setString(2, "%"+name+"%");
+			}
+
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+			// open 객체 닫기
+			rs.close(); pstmt.close(); con.close();
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return count;
+	}
 }
