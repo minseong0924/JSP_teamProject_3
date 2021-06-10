@@ -219,6 +219,45 @@ public class ScreenDAO {
 		
 	}
 	
+	public List<ScreenDTO> bookingScreenOpen(String flag, String str) {
+		List<ScreenDTO> list = new ArrayList<>();
+//		String screenlist = "";
+		
+		try {
+			openConn();
+			
+			sql = "select * from screen where ? between start_date and end_date";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, str);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScreenDTO dto = new ScreenDTO();
+				dto.setScreencode(rs.getInt("screencode"));
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCincode(rs.getInt("cincode"));
+				dto.setStart_time(rs.getInt("start_time"));
+				dto.setEnd_time(rs.getInt("end_time"));
+				dto.setStart_date(rs.getString("start_date").substring(0, 10));
+				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
+				dto.setCinemaname(rs.getString("cinemaname"));
+				
+//				screenlist += dto.toString();
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return list;
+		
+	}
+	
 	public ScreenDTO screenDetailOpen(int screencode) {
 		ScreenDTO dto = new ScreenDTO();
 		
