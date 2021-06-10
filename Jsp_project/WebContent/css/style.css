@@ -80,6 +80,14 @@ a.menu:after, .dropdown-toggle:after {
 }
 /* ### login modal end ### */
 
+/* ### screen setting start ### */
+ 
+input[type=date]::-webkit-calendar-picker-indicator {
+  margin-left: -15px;
+}
+
+/* ### screen setting end ### */
+
 /* 영화 차트 start*/
 .movie-list-info {
     position: relative;

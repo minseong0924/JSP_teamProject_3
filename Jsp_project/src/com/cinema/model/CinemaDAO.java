@@ -113,4 +113,40 @@ public class CinemaDAO {
 		return list;
 		
 	}
+	
+	public CinemaDTO cinemaDetailOpen(int cinemacode) {
+		CinemaDTO dto = new CinemaDTO();
+		
+		try {
+			openConn();
+			
+			sql = "select * from cinema where cinemacode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, cinemacode);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setLocalcode(rs.getInt("localcode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCinemaname(rs.getString("Cinemaname"));
+				dto.setIntro(rs.getString("intro"));
+				dto.setAddress(rs.getString("address"));
+				dto.setOne_cin(rs.getInt("one_cin"));
+				dto.setTwo_cin(rs.getInt("two_cin"));
+				dto.setThree_cin(rs.getInt("three_cin"));
+				dto.setFour_cin(rs.getInt("four_cin"));
+				dto.setFive_cin(rs.getInt("five_cin"));
+				dto.setSix_cin(rs.getInt("six_cin"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return dto;
+		
+	}
 }

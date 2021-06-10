@@ -19,6 +19,8 @@ public class ScreenUpdateAction implements Action {
 		int screencode = Integer.parseInt(request.getParameter("screencode").trim());
 		String start_time = request.getParameter("start_time").trim();
 		String end_time = request.getParameter("end_time").trim();
+		String start_date = request.getParameter("start_date").trim();
+		String end_date = request.getParameter("end_date").trim();
 		
 		ScreenDAO sdao = ScreenDAO.getInstance();
 		ScreenDTO sdto = sdao.screenDetailOpen(screencode);
@@ -40,6 +42,8 @@ public class ScreenUpdateAction implements Action {
 		
 		sdto.setStart_time(strat_min);
 		sdto.setEnd_time(end_min);
+		sdto.setStart_date(start_date.substring(0, 10));
+		sdto.setEnd_date(end_date.substring(0, 10));
 		
 		int res = sdao.updateScreen(sdto);
 		
