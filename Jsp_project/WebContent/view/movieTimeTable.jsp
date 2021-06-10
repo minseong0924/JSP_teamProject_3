@@ -9,6 +9,7 @@
 <link href="./css/style.css" rel="stylesheet" type="text/css" />
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
+
 	var today = new Date();
 	var year = today.getFullYear();
 	var month = today.getMonth() + 1;
@@ -16,11 +17,13 @@
 	var yearmonth = year + "-0" +month;
 	var day = "";
 	var count = 0;
-	
+// 페이지 시작 시 상영시간표 띄우기
 $(document).ready(function(){
 	
 	$(".wrap").append("<button class='btn-pre' title='이전 날짜 보기'></button>");
 	$(".btn-pre").append("<i class='glyphicon glyphicon-chevron-left'></i");
+	
+	
 	for(var i=date; i<date+13; i++) {
 		var tym = yearmonth+"-"+i;
 		var day = "";
@@ -47,7 +50,6 @@ $(document).ready(function(){
 			day="내일";
 		}
 		
-		
 		if(day == "토"){
 			$(".wrap").append("<button class='sat on' type='button' date-data='"+tym+"'month='"+month+"'>"+i+"<br>"+day+"</button>");
 		}else if(day =="일"){			
@@ -57,11 +59,11 @@ $(document).ready(function(){
 		}
 		count++;
 	}
-		$(".wrap").append("<button class='btn-next' title='이전 날짜 보기'></button>");
+		$(".wrap").append("<button class='btn-next' title='다음 날짜 보기'></button>");
 		$(".btn-next").append("<i class='glyphicon glyphicon-chevron-right'></i");
 }); 
 	
-
+//영화버튼을 눌렀을 때 이벤트
 function change(moviecode) {
 	$.ajax({
 		type: "post",		// post 방식으로 전송
@@ -78,7 +80,7 @@ function change(moviecode) {
 		},
 	});
 }
-
+//서울 ~제주 버튼을 눌렀을 때 이벤트
 function load(location) {
 	$.ajax({
 		type: "post",		// post 방식으로 전송
@@ -86,8 +88,12 @@ function load(location) {
 		url : "/Jsp_project/data/timeTableLocation.jsp",	// 전송할 페이지를 지정
 		data: {"location": location, "title_ko":$("#title_ko").text()},	// 전송할 매개변수와 값을 설정
 		success: function(data) {
-			var location = $(data);
-			alert('성공');
+			var dat = $(data).find("screen");
+				dat.each(function() {
+					dat.find("cinemaname").text();
+					$(".locationInfo").append("<button>d</button>");
+				});
+				
 		},
 		error:function(request, status, error){
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -135,18 +141,18 @@ function load(location) {
 			</div>
 			
 			<div class="btn-group" role="group" aria-label="...">
-			  <button type="button" class="btn btn-default" onclick="load('seoul')">서울</button>
-			  <button type="button" class="btn btn-default" onclick="load('gk')">경기</button>
-			  <button type="button" class="btn btn-default" onclick="load('incheo')">인천</button>
-			  <button type="button" class="btn btn-default" onclick="load('daejeon')">대전/충청/세종</button>
-			  <button type="button" class="btn btn-default" onclick="load('busan')">부산/대구/경상</button>
-			  <button type="button" class="btn btn-default" onclick="load('gwangju')">광주/전라</button>
-			  <button type="button" class="btn btn-default" onclick="load('gangwon')">강원</button>
-			  <button type="button" class="btn btn-default" onclick="load('jeju')">제주</button>
+			  <button type="button" class="btn btn-default" onclick="load('서울')">서울</button>
+			  <button type="button" class="btn btn-default" onclick="load('경기')">경기</button>
+			  <button type="button" class="btn btn-default" onclick="load('인천')">인천</button>
+			  <button type="button" class="btn btn-default" onclick="load('대전')">대전/충청/세종</button>
+			  <button type="button" class="btn btn-default" onclick="load('부산')">부산/대구/경상</button>
+			  <button type="button" class="btn btn-default" onclick="load('광주')">광주/전라</button>
+			  <button type="button" class="btn btn-default" onclick="load('강원')">강원</button>
+			  <button type="button" class="btn btn-default" onclick="load('제주')">제주</button>
 			</div>
 			
 			<div class="locationInfo">
-				<span></span>
+				
 			</div>
 			
 	</div>

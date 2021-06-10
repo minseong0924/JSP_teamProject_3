@@ -470,4 +470,67 @@ public class ScreenDAO {
 		
 		return count;
 	}
+	
+	public String ScreenList(String loc, String title) {
+		String result = "";
+		int localcode = 0;
+		int moviecode = 0;
+		String cinemaname = "";
+		try {
+			openConn();
+			
+			sql = "select localcode from local where localname = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, loc);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				localcode = rs.getInt(1);
+			}
+			
+			sql= "select moviecode from movie where title_ko = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				moviecode = rs.getInt(1);
+			}
+			
+			sql = "select s.*,c.cinemaname\n" + 
+					"from screen s, cinema c\n" + 
+					"where s.cinemacode = c.cinemacode\n" + 
+					"and s.cinemacode in(select cinemacode from cinema where localcode = ?)\n" + 
+					"and moviecode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, localcode);
+			pstmt.setInt(2, moviecode);
+			
+			rs = pstmt.executeQuery();
+			
+			result += "<screen>";
+			
+			while(rs.next()) {
+				result += "<screencode>" + rs.getInt("screencode") + "</screencode>";
+				result += "<moviecode>" + rs.getInt("moviecode") + "</moviecode>";
+				result += "<cinemacode>" + rs.getInt("cinemacode") + "</cinemacode>";
+				result += "<cinemaname>" + rs.getString("cinemaname") + "</cinemaname>";
+				result += "<cincode>" + rs.getInt("cincode") + "</cincode>";
+				result += "<start_time>" + rs.getInt("start_time") + "</start_time>";
+				result += "<end_time>" + rs.getInt("end_time") + "</end_time>";
+			}
+			
+			result += "</screen>";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }
