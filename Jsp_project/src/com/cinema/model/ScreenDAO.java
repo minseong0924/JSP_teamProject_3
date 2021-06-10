@@ -53,7 +53,6 @@ public class ScreenDAO {
 			con = ds.getConnection();
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -69,7 +68,6 @@ public class ScreenDAO {
 				if(pstmt != null) pstmt.close();
 				if(con != null) con.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -96,13 +94,19 @@ public class ScreenDAO {
 			sql = "select * from screen where cinemacode = ? "+ 
 					"and cincode = ? " +
 					"and (? between start_time and end_time "+
-					"or ? between start_time and end_time)";
+					"or ? between start_time and end_time) "+
+					"and (start_date between ? and ? "+
+					"or end_date between ? and ?)";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, dto.getCinemacode());
 			pstmt.setInt(2, dto.getCincode());
 			pstmt.setInt(3, dto.getStart_time());
 			pstmt.setInt(4, dto.getEnd_time());
+			pstmt.setString(5, dto.getStart_date());
+			pstmt.setString(6, dto.getEnd_date());
+			pstmt.setString(7, dto.getStart_date());
+			pstmt.setString(8, dto.getEnd_date());
 			
 			rs = pstmt.executeQuery();
 			
@@ -111,16 +115,19 @@ public class ScreenDAO {
 			} else {
 			
 				sql = "insert into screen "
-						+ " values(?,?,?,?,?,?)";
+						+ " values(?,?,?,?,?,?,?,?,?)";
 				
 				pstmt = con.prepareStatement(sql);
 				
 				pstmt.setInt(1, count);
 				pstmt.setInt(2, dto.getMoviecode());
 				pstmt.setInt(3, dto.getCinemacode());
-				pstmt.setInt(4, dto.getCincode());
-				pstmt.setInt(5, dto.getStart_time());
-				pstmt.setInt(6, dto.getEnd_time());
+				pstmt.setString(4, dto.getCinemaname());
+				pstmt.setInt(5, dto.getCincode());
+				pstmt.setInt(6, dto.getStart_time());
+				pstmt.setInt(7, dto.getEnd_time());
+				pstmt.setString(8, dto.getStart_date());
+				pstmt.setString(9, dto.getEnd_date());
 				
 				result = pstmt.executeUpdate();
 			}
@@ -154,6 +161,9 @@ public class ScreenDAO {
 				dto.setCincode(rs.getInt("cincode"));
 				dto.setStart_time(rs.getInt("start_time"));
 				dto.setEnd_time(rs.getInt("end_time"));
+				dto.setStart_date(rs.getString("start_date").substring(0, 10));
+				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
+				dto.setCinemaname(rs.getString("cinemaname"));
 				
 				list.add(dto);
 			}
@@ -192,6 +202,9 @@ public class ScreenDAO {
 				dto.setCincode(rs.getInt("cincode"));
 				dto.setStart_time(rs.getInt("start_time"));
 				dto.setEnd_time(rs.getInt("end_time"));
+				dto.setStart_date(rs.getString("start_date").substring(0, 10));
+				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
+				dto.setCinemaname(rs.getString("cinemaname"));
 				
 				list.add(dto);
 			}
@@ -222,7 +235,12 @@ public class ScreenDAO {
 				dto.setScreencode(screencode);
 				dto.setMoviecode(rs.getInt("moviecode"));
 				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCinemaname(rs.getString("cinemaname"));
 				dto.setCincode(rs.getInt("cincode"));
+				dto.setStart_time(rs.getInt("start_time"));
+				dto.setEnd_time(rs.getInt("end_time"));
+				dto.setStart_date(rs.getString("start_date").substring(0, 10));
+				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
 			}
 			
 		} catch (SQLException e) {
@@ -268,7 +286,9 @@ public class ScreenDAO {
 					"and cinemacode = ? "+ 
 					"and cincode = ? " +
 					"and ( ? between start_time and end_time "+
-					"or ? between start_time and end_time)";
+					"or ? between start_time and end_time)"+
+					"and (start_date between ? and ? "+
+					"or end_date between ? and ?)";;
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, dto.getScreencode());
@@ -276,6 +296,10 @@ public class ScreenDAO {
 			pstmt.setInt(3, dto.getCincode());
 			pstmt.setInt(4, dto.getStart_time());
 			pstmt.setInt(5, dto.getEnd_time());
+			pstmt.setString(6, dto.getStart_date());
+			pstmt.setString(7, dto.getEnd_date());
+			pstmt.setString(8, dto.getStart_date());
+			pstmt.setString(9, dto.getEnd_date());
 			
 			rs = pstmt.executeQuery();
 			
@@ -285,14 +309,18 @@ public class ScreenDAO {
 			
 				sql = "update screen set " + 
 						"start_time = ?, " + 
-						"end_time = ? " + 
+						"end_time = ?, " + 
+						"start_date = ?, " + 
+						"end_date = ? " + 
 						"where screencode = ? ";
 				
 				pstmt = con.prepareStatement(sql);
 				
 				pstmt.setInt(1, dto.getStart_time());
 				pstmt.setInt(2, dto.getEnd_time());
-				pstmt.setInt(3, dto.getScreencode());
+				pstmt.setString(3, dto.getStart_date());
+				pstmt.setString(4, dto.getEnd_date());
+				pstmt.setInt(5, dto.getScreencode());
 				
 				result = pstmt.executeUpdate();
 			}
@@ -400,9 +428,12 @@ public class ScreenDAO {
 				dto.setScreencode(rs.getInt("screencode"));
 				dto.setMoviecode(rs.getInt("moviecode"));
 				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCinemaname(rs.getString("cinemaname"));
 				dto.setCincode(rs.getInt("cincode"));
 				dto.setStart_time(rs.getInt("start_time"));
 				dto.setEnd_time(rs.getInt("end_time"));
+				dto.setStart_date(rs.getString("start_date").substring(0, 10));
+				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
 				
 				list.add(dto);
 			}

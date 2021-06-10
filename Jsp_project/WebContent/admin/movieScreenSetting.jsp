@@ -54,6 +54,8 @@
 		$("#sc_modify_ok"+code).show();
 		$("#sc_modify_cc"+code).show();
 		$("#sc_modify"+code).hide();
+		$("#start_date"+code).attr('disabled', false);
+		$("#end_date"+code).attr('disabled', false);
 		
 		var srt_time = "";
 		
@@ -103,7 +105,7 @@
 	}
 	
 	// 상영 정보 수정 취소
-	function screen_cancle(code,starttime,endtime) {
+	function screen_cancle(code,starttime,endtime,startdate,enddate) {
 		$("#sc_modify_ok"+code).hide();
 		$("#sc_modify_cc"+code).hide();
 		$("#sc_modify"+code).show();
@@ -130,6 +132,13 @@
 		$("#end_time_td_"+code).empty();
 		$("#end_time_td_"+code).html(end_time);
 		
+		console.log("startdate:"+startdate);
+		console.log("enddate:"+enddate);
+		$("#start_date"+code).val(startdate.toISOString().slice(0, 10));
+		$("#end_date"+code).val(enddate.toISOString().slice(0, 10));
+		$("#start_date"+code).attr('disabled', true);
+		$("#end_date"+code).attr('disabled', true);
+		
 	}
 	
 	// 상영 정보 수정 확인
@@ -137,6 +146,13 @@
 		
 		var stime = $("#new_s_time_"+code).val();
 		var etime = $("#new_e_time_"+code).val();
+		var sdate = $("#start_date"+code).val();
+		var edate = $("#end_date"+code).val();
+		
+		if($("#start_date"+code).val() > $("#end_date"+code).val()) {
+			alert("상영 시작일이 상영 종료일보다 늦습니다.");
+			return;
+		}
 
 		$.ajax({
 			type:"post",
@@ -144,7 +160,9 @@
 			data: {
 				   "screencode" : code, 
 				   "start_time" : stime,
-				   "end_time" : etime
+				   "end_time" : etime,
+				   "start_date" : sdate,
+				   "end_date" : edate
 				  },
 			success: function(data) {
 				if(data > 0) {
@@ -191,7 +209,7 @@
 		var runningTimeStr = selectValue.split(":");
 		$("#running_time").children('running_input').remove();
 		
-		runningSelect.innerHTML = "<input id='running_input' required size='3' value='"+runningTimeStr[1]+"' disabled>분";
+		runningSelect.innerHTML = "<input id='running_input' required size='3' value='"+runningTimeStr[1]+"' disabled>";
 		
 		endtimeAuto("movie_change");
 	}
@@ -293,6 +311,11 @@
 	// 상영 정보 추가 AJAX
 	$(function () {
 		$("#insert_btn").mousedown(function() {
+			if($("#start_date").val() > $("#end_date").val()) {
+				alert("상영 시작일이 상영 종료일보다 늦습니다.");
+				return;
+			}
+			
 			$.ajax({
 				type:"post",
 				url: "/Jsp_project/movieScreenInsert.do",
@@ -300,7 +323,9 @@
 					   "movie_code" : $("#select_movie").val(), 
 					   "cinema_code" : $("#select_cinema").val(),
 					   "cinema_cin" : $("#cinema_cin").val(),
-					   "start_time" : $("#timepick_start").val()
+					   "start_time" : $("#timepick_start").val(),
+					   "start_date" : $("#start_date").val(),
+					   "end_date" : $("#end_date").val()
 					  },
 				success: function(data) {
 					if(data > 0) {
@@ -328,18 +353,23 @@
 	$(document).ready(function() {
 		cinemaAuto();
 		
+		var today = new Date();
+		
 		$('#timepick_start').timepicker({
 			step: 1,				 //시간 간격
 			timeFormat: 'H:i',       //시간:분 으로표시
 			scrollbar: false
 		});
 		
-		$("#timepick_start").timepicker('setTime', new Date());
+		$("#timepick_start").timepicker('setTime', today);
 		
 		$('#timepick_start').on('changeTime', function() {
             var new_time = $('#timepick_start').val();
             endtimeAuto_change(new_time);
         });
+		
+		$("#start_date").val(today.toISOString().slice(0, 10));
+		$("#end_date").val(today.toISOString().slice(0, 10));
 		
 		$(".sc_modify_ok").hide();
 		$(".sc_modify_cc").hide();
@@ -365,11 +395,13 @@
 			<thead>
 				<tr> 
 					<th>영화명(코드)</th> 
-					<th>러닝 타임</th> 
-					<th>상영 지점</th> 
-					<th>상영관</th> 
-					<th>상영 시작 시간</th> 
-					<th>상영 종료 시간</th> 
+					<th>러닝타임(분)</th> 
+					<th>상영지점</th> 
+					<th>상영관</th>
+					<th>상영 시작일</th> 
+					<th>상영 종료일</th> 
+					<th>상영 시작시간</th> 
+					<th>상영 종료시간</th> 
 					<th>추가</th>
 				</tr> 
 			</thead> 
@@ -390,7 +422,9 @@
 	               	</td>
 	               	
 	               	<td id="running_time">
-	               		<input id="running_input" required size="3" value="${movielist.get(0).running_time }" disabled>분
+	               		<span>
+	               		<input id="running_input" required size="3" value="${movielist.get(0).running_time }" disabled>
+	               		</span>
 	               	</td>
 	               	
 	               	<td>
@@ -412,6 +446,14 @@
 					   <select id="cinema_cin" name="cinema_cin">
 						  	
 		               </select>
+	               	</td>
+	               	
+	               	<td>
+	               		<input id="start_date" name="start_date" type="date" required>
+	               	</td>
+	               	
+	               	<td>
+	               		<input id="end_date" name="end_date" type="date" required>
 	               	</td>
 	               	
 	               	<td>
@@ -459,12 +501,14 @@
 		<table class="table table-hover"> 
 			<thead>
 				<tr>
-					<th>상영코드</th>
+					<th>상영코드</th> 
 					<th>영화명(코드)</th> 
-					<th>상영 지점</th> 
-					<th>상영관</th> 
-					<th>상영 시작 시간</th> 
-					<th>상영 종료 시간</th> 
+					<th>상영지점</th> 
+					<th>상영관</th>
+					<th>상영 시작일</th> 
+					<th>상영 종료일</th> 
+					<th>상영 시작시간</th> 
+					<th>상영 종료시간</th> 
 					<th>수정</th>
 					<th>삭제</th>
 				</tr> 
@@ -496,6 +540,14 @@
 		               	
 		               	<td> ${screen.cincode }관 </td>
 		               	
+		               	<td>
+	               		<input id="start_date${screen.screencode }" type="date" value="${screen.start_date }" disabled>
+		               	</td>
+		               	
+		               	<td>
+		               		<input id="end_date${screen.screencode }" type="date" value="${screen.end_date }" disabled>
+		               	</td>
+		               	
 		               	<td id="start_time_td_${screen.screencode }">
 		               		<fmt:parseNumber value="${(screen.start_time / 60) }" integerOnly="true" />시
 		               		<fmt:parseNumber value="${(screen.start_time % 60) }" integerOnly="true" />분
@@ -510,7 +562,7 @@
 			               		<input type="button" id="sc_modify${screen.screencode }" class="btn btn-default btn-sm"
 			               			value="수정" onclick="screen_modify(${screen.screencode },${screen.start_time },${screen.end_time })">
 			               		<input type="button" id="sc_modify_cc${screen.screencode }" class="sc_modify_cc btn btn-default btn-sm"
-			               			value="취소" onclick="screen_cancle(${screen.screencode },${screen.start_time },${screen.end_time })">
+			               			value="취소" onclick="screen_cancle(${screen.screencode },${screen.start_time },${screen.end_time },new Date('${screen.start_date }'),new Date('${screen.end_date }'))">
 			               		<input type="button" id="sc_modify_ok${screen.screencode }" class="sc_modify_ok btn btn-default btn-sm"
 			               			value="확인" onclick="screen_modify_ok(${screen.screencode })">
 		               	</td>
