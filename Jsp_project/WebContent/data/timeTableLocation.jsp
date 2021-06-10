@@ -5,10 +5,11 @@
 <%
 	String location = request.getParameter("location");
 	String title = request.getParameter("title_ko");
-			
-	ScreenDAO dao = ScreenDAO.getInstance();
+	String today = request.getParameter("today");
 	
-	String list = dao.ScreenList(location, title);
+	ScreenDAO dao = ScreenDAO.getInstance();
+	String list = dao.ScreenList(location, title, today);
+	
 	System.out.println(list);
 	out.print(list);
 %>

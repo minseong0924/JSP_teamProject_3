@@ -502,7 +502,7 @@ public class ScreenDAO {
 		return count;
 	}
 	
-	public String ScreenList(String loc, String title) {
+	public String ScreenList(String loc, String title, String today) {
 		String result = "";
 		int localcode = 0;
 		int moviecode = 0;
@@ -531,21 +531,24 @@ public class ScreenDAO {
 				moviecode = rs.getInt(1);
 			}
 			
-			sql = "select s.*,c.cinemaname\n" + 
-					"from screen s, cinema c\n" + 
-					"where s.cinemacode = c.cinemacode\n" + 
+			sql = "select s.*,m.mtype\n" + 
+					"from screen s, movie m\n" + 
+					"where s.moviecode = m.moviecode\n" + 
 					"and s.cinemacode in(select cinemacode from cinema where localcode = ?)\n" + 
-					"and moviecode = ?";
+					"and s.moviecode = ?\n" + 
+					"and start_date = TO_DATE(?, 'YYYY-MM-DD') order by s.cinemacode, s.cincode";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, localcode);
 			pstmt.setInt(2, moviecode);
+			pstmt.setString(3, today);
 			
 			rs = pstmt.executeQuery();
 			
-			result += "<screen>";
+				result += "<screen1>";
 			
 			while(rs.next()) {
+				result += "<screen>";
 				result += "<screencode>" + rs.getInt("screencode") + "</screencode>";
 				result += "<moviecode>" + rs.getInt("moviecode") + "</moviecode>";
 				result += "<cinemacode>" + rs.getInt("cinemacode") + "</cinemacode>";
@@ -553,9 +556,11 @@ public class ScreenDAO {
 				result += "<cincode>" + rs.getInt("cincode") + "</cincode>";
 				result += "<start_time>" + rs.getInt("start_time") + "</start_time>";
 				result += "<end_time>" + rs.getInt("end_time") + "</end_time>";
+				result += "<mtype>" + rs.getString("mtype") + "</mtype>";
+				result += "</screen>";
 			}
+				result += "</screen1>";
 			
-			result += "</screen>";
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
