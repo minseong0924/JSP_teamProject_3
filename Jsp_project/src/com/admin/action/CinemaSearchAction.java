@@ -23,9 +23,7 @@ public class CinemaSearchAction implements Action {
 		System.out.println(local_code);
 		
 		CinemaDAO cdao = CinemaDAO.getInstance();
-		
 		List<CinemaDTO> clist = cdao.cinemaSearch(local_code);
-		
 		
 		request.setAttribute("local_code", local_code);
 		request.setAttribute("List", clist);

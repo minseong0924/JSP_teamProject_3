@@ -37,7 +37,7 @@
 		}
 	}
 
-	/* function test_checkbox() {
+	function test_checkbox() {
 		var flag = false;
 		var values = document.getElementsByName("cin_check");
 		var count = 0;
@@ -45,6 +45,7 @@
 		for(var i=0; i<values.length; i++) {
 			if(values[i].checked) {
 				count++;
+			}
 		}
 		 
 		if(count < 1) {
@@ -53,7 +54,7 @@
 			flag = true;
 		}
 		return flag;
-	} */
+	}
 </script>
 </head>
 <body>
@@ -65,7 +66,8 @@
 			<br>
 			<br>
 			
-		<form method="post" action="<%=request.getContextPath() %>/cinemaEditOk.do">
+		<form method="post" action="<%=request.getContextPath() %>/cinemaEditOk.do"
+			onsubmit="return test_checkbox()">
 		<c:set var="dto" value="${List }"/>
 		<c:set var="llist" value="${locallist }"/>
 		
@@ -166,7 +168,7 @@
 						<c:if test="${dto.getSix_cin() == 1 }">
 							<input type="checkbox" name="cin_check" value="6" checked> 6관
 						</c:if>
-						<c:if test="${dto.getFour_cin() != 1 }">
+						<c:if test="${dto.getSix_cin() != 1 }">
 							<input type="checkbox" name="cin_check" value="6"> 6관
 						</c:if>
 					</td>

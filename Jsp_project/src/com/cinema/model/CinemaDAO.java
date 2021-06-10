@@ -75,6 +75,7 @@ public class CinemaDAO {
 			
 	}  // closeConn() 메서드 end
 	
+	
 	public List<CinemaDTO> cinemaOpen() {
 		List<CinemaDTO> list = new ArrayList<>();
 		
@@ -91,7 +92,7 @@ public class CinemaDAO {
 				CinemaDTO dto = new CinemaDTO();
 				dto.setLocalcode(rs.getInt("localcode"));
 				dto.setCinemacode(rs.getInt("cinemacode"));
-				dto.setCinemaname(rs.getString("Cinemaname"));
+				dto.setCinemaname(rs.getString("cinemaname"));
 				dto.setIntro(rs.getString("intro"));
 				dto.setAddress(rs.getString("address"));
 				dto.setOne_cin(rs.getInt("one_cin"));
@@ -109,8 +110,205 @@ public class CinemaDAO {
 		} finally {
 			closeConn(rs, pstmt, con);
 		}
-		
 		return list;
+	}
+	
+	
+	public int cinemaWriteOk(CinemaDTO dto) {
+		int result = 0, count = 0;
 		
+		try {
+			openConn();
+			
+			sql = "select count(*) from cinema";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1) + 1;
+			}
+			
+			sql = "insert into cinema values(?,?,?,?,?,?,?,?,?,?,?)";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, dto.getLocalcode());
+			pstmt.setInt(2, count);
+			pstmt.setString(3, dto.getCinemaname());
+			pstmt.setString(4, dto.getIntro());
+			pstmt.setString(5, dto.getAddress());
+			pstmt.setInt(6, dto.getOne_cin());
+			pstmt.setInt(7, dto.getTwo_cin());
+			pstmt.setInt(8, dto.getThree_cin());
+			pstmt.setInt(9, dto.getFour_cin());
+			pstmt.setInt(10, dto.getFive_cin());
+			pstmt.setInt(11, dto.getSix_cin());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	
+	public List<CinemaDTO> cinemaSearch(int code) {
+		List<CinemaDTO> list = new ArrayList<>();
+		
+		try {
+			openConn();
+		
+			sql = "select * from "
+					+ " (select row_number() "
+					+ " over(order by cinemacode) rnum, "
+					+ " b.*  from cinema b where localcode like ?)";
+		
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				CinemaDTO dto = new CinemaDTO();
+				
+				dto.setLocalcode(rs.getInt("localcode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCinemaname(rs.getString("cinemaname"));
+				dto.setIntro(rs.getString("intro"));
+				dto.setAddress(rs.getString("address"));
+				dto.setOne_cin(rs.getInt("one_cin"));
+				dto.setTwo_cin(rs.getInt("two_cin"));
+				dto.setThree_cin(rs.getInt("three_cin"));
+				dto.setFour_cin(rs.getInt("four_cin"));
+				dto.setFive_cin(rs.getInt("five_cin"));
+				dto.setSix_cin(rs.getInt("six_cin"));
+				
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return list;
+	}
+	
+	
+	// cinemacode가 ?인 지점 정보를 가져오는 메서드
+	public CinemaDTO cinemaDetailOpen(int cinemacode) {
+		CinemaDTO dto = new CinemaDTO();
+		
+		try {
+			openConn();
+			
+			sql = "select * from cinema where cinemacode =" + cinemacode;
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setLocalcode(rs.getInt("localcode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCinemaname(rs.getString("cinemaname"));
+				dto.setIntro(rs.getString("intro"));
+				dto.setAddress(rs.getString("address"));
+				dto.setOne_cin(rs.getInt("one_cin"));
+				dto.setTwo_cin(rs.getInt("two_cin"));
+				dto.setThree_cin(rs.getInt("three_cin"));
+				dto.setFour_cin(rs.getInt("four_cin"));
+				dto.setFive_cin(rs.getInt("five_cin"));
+				dto.setSix_cin(rs.getInt("six_cin"));
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return dto;
+	}
+	
+	
+	public int cinemaEditOk(CinemaDTO dto) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "update cinema set localcode=?, cinemaname=?, intro=?, address=?,"
+					+ "one_cin=?, two_cin=?, three_cin=?, four_cin=?, five_cin=?, six_cin=?"
+					+ "where cinemacode=?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, dto.getLocalcode());
+			pstmt.setString(2, dto.getCinemaname());
+			pstmt.setString(3, dto.getIntro());
+			pstmt.setString(4, dto.getAddress());
+			pstmt.setInt(5, dto.getOne_cin());
+			pstmt.setInt(6, dto.getTwo_cin());
+			pstmt.setInt(7, dto.getThree_cin());
+			pstmt.setInt(8, dto.getFour_cin());
+			pstmt.setInt(9, dto.getFive_cin());
+			pstmt.setInt(10, dto.getSix_cin());
+			pstmt.setInt(11, dto.getCinemacode());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	
+	// 지점을 삭제하는 메서드
+	public int cinemaDelete(int code) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "delete from cinema where cinemacode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	
+	// 삭제한 지점보다 code값이 큰 지점들의 code값을 -1 해주는 메서드
+	public void cinemaCodeDown(int code) {
+		
+		try {openConn();
+		
+			sql = "update cinema set cinemacode = cinemacode - 1 where cinemacode > ?";
+		
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, code);
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
 	}
 }

@@ -17,14 +17,17 @@ public class CinemaWriteAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
 		LocalDAO ldao = LocalDAO.getInstance();
-		List<LocalDTO> llist = ldao.localOpen();
 		
-		request.setAttribute("locallist", llist);
+		// 페이지에 해당하는 게시물을 가져오는 메서드 호출
+		List<LocalDTO> list = ldao.localOpen();
 		
+		request.setAttribute("List", list);
+
 		ActionForward forward = new ActionForward();
 		
 		forward.setRedirect(false);
-		forward.setPath("admin/cinemaManagement.jsp");
+		forward.setPath("admin/cinemaWrite.jsp");
+		
 		
 		return forward;
 	}

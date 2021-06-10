@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>지점 등록</title>
 <link rel="stylesheet" href="./css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript">
@@ -46,6 +46,7 @@
 		for(var i=0; i<values.length; i++) {
 			if(values[i].checked) {
 				count++;
+			}
 		}
 		 
 		if(count < 1) {
@@ -66,19 +67,21 @@
 			<br>
 			<br>
 			
-		<form method="post" action="<%=request.getContextPath() %>/cinemaWriteOk.do">
+		<form method="post" action="<%=request.getContextPath() %>/cinemaWriteOk.do"
+			onsubmit="return test_checkbox()">
 			<table class="localWrite">
 				<tr>
 					<th>분 류 : </th>
 					<td>
 						<select name="local_code">
-							<c:if test="${empty locallist }">
+							<c:set var="llist" value="${List }" />
+							<c:if test="${empty llist }">
 								<option value="">:::저장된 지역 없음:::</option>
 				          	</c:if>
 				          	
-				          	<c:if test="${!empty locallist }">
-				          		<c:forEach items="${locallist }" var="ldto">
-				          			<option value="${ldto.localcode }">${ldto.localname }</option>
+				          	<c:if test="${!empty llist }">
+				          		<c:forEach items="${llist }" var="dto">
+				          			<option value="${dto.localcode }">${dto.localname }</option>
 				          		</c:forEach>
 			             	</c:if>
 						</select>

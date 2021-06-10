@@ -21,13 +21,14 @@
 			action="<%=request.getContextPath() %>/cinemaSearch.do">
 			<div class="search">
 				<select name="local_code" required>
-					<c:if test="${empty locallist }">
+					<c:set var="llist" value="${List }" />
+					<c:if test="${empty llist }">
 						<option value="">:::저장된 지역 없음:::</option>
 					</c:if>
 	
-					<c:if test="${!empty locallist }">
-						<c:forEach items="${locallist }" var="ldto">
-							<option value="${ldto.localcode }">${ldto.localname }</option>
+					<c:if test="${!empty llist }">
+						<c:forEach items="${llist }" var="dto">
+							<option value="${dto.localcode }">${dto.localname }</option>
 						</c:forEach>
 					</c:if>
 				</select>

@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%	
-	Object list = request.getAttribute("List");
-%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,17 +16,24 @@
 			<br>
 			<br>
 		</div>
+		<c:set var="llist" value="${locallist }" />
+		<c:set var="clist" value="${List }" />
 		<form method="post"
 			action="<%=request.getContextPath() %>/cinemaSearch.do">
 			<div class="search">
 				<select name="local_code" required>
-					<c:if test="${empty locallist }">
+					<c:if test="${empty llist }">
 						<option value="">:::저장된 지역 없음:::</option>
 					</c:if>
 	
-					<c:if test="${!empty locallist }">
-						<c:forEach items="${locallist }" var="ldto">
-							<option value="${ldto.localcode }">${ldto.localname }</option>
+					<c:if test="${!empty llist }">
+						<c:forEach items="${llist }" var="dto">
+							<c:if test="${dto.localcode ==  local_code}">
+								<option value="${dto.localcode }" selected>${dto.localname }</option>
+							</c:if>
+							<c:if test="${dto.localcode !=  local_code}">
+								<option value="${dto.localcode }">${dto.localname }</option>
+							</c:if>
 						</c:forEach>
 					</c:if>
 				</select>
@@ -49,22 +53,21 @@
 					<th>삭제</th>
 				</tr>
 
-				<c:set var="list" value="${List }" />
-				<c:if test="${!empty List}">
-					<c:forEach items="${List }" var="dto">
+				<c:if test="${!empty clist}">
+					<c:forEach items="${clist }" var="dto">
 						<tr>
-							<td>${dto.getCinemaname() }</td>
-							<td>${dto.getAddress() }</td>
+							<td>${dto.cinemaname }</td>
+							<td>${dto.address }</td>
 							<td><input type="button" value="수정"
-								onclick="location.href='cinemaEdit.do?cinemaCode=${dto.getCinemacode()}'"></td>
+								onclick="location.href='cinemaEdit.do?cinemaCode=${dto.cinemacode }'"></td>
 							<td><input type="button" value="삭제"
-								onclick="if(confirm('정말 삭제하시겠습니까?')){location.href='cinemaDelete.do?cinemaCode=${dto.getCinemacode()}'}
+								onclick="if(confirm('정말 삭제하시겠습니까?')){location.href='cinemaDelete.do?cinemaCode=${dto.cinemacode }'}
 										else{return false}"></td>
 						</tr>
 					</c:forEach>
 				</c:if>
 				
-				<c:if test="${empty List}">
+				<c:if test="${empty clist}">
 					<tr>
 						<td colspan="4" align="center">검색된 데이터가 없습니다.</td>
 				</c:if>
@@ -76,26 +79,6 @@
 			<input type="button" value="지점등록"
 				onclick="location.href='<%=request.getContextPath()%>/cinemaWrite.do'">
 		</div>
-		
-		<c:if test="${page > block }">
-			<a href="cinemaSearch.do?page=1&local_code=${local_code }">[맨처음]</a>
-			<a href="cinemaSearch.do?page=${startBlock - 1 }&local_code=${local_code }">◀</a>
-		</c:if>
-
-		<c:forEach begin="${startBlock }" end="${endBlock }" var="i">
-			<c:if test="${i == page }">
-				<b><a href="cinemaSearch.do?page=${i }&local_code=${local_code }">[${i }]</a></b>
-			</c:if>
-
-			<c:if test="${i != page }">
-				<a href="cinemaSearch.do?page=${i }&local_code=${local_code }">[${i }]</a>
-			</c:if>
-		</c:forEach>
-
-		<c:if test="${endBlock < allPage }">
-			<a href="cinemaSearch.do?page=${endBlock + 1 }&local_code=${local_code }">▶</a>
-			<a href="cinemaSearch.do?page=${allPage }&local_code=${local_code }">[마지막]</a>
-		</c:if>
 
 	</div>
 	<jsp:include page="../include/mfooter.jsp" />

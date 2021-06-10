@@ -26,17 +26,17 @@ public class CinemaWriteOkAction implements Action {
 				four_cin = 0, five_cin = 0, six_cin = 0;
 		
 		for(int i=0; i<cin_check.length; i++) {
-			if(cin_check[i].equals(1)) {
+			if(cin_check[i].equals("1")) {
 				one_cin = 1;
-			}else if(cin_check[i].equals(2)) {
+			}else if(cin_check[i].equals("2")) {
 				two_cin = 1;
-			}else if(cin_check[i].equals(3)) {
+			}else if(cin_check[i].equals("3")) {
 				three_cin = 1;
-			}else if(cin_check[i].equals(4)) {
+			}else if(cin_check[i].equals("4")) {
 				four_cin = 1;
-			}else if(cin_check[i].equals(5)) {
+			}else if(cin_check[i].equals("5")) {
 				five_cin = 1;
-			}else if(cin_check[i].equals(6)) {
+			}else if(cin_check[i].equals("6")) {
 				six_cin = 1;
 			}
 		}
@@ -54,7 +54,6 @@ public class CinemaWriteOkAction implements Action {
 		dto.setSix_cin(six_cin);
 		
 		CinemaDAO dao = CinemaDAO.getInstance();
-		
 		int res = dao.cinemaWriteOk(dto);
 		
 		ActionForward forward = new ActionForward();

@@ -31,7 +31,7 @@ public class CinemaEditAction implements Action {
 		ActionForward forward = new ActionForward();
 		
 		forward.setRedirect(false);
-		forward.setPath("admin/cinemaWrite.jsp");
+		forward.setPath("admin/cinemaEdit.jsp");
 		
 		return forward;
 	}
