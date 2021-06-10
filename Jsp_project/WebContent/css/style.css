@@ -327,6 +327,92 @@ a.menu:after, .dropdown-toggle:after {
 	width:200px;
 	height:300px;
 }
+.movie-tit-div{
+	width:60%;
+	justify-content: center;
+	margin-left:300px;
+}
+
+.movie-tit{
+	display:block;
+	margin-top : 60px!important;
+	line-height: 44px;
+	justify-content: center;
+	width:800px;
+}
+
+#title_ko {
+	color:green;
+}
+
+.wrap {
+	position:reative;
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+	width: 1100px;
+	height: 80px;
+	margin-left:300px;
+}
+
+.btn-pre {
+	float:left;
+	width:30px;
+    background-color:white;
+	height:100%;
+	border:0px;
+}
+.btn-next {
+	float:left;
+	width:30px;
+    background-color:white;
+	height:100%;
+	border:0px;
+}
+
+.on {
+	float:left;
+	width:80px;
+	height:100%;
+	background-color:white;
+	border : 0px;
+}
+.year {
+	position: absolute;
+    top: 0;
+    font-size: .8667em;
+    width: 70px;
+    height: 28px;
+    line-height: 28px;
+    margin-top: -14px;
+    border: 1px solid #d8d9db;
+    border-radius: 15px;
+    text-align: center;
+    background-color: #fff;
+    font-weight: 400;
+}
+
+.holi {
+	color:red;
+}
+
+.sat {
+	color:blue;
+}
+
+.btn-group {
+	margin-top:50px;
+	margin-left:300px;
+}
+
+.btn-default {
+	width:140px;
+	background-color:white;
+}
+
+.locationInfo {
+	margin-top:50px;
+	margin-left:300px;
+}
 /* 상영시간표 페이지 end */
 /* 관리 페이지 	*/
 .title {

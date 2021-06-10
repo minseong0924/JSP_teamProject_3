@@ -9,7 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
 function fn_checkByte(obj){
-    var maxByte = 1000; //최대 1000바이트
+    var maxByte = 800; //최대 800바이트
     var text_val = obj.value; //입력한 문자
     var text_len = text_val.length; //입력한 문자수
     
@@ -27,7 +27,7 @@ function fn_checkByte(obj){
     }
     
     if(totalByte>maxByte){
-    	alert('최대 100Byte까지만 입력가능합니다.');
+    	alert('최대 800Byte까지만 입력가능합니다.');
         	document.getElementById("nowByte").innerText = totalByte;
             document.getElementById("nowByte").style.color = "red";
         }else{
@@ -52,7 +52,7 @@ function fn_checkByte(obj){
 			<table class="movieWrite">
 				<tr>
 					<th>영화명(국문) : </th>
-					<td><input name="movie_title_kor" placeholder="내용을 입력하세요" required pattern="^[가-힣1-50000]{1,30}$">
+					<td><input name="movie_title_kor" placeholder="내용을 입력하세요" required pattern="^[가-힣0-9\s]{1,50}$">
 					 <div class="valid-feedback">
 					      Looks good!
 					    </div>
@@ -61,7 +61,7 @@ function fn_checkByte(obj){
 				
 				<tr>
 					<th>영화명(영문) : </th>
-					<td><input name="movie_title_eng" placeholder="내용을 입력하세요" required pattern="^[a-zA-Z1-50000]{1,50}$"></td>
+					<td><input name="movie_title_eng" placeholder="내용을 입력하세요" required pattern="^[a-zA-Z0-9\s]{1,50}$"></td>
 				</tr>
 				
 				<tr>
@@ -96,14 +96,14 @@ function fn_checkByte(obj){
 				</tr>
 				
 				<tr>
-					<th>줄 거 리 : <br><span id="nowByte">0</span>/1000bytes</th>
+					<th>줄 거 리 : <br><span id="nowByte">0</span>/800bytes</th>
 					<td> <textarea id="summary" rows="7" cols="30" name="movie_summary" 
 						placeholder="내용을 입력하세요" onkeyup="fn_checkByte(this)" required></textarea></td>
 				</tr>
 				
 				<tr>
 					<th>상영시간 (분) : </th>
-					<td> <input name="movie_runningtime" placeholder="숫자만 입력해주세요" required pattern="^[1-50000]{1,3}$"></td>
+					<td> <input name="movie_runningtime" placeholder="숫자만 입력해주세요" required pattern="^[0-9]+$"></td>
 				</tr>
 				
 				<tr>

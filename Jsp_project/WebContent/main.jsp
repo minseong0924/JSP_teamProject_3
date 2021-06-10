@@ -47,7 +47,7 @@
 						<input type="button" value="검색" onclick="location.href='movieSearch2.do'">
 					</td>
 					<td>
-						<input type="button" value="상영시간표" onclick="location.href='timetable.do'"></td>
+						<input type="button" value="상영시간표" onclick="location.href='timeTable.do'"></td>
 					<td>
 						<input type="button" value="영화차트" onclick="location.href='movieChart.do'"></td>
 					<td>
