@@ -319,6 +319,15 @@ input[type=date]::-webkit-calendar-picker-indicator {
 	padding: 0 0 0 20px;
 }
 
+movie-choise1 {
+	border:1px solid black;
+	border-radius:3px;
+	float:left;
+	width: 800px;
+	height:300px;
+	padding: 0 0 0 20px;
+}
+
 .movie-choise li{
 	float:left;
 	width:33%;
@@ -349,7 +358,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
 	width:800px;
 }
 
-#title_ko {
+#title_ko, #title_ko2{
 	color:green;
 }
 
@@ -384,6 +393,11 @@ input[type=date]::-webkit-calendar-picker-indicator {
 	background-color:white;
 	border : 0px;
 }
+
+.on:hover{
+	bacgroundcolor:gray;
+}
+
 .year {
 	position: absolute;
     top: 0;

@@ -312,4 +312,46 @@ public class CinemaDAO {
 		}
 	}
 	
+	public String LocalCinemaList(String local) {
+		String result = "";
+		int localcode = 0;
+		
+		try {
+			openConn();
+			
+			sql = "select localcode from local where localname = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, local);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				localcode = rs.getInt(1);
+			}
+			
+			sql = "select cinemaname from cinema where localcode =?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, localcode);
+			
+			rs = pstmt.executeQuery();
+			
+			result += "<cin>";
+			while(rs.next()) {
+			result += "<cin1>";
+			result += "<cinemaname>" + rs.getString("cinemaname")+"</cinemaname>";
+			result += "</cin1>";
+			}
+			
+			result += "</cin>";
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }

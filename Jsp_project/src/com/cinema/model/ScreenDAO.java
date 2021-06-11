@@ -608,4 +608,49 @@ public class ScreenDAO {
 		}
 		return result;
 	}
+	
+	public List<ScreenDTO> ScreenList(String cinemaname, String date) {
+		List<ScreenDTO> list = new ArrayList<>();
+		
+		try {
+			openConn();
+			
+			sql = "select s.*, m.title_ko, m.mtype\n" + 
+					"from screen s, movie m \n" + 
+					"where s.cinemaname=? \n" + 
+					"and s.moviecode = m.moviecode\n" + 
+					"and start_date = TO_DATE(?, 'YYYY-MM-DD') \n" + 
+					"order by title_ko, cincode, start_time";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, cinemaname);
+			pstmt.setString(2, date);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScreenDTO dto = new ScreenDTO();
+				
+				dto.setScreencode(rs.getInt("screencode"));
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCinemaname(rs.getString("cinemaname"));
+				dto.setCincode(rs.getInt("cincode"));
+				dto.setStart_time(rs.getInt("start_time"));
+				dto.setEnd_time(rs.getInt("end_time"));
+				dto.setStart_date(rs.getString("start_date").substring(0, 10));
+				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
+				dto.setMoviename(rs.getString("title_ko"));
+				dto.setMtype(rs.getString("mtype"));
+				
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return list;
+	} 
 }

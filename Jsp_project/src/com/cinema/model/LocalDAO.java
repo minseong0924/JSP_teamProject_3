@@ -139,6 +139,37 @@ public class LocalDAO {
 		return list;	
 	}
 	
+	public String LocalList() {
+		String result = "";
+		
+		try {
+			openConn();
+			
+			sql = "select localname, cinemaname\r\n" + 
+					"from local l, cinema c \r\n" + 
+					"where l.localcode = c.localcode";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			result += "<local1>";
+			
+			while(rs.next()) {
+				result += "<local>";
+				result += "<localname>" + rs.getString("localname") + "</localname>";
+				result += "<cinemaname>" + rs.getString("cinemaname") + "</cinemaname>";
+				result += "</local>";
+			}
+			result += "</local1>";
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }
 
 

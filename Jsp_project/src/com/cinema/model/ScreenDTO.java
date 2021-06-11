@@ -10,7 +10,21 @@ public class ScreenDTO {
 	private String start_date;
 	private String end_date;
 	private String cinemaname;
+	private String moviename;
+	private String mtype;
 	
+	public String getMtype() {
+		return mtype;
+	}
+	public void setMtype(String mtype) {
+		this.mtype = mtype;
+	}
+	public String getMoviename() {
+		return moviename;
+	}
+	public void setMoviename(String moviename) {
+		this.moviename = moviename;
+	}
 	public int getScreencode() {
 		return screencode;
 	}
