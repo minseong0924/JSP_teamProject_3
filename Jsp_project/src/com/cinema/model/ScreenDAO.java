@@ -219,34 +219,72 @@ public class ScreenDAO {
 		
 	}
 	
-	public List<ScreenDTO> bookingScreenOpen(String flag, String str) {
+	public List<ScreenDTO> bookingScreenOpen(String flag, String value) {
 		List<ScreenDTO> list = new ArrayList<>();
-//		String screenlist = "";
 		
 		try {
 			openConn();
 			
-			sql = "select * from screen where ? between start_date and end_date";
-			
-			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, str);
-			rs = pstmt.executeQuery();
-			
-			while(rs.next()) {
-				ScreenDTO dto = new ScreenDTO();
-				dto.setScreencode(rs.getInt("screencode"));
-				dto.setMoviecode(rs.getInt("moviecode"));
-				dto.setCinemacode(rs.getInt("cinemacode"));
-				dto.setCincode(rs.getInt("cincode"));
-				dto.setStart_time(rs.getInt("start_time"));
-				dto.setEnd_time(rs.getInt("end_time"));
-				dto.setStart_date(rs.getString("start_date").substring(0, 10));
-				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
-				dto.setCinemaname(rs.getString("cinemaname"));
+			if(flag.equals("dayBase")) {
+				sql = "select * from screen where ? between start_date and end_date";
 				
-//				screenlist += dto.toString();
-				list.add(dto);
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, value);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					ScreenDTO dto = new ScreenDTO();
+					dto.setScreencode(rs.getInt("screencode"));
+					dto.setMoviecode(rs.getInt("moviecode"));
+					dto.setCinemacode(rs.getInt("cinemacode"));
+					dto.setCincode(rs.getInt("cincode"));
+					dto.setStart_time(rs.getInt("start_time"));
+					dto.setEnd_time(rs.getInt("end_time"));
+					dto.setStart_date(rs.getString("start_date").substring(0, 10));
+					dto.setEnd_date(rs.getString("end_date").substring(0, 10));
+					dto.setCinemaname(rs.getString("cinemaname"));
+					
+					list.add(dto);
+				}
+				
+			} else if(flag.equals("movieBase")) {
+				sql = "select TO_CHAR(min(start_date), 'YYYY-MM-DD') "
+						+ " as start_date from screen "
+						+"where start_date >= TO_CHAR(SYSDATE, 'YYYY-MM-DD') "
+						+"and moviecode = ?";
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, value);
+				rs = pstmt.executeQuery();
+				String start_date = "";
+				
+				if(rs.next()) {
+					start_date = rs.getString("start_date");
+				}
+				
+				sql = "select * from screen where ? between start_date and end_date";
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, start_date);
+				rs = pstmt.executeQuery();
+				
+				while(rs.next()) {
+					ScreenDTO dto = new ScreenDTO();
+					dto.setScreencode(rs.getInt("screencode"));
+					dto.setMoviecode(rs.getInt("moviecode"));
+					dto.setCinemacode(rs.getInt("cinemacode"));
+					dto.setCincode(rs.getInt("cincode"));
+					dto.setStart_time(rs.getInt("start_time"));
+					dto.setEnd_time(rs.getInt("end_time"));
+					dto.setStart_date(rs.getString("start_date").substring(0, 10));
+					dto.setEnd_date(rs.getString("end_date").substring(0, 10));
+					dto.setCinemaname(rs.getString("cinemaname"));
+					
+					list.add(dto);
+				}
 			}
+			
+			
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
