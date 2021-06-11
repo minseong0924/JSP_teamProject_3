@@ -107,9 +107,11 @@
 	function movieSelct(moviecode){
 		var thisday = new Date();
 		thisday = thisday.toISOString().slice(0, 10);
-		var movieExist = false;
+		var movieExist = "없음";
 		console.log("movie:"+moviecode);
 		console.log("thisday:"+thisday);
+		// 선택한 표시
+		$("#screenmovie"+moviecode).addClass("active");
 		
 		$.ajax({
 			type:"post",
@@ -123,7 +125,7 @@
 				var screenlist = data.slist;
 				for(var i=0; i<screenlist.length; i++) {
 					if(moviecode == screenlist[i].moviecode) {
-						movieExist = true;
+						movieExist = "있음";
 						break;
 					}
 				}
@@ -135,7 +137,7 @@
 		
 		console.log("movieExist:"+movieExist);
 		
-		if(!movieExist) {
+		if(movieExist == "있음") {
 			if(confirm("해당 일자에 상영 시간표가 없습니다.\n선택하신 영화의 가장 빠른 예매일로 변경하시겠습니까?")){
 				$.ajax({
 					type:"post",
@@ -184,6 +186,8 @@
 							daySetting("movie", today);
 						}
 						
+						// 날짜 버튼을 새로 그려줬으므로 리셋팅
+						dayGroup = $("#header_day").children("button");
 						dayGroup.attr('disabled', true);
 						
 						// 상영 날짜에 따른 날짜 버튼 disable/able 셋팅
@@ -263,7 +267,7 @@
 			<tr>
 				<td style="width:300px;"><span class="booking_title">영화</span>
 					<div class="booking_list panel panel-default" align="left">
-					  <div id="movielist_div" class="list-group" role="group">
+					  <div id="movielist_div" class="list-group list-group-flush" role="group">
 					  	<c:if test="${!empty movielist }">
 		                   <c:forEach items="${movielist }" var="mdto">
 		                      <button type="button" 
