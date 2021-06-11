@@ -65,5 +65,12 @@ public class ScreenDTO {
 	public void setCinemaname(String cinemaname) {
 		this.cinemaname = cinemaname;
 	}
+	
+	@Override
+	public String toString() {
+		return "ScreenDTO [screencode=" + screencode + ", moviecode=" + moviecode + ", cinemacode=" + cinemacode
+				+ ", cincode=" + cincode + ", start_time=" + start_time + ", end_time=" + end_time + ", start_date="
+				+ start_date + ", end_date=" + end_date + ", cinemaname=" + cinemaname + "]";
+	}	
 
 }

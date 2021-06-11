@@ -17,7 +17,7 @@ import com.cinema.model.MovieDTO;
 import com.cinema.model.ScreenDAO;
 import com.cinema.model.ScreenDTO;
 
-public class movieQBookingAction implements Action {
+public class MovieQBookingAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
