@@ -311,4 +311,5 @@ public class CinemaDAO {
 			closeConn(rs, pstmt, con);
 		}
 	}
+
 }
