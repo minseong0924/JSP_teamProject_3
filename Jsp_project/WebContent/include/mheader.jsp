@@ -103,6 +103,7 @@
 			   			<li class="nav-item"><a href="#">${memSession.name }님 환영합니다.</a></li>
 			   			<li class="nav-item"><a href="javascript:goLogout()">로그아웃</a><li>
 			   		</c:if>
+			   		
 
 			   		<c:if test="${empty memSession }">
 			   			<li class="nav-item"><a href="javascript:onClick()">로그인</a></li>
