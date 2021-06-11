@@ -540,4 +540,72 @@ public class ScreenDAO {
 		
 		return count;
 	}
+	
+	public String ScreenList(String loc, String title, String today) {
+		String result = "";
+		int localcode = 0;
+		int moviecode = 0;
+		String cinemaname = "";
+		try {
+			openConn();
+			
+			sql = "select localcode from local where localname = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, loc);
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				localcode = rs.getInt(1);
+			}
+			
+			sql= "select moviecode from movie where title_ko = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				moviecode = rs.getInt(1);
+			}
+			
+			sql = "select s.*,m.mtype\n" + 
+					"from screen s, movie m\n" + 
+					"where s.moviecode = m.moviecode\n" + 
+					"and s.cinemacode in(select cinemacode from cinema where localcode = ?)\n" + 
+					"and s.moviecode = ?\n" + 
+					"and start_date = TO_DATE(?, 'YYYY-MM-DD') order by s.cinemacode, s.cincode";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, localcode);
+			pstmt.setInt(2, moviecode);
+			pstmt.setString(3, today);
+			
+			rs = pstmt.executeQuery();
+			
+				result += "<screen1>";
+			
+			while(rs.next()) {
+				result += "<screen>";
+				result += "<screencode>" + rs.getInt("screencode") + "</screencode>";
+				result += "<moviecode>" + rs.getInt("moviecode") + "</moviecode>";
+				result += "<cinemacode>" + rs.getInt("cinemacode") + "</cinemacode>";
+				result += "<cinemaname>" + rs.getString("cinemaname") + "</cinemaname>";
+				result += "<cincode>" + rs.getInt("cincode") + "</cincode>";
+				result += "<start_time>" + rs.getInt("start_time") + "</start_time>";
+				result += "<end_time>" + rs.getInt("end_time") + "</end_time>";
+				result += "<mtype>" + rs.getString("mtype") + "</mtype>";
+				result += "</screen>";
+			}
+				result += "</screen1>";
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }

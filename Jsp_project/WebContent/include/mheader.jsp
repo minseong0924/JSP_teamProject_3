@@ -85,7 +85,9 @@
 					
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> 홈페이지관리 </a> 
-						<ul class="dropdown-menu"> 
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/cinemaList.do">전체 지점 목록</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/cinemaWrite.do">지점 등록</a></li>
 							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieList.do">전체 영화 목록</a></li>
 							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieWrite.do">영화 등록</a></li>
 							<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieScreenSetting.do">영화 상영 설정</a></li>

@@ -49,16 +49,18 @@ $(document).ready(function(){
 		
 		
 		if(day == "토"){
-			$(".wrap").append("<button class='sat on' type='button' date-data='"+tym+"'month='"+month+"'>"+i+"<br>"+day+"</button>");
+			$(".wrap").append("<button class='on sat' name='btn' type='button' date_data='"+tym+"'month='"+month+"'>"+i+"<br>"+day+"</button>");
 		}else if(day =="일"){			
-			$(".wrap").append("<button class='holi on' type='button' date-data='"+tym+"'month='"+month+"'>"+i+"<br>"+day+"</button>");
+			$(".wrap").append("<button class='on holi' name='btn' type='button' date_data='"+tym+"'month='"+month+"'>"+i+"<br>"+day+"</button>");
 		}else {
-			$(".wrap").append("<button class='on' type='button' date-data='"+tym+"'month='"+month+"'>"+i+"<br>"+day+"</button>");
+			$(".wrap").append("<button class='on' name='btn' type='button' date_data='"+tym+"'month='"+month+"'>"+i+"<br>"+day+"</button>");
 		}
 		count++;
 	}
 		$(".wrap").append("<button class='btn-next' title='이전 날짜 보기'></button>");
 		$(".btn-next").append("<i class='glyphicon glyphicon-chevron-right'></i");
+		
+		//load(date_data);
 }); 
 	
 
@@ -84,10 +86,80 @@ function load(location) {
 		type: "post",		// post 방식으로 전송
 		dataType : "xml",	// 응답 데이터를 텍스트 형식으로 지정
 		url : "/Jsp_project/data/timeTableLocation.jsp",	// 전송할 페이지를 지정
-		data: {"location": location, "title_ko":$("#title_ko").text()},	// 전송할 매개변수와 값을 설정
+		data: {"location": location, "title_ko":$("#title_ko").text(),
+			"today": date_data	},	// 전송할 매개변수와 값을 설정
 		success: function(data) {
-			var location = $(data);
-			alert('성공');
+			$(".theater-list").empty();
+			var dat = $(data).find("screen1").find("screen");
+			
+			//dat.find("cinemaname").text() 저장용
+			var pre = "";
+			var cincode = 0;
+			
+			//극장 뿌리기
+			dat.each(function(){
+				//영화관이 중복되지 않게하는 조건문.
+				if($("cinemaname", this).text() != pre) {
+					$(".theater-list").append("<div id='"+$("cinemaname", this).text()+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+$("cinemaname", this).text()+"</h3></div>"
+							+"<hr width='70%' align='left'></div>");
+				}
+					pre = $("cinemaname", this).text();
+					
+						console.log(cincode);
+						
+				
+				// 관이 중복되지 않게하는 조건문
+				if($("cincode", this).text() != cincode){	
+					$("#"+$("cinemaname", this).text()+"").append("<div id='"+$("cincode", this).text()+"'class='theater-list-box1'><span class='localscreen'>"+$("cincode", this).text()+"관</span>" +
+						"<div class='movietype'><span class='movietype-text'>"+$("mtype", this).text()+"</span></div>"+
+						"<div class='movietime-box'><a href='#' class='movietime'>"+$("start_time", this).text()+"</a></div></div>");
+				}else {
+					$("#"+$("cinemaname", this).text()+"").find("#"+$("cincode", this).text()+"").append("<div class='movietime-box'><a href='#' class='movietime'>"+$("start_time", this).text()+"</a></div>");
+				}
+						cincode = $("cincode", this).text();
+			});
+			
+			// 시간표 뿌리기
+		/* 	dat.each(function(){
+				console.log($(".localarea").text());
+				if($("cinemaname", this).text() == $(".localarea").text()) {	
+				$(".theater-list-box").append("<div class='theater-list-box1'><span class='localscreen'>"+$("cincode", this).text()+"관</span>" +
+						"<div class='movietype'><span class='movietype-text'>"+$("mtype", this).text()+"</span></div></div>")
+				}
+				
+			}); */
+			
+			/* <div class="theater-list-box1">
+			<span class="localscreen">1관</span>
+				<div class="movietype">
+					<span class="movietype-text">2D</span>
+				</div>
+			
+				<div class="movietime-box">
+					<a href="#" class="movietime">17:50</a>
+				</div>
+		</div> */
+/* $(".theater-list").append
+	("<div class='locationInfo'><h3 class='localarea'>"+dat.find("cinemaname").text()+"</h3></div>"
+	+ ""); */
+					/* <div class="theater-list">
+					<div class="locationInfo">
+						<h3 class="localarea">강남</h3>
+						<hr width="70%" align="left">
+					</div>
+						
+					<div class="theater-list-box">
+						<span class="localscreen">1관</span>
+						
+						<div class="movietype">
+							<span class="movietype-text">2D</span>
+						</div>
+						
+						<div class="movietime-box">
+							<a href="#" class="movietime">17:50</a>
+						</div>
+					</div>
+				</div> */
 		},
 		error:function(request, status, error){
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -134,20 +206,49 @@ function load(location) {
 
 			</div>
 			
-			<div class="btn-group" role="group" aria-label="...">
-			  <button type="button" class="btn btn-default" onclick="load('seoul')">서울</button>
-			  <button type="button" class="btn btn-default" onclick="load('gk')">경기</button>
-			  <button type="button" class="btn btn-default" onclick="load('incheo')">인천</button>
-			  <button type="button" class="btn btn-default" onclick="load('daejeon')">대전/충청/세종</button>
-			  <button type="button" class="btn btn-default" onclick="load('busan')">부산/대구/경상</button>
-			  <button type="button" class="btn btn-default" onclick="load('gwangju')">광주/전라</button>
-			  <button type="button" class="btn btn-default" onclick="load('gangwon')">강원</button>
-			  <button type="button" class="btn btn-default" onclick="load('jeju')">제주</button>
+			<div class="btn-group1" role="group" aria-label="...">
+			  <button type="button" class="btn btn-default btn1" onclick="load('seoul')">서울</button>
+			  <button type="button" class="btn btn-default btn1" onclick="load('gk')">경기</button>
+			  <button type="button" class="btn btn-default btn1" onclick="load('incheo')">인천</button>
+			  <button type="button" class="btn btn-default btn1" onclick="load('daejeon')">대전/충청/세종</button>
+			  <button type="button" class="btn btn-default btn1" onclick="load('busan')">부산/대구/경상</button>
+			  <button type="button" class="btn btn-default btn1" onclick="load('gwangju')">광주/전라</button>
+			  <button type="button" class="btn btn-default btn1" onclick="load('gangwon')">강원</button>
+			  <button type="button" class="btn btn-default btn1" onclick="load('jeju')">제주</button>
 			</div>
 			
-			<div class="locationInfo">
-				<span></span>
-			</div>
+			<div class="theater-list">
+				<div class="theater-list-box">
+					<div class="locationInfo">
+						<h3 class="localarea">강남</h3>
+						<hr width="70%" align="left">
+					</div>
+					<div class="theater-list-box1">
+						<span class="localscreen">1관</span>
+							<div class="movietype">
+								<span class="movietype-text">2D</span>
+							</div>
+
+							<div class="movietime-box">
+								<a href="#" class="movietime">17:50</a>
+							</div>
+					</div>
+
+
+					<div class="theater-list-box1">
+						<span class="localscreen">1관</span>
+							<div class="movietype">
+								<span class="movietype-text">2D</span>
+							</div>
+
+							<div class="movietime-box">
+								<a href="#" class="movietime">17:50</a>
+							</div>
+
+					</div>
+
+
+				</div>
 			
 	</div>
 	<jsp:include page="../include/mfooter.jsp" />
