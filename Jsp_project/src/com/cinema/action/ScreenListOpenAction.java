@@ -23,11 +23,12 @@ public class ScreenListOpenAction implements Action {
 		
 		String value = request.getParameter("value");
 		String flag = request.getParameter("flag");
+		int code = Integer.parseInt(request.getParameter("code"));
 		
-		System.out.println("sOpenAction:"+flag+"/"+value);
+		System.out.println("sOpenAction:"+flag+"/"+value+"/"+code);
 		
 		ScreenDAO sdao = ScreenDAO.getInstance();
-		List<ScreenDTO> slist = sdao.bookingScreenOpen(flag,value);
+		List<ScreenDTO> slist = sdao.bookingScreenOpen(flag,value,code);
 
 		PrintWriter out = response.getWriter();
 		

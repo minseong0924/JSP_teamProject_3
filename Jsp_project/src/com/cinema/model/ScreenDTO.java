@@ -12,7 +12,15 @@ public class ScreenDTO {
 	private String cinemaname;
 	private String moviename;
 	private String mtype;
+	private String poster;
+	private String localcode;
 	
+	public String getLocalcode() {
+		return localcode;
+	}
+	public void setLocalcode(String localcode) {
+		this.localcode = localcode;
+	}
 	public String getMtype() {
 		return mtype;
 	}
@@ -78,6 +86,13 @@ public class ScreenDTO {
 	}
 	public void setCinemaname(String cinemaname) {
 		this.cinemaname = cinemaname;
+	}
+	
+	public String getPoster() {
+		return poster;
+	}
+	public void setPoster(String poster) {
+		this.poster = poster;
 	}
 	
 	@Override
