@@ -7,7 +7,14 @@ public class ReviewDTO {
 	private String title_ko;
 	private String content;
 	private String regdate;
+	private int point;
 	
+	public int getPoint() {
+		return point;
+	}
+	public void setPoint(int point) {
+		this.point = point;
+	}
 	public int getNo() {
 		return no;
 	}

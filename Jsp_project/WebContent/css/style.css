@@ -229,6 +229,12 @@ input[type=date]::-webkit-calendar-picker-indicator {
 .review-text{
 	float:left;
 }
+.review-point{
+	padding-top:25px;
+	padding-right: 20px;
+	float:left;	
+	clear:both;
+}
 .review-text textarea{
 	width:800px;
 	height:80px;
@@ -283,6 +289,26 @@ input[type=date]::-webkit-calendar-picker-indicator {
     height: 50px;
     margin-top: -25px;
     background-color: rgba(0,0,0,.1);
+}
+.review-write{
+	overflow:auto;
+}
+.review-list {
+	border:1px solid black;
+	padding-top:20px;
+	overflow:auto;
+}
+.id {
+	clear:both;
+	float:left;
+}
+.point {
+	padding-left:50px;
+	float:left;
+}
+.text{
+	float:left;
+	padding-left:80px;
 }
 /* 영화 상세페이지 end */
 /* 상영시간표 페이지 start */
@@ -472,6 +498,10 @@ movie-choise1 {
 	height:50px;
 	text-align:center;
 	margin-right:20px;
+}
+
+.bk {
+	background-color:gray;
 }
 /* 상영시간표 페이지 end */
 /* 관리 페이지 	*/

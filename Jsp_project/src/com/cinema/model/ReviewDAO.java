@@ -76,7 +76,7 @@ public class ReviewDAO {
 	}  // closeConn() 메서드 end
 	
 	// 리뷰 작성하는 메서드
-	public int reviewWriteOk(int moviecode, String title_ko, String cont, String id) {
+	public int reviewWriteOk(int moviecode, String title_ko, String cont, String id, int point) {
 		int result = 0, count = 0;
 		
 		try {
@@ -88,10 +88,15 @@ public class ReviewDAO {
 			
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				count = rs.getInt(1) + 1;
+				if(rs.getInt(1) == 0) {
+					count = 1;
+				}else {
+					
+					count = rs.getInt(1) + 1;
+				}
 			}
 			
-			sql = "insert into review values(?,?,?,?,?,sysdate)";
+			sql = "insert into review values(?,?,?,?,?,?,sysdate)";
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -100,6 +105,7 @@ public class ReviewDAO {
 			pstmt.setInt(3, moviecode);
 			pstmt.setString(4, title_ko);
 			pstmt.setString(5, cont);
+			pstmt.setInt(6, point);
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -111,18 +117,18 @@ public class ReviewDAO {
 		return result;
 	}
 	
-	//moviecode가 ?인 리뷰 리스트를 가져오는 메서드
-	public List<ReviewDTO> ReviewList(int moviecode) {
+	//title_ko가 ?인 리뷰 리스트를 가져오는 메서드
+	public List<ReviewDTO> ReviewList(String title_ko) {
 		List<ReviewDTO> list = new ArrayList<>();
 		
 		try {
 			openConn();
 			
-			sql = "select * from review where moviecode=?";
+			sql = "select * from review where title_ko=?";
 			
 			pstmt = con.prepareStatement(sql);
 			
-			pstmt.setInt(1, moviecode);
+			pstmt.setString(1, title_ko);
 			
 			rs = pstmt.executeQuery();
 			
@@ -135,6 +141,7 @@ public class ReviewDAO {
 				dto.setTitle_ko(rs.getString("title_ko"));
 				dto.setContent(rs.getString("content"));
 				dto.setRegdate(rs.getString("regdate").substring(0,10));
+				dto.setPoint(rs.getInt("point"));
 				
 				list.add(dto);
 			}

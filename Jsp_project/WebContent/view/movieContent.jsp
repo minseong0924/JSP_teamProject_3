@@ -7,6 +7,33 @@
 <meta charset="UTF-8">
 <title>영화 상세정보</title>
 <link href="./css/style.css" rel="stylesheet" type="text/css" />
+<script>
+$(document).ready(function(){
+	
+});
+function loadReview() {
+	
+	$.ajax({
+		type:"post",
+		url: "/Jsp_project/ReviewList.do",
+		dataType: "json",
+		data: {"title_ko" : $(".movie-title").text()},
+		success: function(data) {
+			var Rlist = data.list;
+			
+			for(var i=0; i<Rlist.length; i++) {
+				
+			}
+			
+			
+		},
+		error: function(request,status,error){
+	       alert("error!!!");
+		}
+	});
+}
+
+</script>
 
 </head>
 <body>
@@ -72,40 +99,41 @@
 				<span>box</span>
 			</div>
 			<form method="post" action="<%=request.getContextPath() %>/reviewWriteOk.do">
-				<input type="hidden" name="moviecode" value="${dto.getMoviecode() }">
-				<input type="hidden" name="title_ko" value="${dto.getTitle_ko() }">
-				<input type="hidden" name="id" value="${id}">
-				<div class="review-text">
-					<textarea rows="7" cols="10" name="review-text" 
-						placeholder="${dto.getTitle_ko() }재미있게 보셨나요? 영화의 어떤점이 좋았는지 평가해주세요"></textarea>
-				</div>
-				<div class="write-review">
-					<input type="submit" value="관람평 쓰기">
+				<div class="review-write">
+					<input type="hidden" name="moviecode" value="${dto.getMoviecode() }">
+					<input type="hidden" name="title_ko" value="${dto.getTitle_ko() }">
+					<input type="hidden" name="id" value="${memSession.id}">
+					<div class="review-point">
+						<select name="point" required>
+									<option value="" selected disabled>:::평점:::</option>
+							<% for(int i=0; i<11; i++) { %>
+									<option value="<%=i%>"><%=i %></option>
+							<%} %>
+						</select>
+					</div>
+					<div class="review-text">
+						<textarea rows="7" cols="10" name="review-text" 
+							placeholder="${dto.getTitle_ko() }재미있게 보셨나요? 영화의 어떤점이 좋았는지 평가해주세요"
+							required></textarea>
+					</div>
+					<div class="write-review">
+						<input type="submit" value="관람평 쓰기">
+					</div>
 				</div>
 			</form>
 			
-			<c:set var="review" value="${reviewList}"/>
-			<c:if test="${!empty reviewList }">
-			<c:forEach var="re" items="${reviewList}">
-			<br><br><br><br><br>
-			<div class="memberName1">
-				<span>${re.getId() }</span>
-			</div>
-			<div class="review-box">
-				<div class="story-point">
-					<span>${re.getPoint() }</span>
+			<div class="review-list">
+				<div class="id">
+					<span>id</span>
 				</div>
-				
-				<div class="story-text">
-					<span>${re.getCont() }</span>
+				<div class="point">
+					<span>5점</span>
+				</div>
+				<div class="text">
+					<span>text</span>
 				</div>
 			</div>
-			</c:forEach>
-			</c:if>
 			
-			<c:if test="${empty reviewList }">
-				리뷰가 없습니다.
-			</c:if>
 		</div>
 	</div>
 	

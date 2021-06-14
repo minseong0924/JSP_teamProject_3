@@ -1,4 +1,4 @@
-package com.cinema.action;
+package com.member.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -9,22 +9,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.cinema.controller.Action;
 import com.cinema.controller.ActionForward;
-import com.cinema.model.MovieDTO;
-import com.cinema.model.ScreenDAO;
-import com.cinema.model.ScreenDTO;
+import com.cinema.model.ReviewDAO;
+import com.cinema.model.ReviewDTO;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-public class CinemaTableAction implements Action {
+public class ReviewListAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String cinemaname = request.getParameter("cinemaname");
-		String today = request.getParameter("today");
-		System.out.println("today>>> " + today);
-		ScreenDAO dao = ScreenDAO.getInstance();
-		List<ScreenDTO> list = dao.ScreenList(cinemaname, today);
+		String title_ko = request.getParameter("title_ko");
+		
+		ReviewDAO dao = ReviewDAO.getInstance();
+		
+		List<ReviewDTO> list = dao.ReviewList(title_ko);
 		
 		PrintWriter out = response.getWriter();
 		

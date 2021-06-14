@@ -24,11 +24,8 @@ let date_data = yearmonth + "-" +date;
 let tym = yearmonth+"-"+today.getDate();
 
 // 페이지 시작 시 
-$(document).ready(function(){
+$(document).ready(function(){	
 		movie();
-		opendate();
-		dateButton('서울', tym);
-
 }); 
 
 //영화별 start
@@ -49,11 +46,16 @@ function movie() {
 			var list = data.list;
 			for(var i=0; i<list.length; i++) {
 				$(".movie-choise1").find("ul").append
-				("<li><button id='tit' type='button' class='btn' onclick='change(`"+list[i].moviecode+"`)'>"
+				("<li><button id='"+list[i].moviecode+"' type='button' class='btn' onclick='movieNameB(`"+list[i].moviecode+"`)'>"
 						+list[i].title_ko+"</button></li>");
 			}
 			$("#title_ko").text(list[0].title_ko);
 			dateButton('서울', tym);
+			opendate(0,new Date());
+			$("#list_theater").attr("class" ,"btn");
+			$("#list_movie").attr("class" ,"btn bk");
+			$(".movie-choise1").find("button").first().attr("class" ,"btn bk");
+			$("#day1").attr("class" ,"on bk");
 			
 		},
 		error:function(request, status, error){
@@ -63,59 +65,93 @@ function movie() {
 }
 
 //영화별 상영시간표 띄우는 함수	
-function opendate() {
-	today = new Date();
-	year = today.getFullYear();
-	month = today.getMonth() + 1;
-	date = today.getDate();
-	yearmonth = year + "-0" +month;
-	day = "";
-	count = 0;
-	date_data = yearmonth + "-" +date;
-	tym = yearmonth+"-"+today.getDate();
-	$(".wrap").append("<button class='btn-pre' title='이전 날짜 보기'></button>");
+function opendate(dayflag, day) {
+	var currentDay;
+	
+	if(dayflag == 'before') {
+		$(".wrap").empty();
+		currentDay = new Date(day);
+		currentDay = new Date(currentDay.setDate(currentDay.getDate() - 1));
+	} else if(dayflag == 'after') {
+		$(".wrap").empty();
+		currentDay = new Date(day);
+		currentDay = new Date(currentDay.setDate(currentDay.getDate() + 1));
+	}else {
+		$(".wrap").empty();
+		currentDay = new Date(day);
+		currentDay = new Date(currentDay.setDate(currentDay.getDate()));
+	}
+	
+	
+	var weekName = ['일', '월', '화', '수', '목', '금', '토'];
+	var theYear = currentDay.getFullYear();
+	var theMonth = currentDay.getMonth();
+	var theDate  = currentDay.getDate();
+	 
+	var thisWeek = [];
+	 
+	for(var i=0; i<13; i++) {
+	  var resultDay = new Date(theYear, theMonth, theDate + i);
+	  var yyyy = resultDay.getFullYear();
+	  var mm = Number(resultDay.getMonth()) + 1;
+	  var dd = resultDay.getDate();
+	 
+	  mm = String(mm).length === 1 ? '0' + mm : mm;
+	  dd = String(dd).length === 1 ? '0' + dd : dd;
+	 
+	  thisWeek[i] = yyyy + '-' + mm + '-' + dd;
+	}
+	var day = "";
+	
+	$(".wrap").append("<button onclick='dayBeforeSetting()' class='btn-pre' title='이전 날짜 보기'></button>");
 	$(".btn-pre").append("<i class='glyphicon glyphicon-chevron-left'></i");
 	
-	
-	for(var i=date; i<date+13; i++) {
-		tym = yearmonth+"-"+i;
-		var day = "";
-		day = today.getDay();
-		
-		day = day + count;
-		
-		if(day>=7) {
-			day = day%7;
-		}
-		switch(day) {
-			case 0 : day="일"; break;
-			case 1 : day="월"; break;
-			case 2 : day="화"; break;
-			case 3 : day="수"; break;
-			case 4 : day="목"; break;
-			case 5 : day="금"; break;
-			case 6 : day="토"; break;	
-		}
-		if(count==0) {
-			day="오늘";
-		}else if(count==1) {
-			day="내일";
-		}
-		
-		if(day == "토"){
-			$(".wrap").append("<button class='on sat'type='button' onclick='dateButton(`"+tym+"`)'month='"+month+"'>"+i+"<br>"+day+"</button>");
-		}else if(day =="일"){			
-			$(".wrap").append("<button class='on holi'  type='button' onclick='dateButton(`"+tym+"`)'month='"+month+"'>"+i+"<br>"+day+"</button>");
+	for(var j=0; j<thisWeek.length; j++) {
+		if(weekName[new Date(thisWeek[j]).getDay()] == "토"){
+			$(".wrap").append("<button id='day"+(j+1)+"' class='on sat'type='button' onclick='dateButton(`"+thisWeek[j]+"`)' value='"+thisWeek[j]+"'>"
+					+ thisWeek[j].substring(5,7)+"/"
+					+ thisWeek[j].substring(8,10)+"·"
+					+ weekName[new Date(thisWeek[j]).getDay()]+"</button>");
+		}else if(weekName[new Date(thisWeek[j]).getDay()] =="일"){			
+			$(".wrap").append("<button id='day"+(j+1)+"' class='on holi'  type='button' onclick='dateButton(`"+thisWeek[j]+"`)' value='"+thisWeek[j]+"'>"
+					+ thisWeek[j].substring(5,7)+"/"
+					+ thisWeek[j].substring(8,10)+"·"
+					+ weekName[new Date(thisWeek[j]).getDay()]+"</button>");
 		}else {
-			$(".wrap").append("<button class='on' type='button' onclick='dateButton(`"+tym+"`)'month='"+month+"'>"+i+"<br>"+day+"</button>");
+			$(".wrap").append("<button id='day"+(j+1)+"' class='on' type='button' onclick='dateButton(`"+thisWeek[j]+"`)' value='"+thisWeek[j]+"'>"
+					+ thisWeek[j].substring(5,7)+"/"
+					+ thisWeek[j].substring(8,10)+"·"
+					+ weekName[new Date(thisWeek[j]).getDay()]+"</button>");
 		}
-		count++;
 	}
-		$(".wrap").append("<button class='btn-next' title='다음 날짜 보기'></button>");
-		$(".btn-next").append("<i class='glyphicon glyphicon-chevron-right'></i");
+	
+	$(".wrap").append("<button onclick='dayAfterSetting()' class='btn-next' title='다음 날짜 보기'></button>");
+	$(".btn-next").append("<i class='glyphicon glyphicon-chevron-right'></i");
 }
+function dayBeforeSetting() {
+	today = new Date();
+	today = today.toISOString().slice(0, 10);
+	day = $("#day1").val();
+	var checked = $(".wrap").find(".bk").prev().val();
+	if(day == today) {
+		return;
+	} else {
+		opendate("before", day);
+	}
+	dateButton(checked);
+	
+}
+
+function dayAfterSetting() {
+	var day = $("#day1").val();
+	var checked = $(".wrap").find(".bk").next().val();
+	opendate("after", day);
+	dateButton(checked);
+}
+
+
 //영화명을 눌렀을 때 이벤트
-function change(moviecode) {
+function movieNameB(moviecode) {
 	$.ajax({
 		type: "post",		
 		dataType : "xml",	
@@ -126,67 +162,113 @@ function change(moviecode) {
 			$("#img").attr("src", "/Jsp_project/upload/"+dat.find("poster").text());
 			$("#title_ko").text(dat.find("ko").text());
 			
+			$(".movie-choise1").find(".bk").attr("class" ,"btn");
+			$("#"+moviecode).attr("class", "btn bk");
+			
 			var today2 = new Date();
 			var todaydate2 = today2.getFullYear()+ "-0" + (today2.getMonth() + 1)+ "-" +today2.getDate();
-
-			dateButton(todaydate2);
 			
+			dateButton($(".wrap").find(".bk").val());
+
 		},
 		error:function(request, status, error){
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		},
 	});
 }
+
 //영화별에서 날짜 버튼을 눌렀을 때 이벤트	
 function dateButton(date) {
+		$(".wrap").find(".bk").attr("class", "on");
+		$("button[value='"+date+"']").attr("class", "on bk");
+		
 		date_data = date;
 		load('서울',date_data);
 }
 
 //영화별에서 아래 서울 ~제주 버튼을 눌렀을 때 이벤트
-function load(location) {
+function load(location, date_data) {
 	$.ajax({
 		type: "post",		
 		dataType : "xml",	
 		url : "/Jsp_project/data/timeTableLocation.jsp",	
 		data: {"location": location, "title_ko":$("#title_ko").text(),
-				"today": date_data	},	
+				"today": $(".wrap").find(".bk").val()	},	
 		success: function(data) {
 			$(".theater-list").empty();
 			var dat = $(data).find("screen1").find("screen");
-			
 			//dat.find("cinemaname").text() 저장용
 			var pre = "";
 			var cincode = 0;
 			var srt_time = "";
 			var starttime = 0;
-				
+				console.log(date_data);
 			//극장 뿌리기
 			dat.each(function(){
-				//영화관이 중복되지 않게하는 조건문.
-				if($("cinemaname", this).text() != pre) {
-					$(".theater-list").append("<div id='"+$("cinemaname", this).text()+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+$("cinemaname", this).text()+"</h3></div>"
-							+"<hr width='70%' align='left'></div>");
-				}
-					pre = $("cinemaname", this).text();
-						
-				starttime = $("start_time", this).text();
-				if(Math.floor(starttime % 60) < 10) {
-					srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
-				} else {
-					srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
-				}
+				
+				var moviedate = new Date($("start_date",this).text());
+				var nowdate = new Date();
+				var mYear = moviedate.getFullYear();
+				var mMonth = moviedate.getMonth();
+				var mDate = moviedate.getDate();
+				var moviedate1 = new Date(mYear, mMonth, mDate+1);
 
-				// 관이 중복되지 않게하는 조건문
-				if($("cincode", this).text() != cincode){	
-					$("#"+$("cinemaname", this).text()+"").append("<div id='"+$("cincode", this).text()+"'class='theater-list-box1'><span class='localscreen'>"+$("cincode", this).text()+"관</span>" +
-						"<div class='movietype'><span class='movietype-text'>"+$("mtype", this).text()+"</span></div>"+
-						"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div></div>");
+				if(moviedate1.toISOString().slice(0, 10) == nowdate.toISOString().slice(0, 10)) {
+					today = new Date();
+					starttime = $("start_time", this).text();
+					
+					if(Math.floor(starttime % 60) < 10) {
+						srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
+					} else {
+						srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
+					}
+					
+					if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())) {	
+						//영화관이 중복되지 않게하는 조건문.
+						if($("cinemaname", this).text() != pre) {
+							$(".theater-list").append("<div id='"+$("cinemaname", this).text()+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+$("cinemaname", this).text()+"</h3></div>"
+									+"<hr width='70%' align='left'></div>");
+						}
+							pre = $("cinemaname", this).text();
+
+						// 관이 중복되지 않게하는 조건문
+						if($("cincode", this).text() != cincode){	
+							$("#"+$("cinemaname", this).text()).append("<div id='"+$("cincode", this).text()+"'class='theater-list-box1'><span class='localscreen'>"+$("cincode", this).text()+"관</span>" +
+								"<div class='movietype'><span class='movietype-text'>"+$("mtype", this).text()+"</span></div>"+
+								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div></div>");
+						}else {
+							$("#"+$("cinemaname", this).text()).find("#"+$("cincode", this).text()).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div>");
+						}
+							cincode = $("cincode", this).text();
+					}
 				}else {
-					$("#"+$("cinemaname", this).text()+"").find("#"+$("cincode", this).text()+"").append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div>");
-				}
+					today = new Date();
+					starttime = $("start_time", this).text();
+					if(Math.floor(starttime % 60) < 10) {
+						srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
+					} else {
+						srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
+					}
+					
+					//영화관이 중복되지 않게하는 조건문.
+					if($("cinemaname", this).text() != pre) {
+						$(".theater-list").append("<div id='"+$("cinemaname", this).text()+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+$("cinemaname", this).text()+"</h3></div>"
+								+"<hr width='70%' align='left'></div>");
+					}
+						pre = $("cinemaname", this).text();
+					// 관이 중복되지 않게하는 조건문
+					if($("cincode", this).text() != cincode){	
+						$("#"+$("cinemaname", this).text()).append("<div id='"+$("cincode", this).text()+"'class='theater-list-box1'><span class='localscreen'>"+$("cincode", this).text()+"관</span>" +
+							"<div class='movietype'><span class='movietype-text'>"+$("mtype", this).text()+"</span></div>"+
+							"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div></div>");
+					}else {
+						$("#"+$("cinemaname", this).text()).find("#"+$("cincode", this).text()).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div>");
+					}
 						cincode = $("cincode", this).text();
+				}
 			});
+				$(".btn-group1").find(".bk").attr("class","btn btn1");
+				$("button[name='"+location+"']").attr("class", "btn btn1 bk");
 			
 		},
 		error:function(request, status, error){
@@ -212,15 +294,19 @@ function theater() {
 			$(".wrap").empty();
 			$(".local").empty();
 			local_button('서울');
-			opendate1();
+			opendate1(0, new Date());
 			
 			$(".movie-choise1").find("ul").empty();
 			var dat = $(data).find("local1").find("local");
 			var prev = "";
+			$("#list_movie").attr("class" ,"btn");
+			$("#list_theater").attr("class" ,"btn bk");
+			$(".local").find("button").first().attr("class", "btn bk");
+			$("#day1").attr("class" ,"on bk");
 			dat.each(function(){
 			var localname = "'"+$("localname",this).text()+"'";
 				if($("localname",this).text() != prev){
-					$(".local").append("<button id='"+$("localname",this).text()+"'class='local-button' onclick='local_button(`"+$("localname",this).text()+"`)'>"+$("localname",this).text()+"</button");
+					$(".local").append("<button id='"+$("localname",this).text()+"'class='btn' onclick='local_button(`"+$("localname",this).text()+"`)'>"+$("localname",this).text()+"</button");
 				}
 
 					$(".movie-choise1").find("ul").append
@@ -229,7 +315,9 @@ function theater() {
 					"</button></li>")
 				
 					prev = $("localname",this).text();
+					
 			});
+			$(".movie-choise1").find("button").first().attr("class" ,"btn bk");
 			
 		},
 		error:function(request, status, error){
@@ -251,11 +339,16 @@ function local_button(local) {
 			dat1.each(function(){
 				var n = 0;
 				$(".movie-choise1").find("ul").append
-				("<li><button id='tit"+n+"' type='button' class='btn' onclick='changecinema(`"+$("cinemaname", this).text()+"`)'>"
+				("<li><button id='tit"+n+"' type='button' class='btn' onclick='changecinema(`"+$("cinemaname", this).text()+"`)'"
+						+"name='"+$("cinemaname", this).text()+"'>"
 						+$("cinemaname", this).text()+"</button></li>");
 				n++;
 			});
 			changecinema($("#tit0").text());
+			$(".local").find(".bk").attr("class", "btn");
+			$("#"+local).attr("class", "btn bk");
+			$("#tit0").attr("class", "btn bk");
+			
 		},
 		error:function(request, status, error){
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -282,7 +375,11 @@ function changecinema(cinemaname) {
 			var today2 = new Date();
 			var todaydate2 = today2.getFullYear()+ "-0" + (today2.getMonth() + 1)+ "-" +today2.getDate();
 
-			dateButton1(todaydate2);		
+			dateButton1(todaydate2);
+			$(".movie-choise1").find(".bk").attr("class", "btn");
+			$("button[name="+cinemaname+"]").attr("class", "btn bk");
+
+			$(".wrap").find("button").eq(1).attr("class", "on bk");
 		},
 		
 		error:function(request, status, error){
@@ -293,8 +390,10 @@ function changecinema(cinemaname) {
 
 //극장별에서 날짜 버튼을 눌렀을 때 이벤트	
 function dateButton1(date_data) {
-
+		$(".wrap").find(".bk").attr("class", "on");
+		$("button[value='"+date_data+"']").attr("class", "on bk");
 		load1($("#title_ko2").text(), date_data);
+
 }
 
 // 극장별에서 정보를 보여주는 메서드
@@ -304,47 +403,104 @@ function load1(cinemaname, chandate) {
 		dataType : "json",	
 		url : "/Jsp_project/cinematable.do",	
 		data: {"cinemaname": cinemaname,
-				"today" : chandate},	
+				"today" :  $(".wrap").find(".bk").val()},	
 		success: function(data) {
 			$(".theater-list").empty();			
+			
 			var slist = data.list;
 			
 			//dat.find("cinemaname").text() 저장용
 			var pre = "";
 			var cincode = 0;
-			//$("#title_ko2").text(cinemaname);
-		
-			//영화명 뿌리기
-			for(var i=0; i<slist.length; i++) {
-
-				if(slist[i].moviename != pre) {
-					$(".theater-list").append("<div id='"+slist[i].moviename+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+slist[i].moviename+"</h3></div>"
-							+"<hr width='70%' align='left'></div>");
-				}
-					pre = slist[i].moviename;
-
+			var moviedate = "";
+			if(slist[0].start_date != null) {
+				moviedate = new Date(slist[0].start_date);
+			}else {
+				moviedate = new Date();
 			}
 			
-			for(var i=0; i<slist.length; i++) {
-				
-				starttime = slist[i].start_time;
-				if(Math.floor(starttime % 60) < 10) {
-					srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
-				} else {
-					srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
+			var nowdate = new Date();
+			var mYear = moviedate.getFullYear();
+			var mMonth = moviedate.getMonth();
+			var mDate = moviedate.getDate();
+			var moviedate1 = new Date(mYear, mMonth, mDate+1);
+	
+			if(moviedate1.toISOString().slice(0, 10) == nowdate.toISOString().slice(0, 10))	{
+				//영화명 뿌리기
+				for(var i=0; i<slist.length; i++) {
+					today = new Date();
+					starttime = slist[i].start_time;
+					
+					if(Math.floor(starttime % 60) < 10) {
+						srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
+					} else {
+						srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
+					}
+					if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())){
+						
+						if(slist[i].moviename != pre) {
+							$(".theater-list").append("<div id='"+slist[i].moviename+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+slist[i].moviename+"</h3></div>"
+									+"<hr width='70%' align='left'></div>");
+						}
+							pre = slist[i].moviename;
+					}
 				}
-			
-				// 관이 중복되지 않게하는 조건문
 				
-				if(slist[i].moviename != pre ||slist[i].cincode != cincode){
-					$("#"+slist[i].moviename+"").append("<div id='"+slist[i].cincode+"'class='theater-list-box1'><span class='localscreen'>"+slist[i].cincode+"관</span>" +
-						"<div class='movietype'><span class='movietype-text'>"+slist[i].mtype+"</span></div>"+
-						"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div></div>");
-				}else {
-					$("#"+slist[i].moviename+"").find("#"+slist[i].cincode+"").append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div>");
+				for(var i=0; i<slist.length; i++) {
+					
+					starttime = slist[i].start_time;
+					if(Math.floor(starttime % 60) < 10) {
+						srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
+					} else {
+						srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
+					}
+				
+					// 관이 중복되지 않게하는 조건문
+					if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())) {
+						if(slist[i].moviename != pre ||slist[i].cincode != cincode){
+							$("#"+slist[i].moviename).append("<div id='"+slist[i].cincode+"'class='theater-list-box1'><span class='localscreen'>"+slist[i].cincode+"관</span>" +
+								"<div class='movietype'><span class='movietype-text'>"+slist[i].mtype+"</span></div>"+
+								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div></div>");
+						}else {
+							$("#"+slist[i].moviename).find("#"+slist[i].cincode).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div>");
+						}
+							cincode = slist[i].cincode;
+							pre = slist[i].moviename;
+					}
 				}
-						cincode = slist[i].cincode;
+			}else {
+				for(var i=0; i<slist.length; i++) {
+					
+					if(slist[i].moviename != pre) {
+						$(".theater-list").append("<div id='"+slist[i].moviename+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+slist[i].moviename+"</h3></div>"
+								+"<hr width='70%' align='left'></div>");
+					}
 						pre = slist[i].moviename;
+	
+				}
+				
+				for(var i=0; i<slist.length; i++) {
+					
+					starttime = slist[i].start_time;
+					if(Math.floor(starttime % 60) < 10) {
+						srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
+					} else {
+						srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
+					}
+				
+					// 관이 중복되지 않게하는 조건문
+					
+						if(slist[i].moviename != pre ||slist[i].cincode != cincode){
+							$("#"+slist[i].moviename).append("<div id='"+slist[i].cincode+"'class='theater-list-box1'><span class='localscreen'>"+slist[i].cincode+"관</span>" +
+								"<div class='movietype'><span class='movietype-text'>"+slist[i].mtype+"</span></div>"+
+								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div></div>");
+						}else {
+							$("#"+slist[i].moviename).find("#"+slist[i].cincode).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div>");
+						}
+					
+							cincode = slist[i].cincode;
+							pre = slist[i].moviename;
+				}
 			}
 		},
 		
@@ -353,58 +509,92 @@ function load1(cinemaname, chandate) {
 		},
 	});
 }
-
-// 극장별 상영시간표 띄우는 함수 
-function opendate1() {
-	today = new Date();
-	year = today.getFullYear();
-	month = today.getMonth() + 1;
-	date = today.getDate();
-	yearmonth = year + "-0" +month;
-	day = "";
-	count = 0;
-	date_data = yearmonth + "-" +date;
-	tym = yearmonth+"-"+today.getDate();
-	$(".wrap").append("<button class='btn-pre' title='이전 날짜 보기'></button>");
-	$(".btn-pre").append("<i class='glyphicon glyphicon-chevron-left'></i");
-	
-	
-	for(var i=date; i<date+13; i++) {
-		tym = yearmonth+"-"+i;
-		var day = "";
-		day = today.getDay();
-		
-		day = day + count;
-		
-		if(day>=7) {
-			day = day%7;
-		}
-		switch(day) {
-			case 0 : day="일"; break;
-			case 1 : day="월"; break;
-			case 2 : day="화"; break;
-			case 3 : day="수"; break;
-			case 4 : day="목"; break;
-			case 5 : day="금"; break;
-			case 6 : day="토"; break;	
-		}
-		if(count==0) {
-			day="오늘";
-		}else if(count==1) {
-			day="내일";
-		}
-		
-		if(day == "토"){
-			$(".wrap").append("<button class='on sat'type='button' onclick='dateButton1(`"+tym+"`)'month='"+month+"'>"+i+"<br>"+day+"</button>");
-		}else if(day =="일"){			
-			$(".wrap").append("<button class='on holi'  type='button' onclick='dateButton1(`"+tym+"`)'month='"+month+"'>"+i+"<br>"+day+"</button>");
-		}else {
-			$(".wrap").append("<button class='on' type='button' onclick='dateButton1(`"+tym+"`)'month='"+month+"'>"+i+"<br>"+day+"</button>");
-		}
-		count++;
+//극장별 상영시간표 띄우는 함수 
+function opendate1(dayflag, day) {
+	var currentDay;
+	$(".wrap").empty();
+	if(dayflag == 'before') {
+		currentDay = new Date(day);
+		currentDay = new Date(currentDay.setDate(currentDay.getDate() - 1));
+	} else if(dayflag == 'after') {
+		currentDay = new Date(day);
+		currentDay = new Date(currentDay.setDate(currentDay.getDate() + 1));
+	}else {
+		currentDay = new Date(day);
+		currentDay = new Date(currentDay.setDate(currentDay.getDate()));
 	}
-		$(".wrap").append("<button class='btn-next' title='다음 날짜 보기'></button>");
-		$(".btn-next").append("<i class='glyphicon glyphicon-chevron-right'></i");
+	console.log(day);
+	console.log(dayflag);
+	console.log(currentDay);
+	
+	var weekName = ['일', '월', '화', '수', '목', '금', '토'];
+	var theYear = currentDay.getFullYear();
+	var theMonth = currentDay.getMonth();
+	var theDate  = currentDay.getDate();
+	 
+	var thisWeek = [];
+	 
+	for(var i=0; i<13; i++) {
+	  var resultDay = new Date(theYear, theMonth, theDate + i);
+	  var yyyy = resultDay.getFullYear();
+	  var mm = Number(resultDay.getMonth()) + 1;
+	  var dd = resultDay.getDate();
+	 
+	  mm = String(mm).length === 1 ? '0' + mm : mm;
+	  dd = String(dd).length === 1 ? '0' + dd : dd;
+	 
+	  thisWeek[i] = yyyy + '-' + mm + '-' + dd;
+	}
+
+	var day = "";
+	
+	$(".wrap").append("<button onclick='dayBeforeSetting1()' class='btn-pre' title='이전 날짜 보기'></button>");
+	$(".btn-pre").append("<i class='glyphicon glyphicon-chevron-left'></i");
+	for(var j=0; j<thisWeek.length; j++) {
+		if(weekName[new Date(thisWeek[j]).getDay()] == "토"){
+			$(".wrap").append("<button id='tday"+(j+1)+"' class='on sat'type='button' onclick='dateButton1(`"+thisWeek[j]+"`)' value='"+thisWeek[j]+"'>"
+					+ thisWeek[j].substring(5,7)+"/"
+					+ thisWeek[j].substring(8,10)+"·"
+					+ weekName[new Date(thisWeek[j]).getDay()]+"</button>");
+		}else if(weekName[new Date(thisWeek[j]).getDay()] == "일"){			
+			$(".wrap").append("<button id='tday"+(j+1)+"' class='on holi'  type='button' onclick='dateButton1(`"+thisWeek[j]+"`)' value='"+thisWeek[j]+"'>"
+					+ thisWeek[j].substring(5,7)+"/"
+					+ thisWeek[j].substring(8,10)+"·"
+					+ weekName[new Date(thisWeek[j]).getDay()]+"</button>");
+		}else {
+			$(".wrap").append("<button id='tday"+(j+1)+"' class='on' type='button' onclick='dateButton1(`"+thisWeek[j]+"`)' value='"+thisWeek[j]+"'>"
+					+ thisWeek[j].substring(5,7)+"/"
+					+ thisWeek[j].substring(8,10)+"·"
+					+ weekName[new Date(thisWeek[j]).getDay()]+"</button>");
+		}
+	}
+	
+	$(".wrap").append("<button onclick='dayAfterSetting1()' class='btn-next' title='다음 날짜 보기'></button>");
+	$(".btn-next").append("<i class='glyphicon glyphicon-chevron-right'></i");
+}
+
+function dayBeforeSetting1() {
+	today = new Date();
+	today = today.toISOString().slice(0, 10);
+	day = $("#tday1").val();
+	var checked = $(".wrap").find(".bk").prev().val();
+	console.log(checked);
+	if(day == today) {
+		return;
+	} else {
+		opendate1("before", day);
+	}
+	dateButton1(checked);
+}
+
+function dayAfterSetting1() {
+	var day = $("#tday1").val();
+	var checked = $(".wrap").find(".bk").next().val();
+	opendate1("after", day);
+	dateButton1(checked);
+	
+	
+
 }
 //극장별 end
 </script>
@@ -415,8 +605,8 @@ function opendate1() {
 		<div class="timetable-container">
 			<div class="movie-choise-area">
 				<ul>
-					<li><button onclick="movie()" title="영화별 선택" class="btn" ><span>영화별</span></button></li>
-					<li><button onclick="theater()" title="극장별 선택" class="btn" ><span>극장별</span></button></li>
+					<li><button id="list_movie" onclick="movie()" title="영화별 선택" class="btn" ><span>영화별</span></button></li>
+					<li><button id="list_theater" onclick="theater()" title="극장별 선택" class="btn" ><span>극장별</span></button></li>
 				</ul>
 			</div>
 			
@@ -450,14 +640,14 @@ function opendate1() {
 			</div>
 			
 			<div class="btn-group1" role="group" aria-label="...">
-			  <button type="button" class="btn btn-default btn1" onclick="load('서울')">서울</button>
-			  <button type="button" class="btn btn-default btn1" onclick="load('경기')">경기</button>
-			  <button type="button" class="btn btn-default btn1" onclick="load('인천')">인천</button>
-			  <button type="button" class="btn btn-default btn1" onclick="load('대전')">대전/충청/세종</button>
-			  <button type="button" class="btn btn-default btn1" onclick="load('부산')">부산/대구/경상</button>
-			  <button type="button" class="btn btn-default btn1" onclick="load('광주')">광주/전라</button>
-			  <button type="button" class="btn btn-default btn1" onclick="load('강원')">강원</button>
-			  <button type="button" class="btn btn-default btn1" onclick="load('제주')">제주</button>
+			  <button type="button" class="btn btn1" name="서울" onclick="load('서울')">서울</button>
+			  <button type="button" class="btn btn1" name="경기" onclick="load('경기')">경기</button>
+			  <button type="button" class="btn btn1" name="인천" onclick="load('인천')">인천</button>
+			  <button type="button" class="btn btn1" name="대전/충청/세종" onclick="load('대전/충청/세종')">대전/충청/세종</button>
+			  <button type="button" class="btn btn1" name="부산/대구/경상" onclick="load('부산/대구/경상')">부산/대구/경상</button>
+			  <button type="button" class="btn btn1" name="광주/전라" onclick="load('광주/전라')">광주/전라</button>
+			  <button type="button" class="btn btn1" name="강원" onclick="load('강원')">강원</button>
+			  <button type="button" class="btn btn1" name="제주" onclick="load('제주')">제주</button>
 			</div>
 			
 			<div class="theater-list">

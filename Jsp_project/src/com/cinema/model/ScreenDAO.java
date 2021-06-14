@@ -1,6 +1,7 @@
 package com.cinema.model;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -633,6 +634,7 @@ public class ScreenDAO {
 				result += "<cincode>" + rs.getInt("cincode") + "</cincode>";
 				result += "<start_time>" + rs.getInt("start_time") + "</start_time>";
 				result += "<end_time>" + rs.getInt("end_time") + "</end_time>";
+				result += "<start_date>" + rs.getString("start_date") + "</start_date>";
 				result += "<mtype>" + rs.getString("mtype") + "</mtype>";
 				result += "</screen>";
 			}

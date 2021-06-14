@@ -21,12 +21,10 @@ public class MovieContentAction implements Action {
 		
 		MovieDAO dao = MovieDAO.getInstance();
 		ReviewDAO rdao = ReviewDAO.getInstance();
-		//moviecode가 ?인 영화정보를 가져오는 메서드
+		
 		MovieDTO dto = dao.MovieContent(moviecode);
-		List<ReviewDTO> list = rdao.ReviewList(moviecode);
 		
 		request.setAttribute("List", dto);
-		request.setAttribute("reviewList", list);
 		
 		ActionForward forward = new ActionForward();
 		

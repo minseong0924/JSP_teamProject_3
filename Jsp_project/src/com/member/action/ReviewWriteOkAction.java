@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.cinema.controller.Action;
 import com.cinema.controller.ActionForward;
 import com.cinema.model.ReviewDAO;
-import com.member.model.MemberDAO;
 
 public class ReviewWriteOkAction implements Action {
 
@@ -18,13 +17,23 @@ public class ReviewWriteOkAction implements Action {
 		int moviecode = Integer.parseInt(request.getParameter("moviecode"));
 		String title_ko = request.getParameter("title_ko");
 		String id = request.getParameter("id");
+		int point = Integer.parseInt(request.getParameter("point"));
+		System.out.println(cont );
+		System.out.println( moviecode );
+		System.out.println(title_ko );
+		System.out.println(id );
+		System.out.println(point);
 		
 		ReviewDAO dao = ReviewDAO.getInstance();
 		
-		int res = dao.reviewWriteOk(moviecode, title_ko, cont, id);
+		int res = dao.reviewWriteOk(moviecode, title_ko, cont, id, point);
 		
+		ActionForward forward = new ActionForward();
 		
-		return null;
+		forward.setRedirect(false);
+		forward.setPath("view/movieContent.jsp");
+		
+		return forward;
 	}
 
 }
