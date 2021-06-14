@@ -21,13 +21,13 @@ public class ScreenListOpenAction implements Action {
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		
-		String day = request.getParameter("day");
+		String value = request.getParameter("value");
 		String flag = request.getParameter("flag");
 		
-		System.out.println("sOpenAction:"+flag+"/"+day);
+		System.out.println("sOpenAction:"+flag+"/"+value);
 		
 		ScreenDAO sdao = ScreenDAO.getInstance();
-		List<ScreenDTO> slist = sdao.bookingScreenOpen(flag,day);
+		List<ScreenDTO> slist = sdao.bookingScreenOpen(flag,value);
 
 		PrintWriter out = response.getWriter();
 		
