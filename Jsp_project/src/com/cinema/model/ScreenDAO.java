@@ -226,7 +226,10 @@ public class ScreenDAO {
 			openConn();
 			
 			if(flag.equals("dayBase")) {
-				sql = "select * from screen where ? between start_date and end_date";
+				sql = "select * from screen s, movie m " + 
+						"where s.moviecode = m.moviecode " + 
+						"and m.mstate = '상영중' " + 
+						"and ? between start_date and end_date";
 				
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, value);
@@ -262,7 +265,10 @@ public class ScreenDAO {
 					start_date = rs.getString("start_date");
 				}
 				
-				sql = "select * from screen where ? between start_date and end_date";
+				sql = "select * from screen s, movie m " + 
+						"where s.moviecode = m.moviecode " + 
+						"and m.mstate = '상영중' " +
+						"and ? between start_date and end_date";
 				
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, start_date);

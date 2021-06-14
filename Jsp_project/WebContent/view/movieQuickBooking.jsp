@@ -107,7 +107,7 @@
 	function movieSelct(moviecode){
 		var thisday = new Date();
 		thisday = thisday.toISOString().slice(0, 10);
-		var movieExist = "없음";
+		var movieExist = false;
 		console.log("movie:"+moviecode);
 		console.log("thisday:"+thisday);
 		// 선택한 표시
@@ -117,6 +117,7 @@
 			type:"post",
 			url: "/Jsp_project/screenListOpen.do",
 			dataType: "json",
+			async: false,
 			data: {
 					"flag" : "dayBase",
 				    "value" : thisday
@@ -125,7 +126,8 @@
 				var screenlist = data.slist;
 				for(var i=0; i<screenlist.length; i++) {
 					if(moviecode == screenlist[i].moviecode) {
-						movieExist = "있음";
+						// 선택한 영화가 상영 정보에 있는 영화일 경우 true를 반환
+						movieExist = true;
 						break;
 					}
 				}
@@ -137,12 +139,14 @@
 		
 		console.log("movieExist:"+movieExist);
 		
-		if(movieExist == "있음") {
+		if(!movieExist) {
+			// 선택한 영화가 상영 정보에 없는 영화인 경우 : 제일 빠른 상영일로 셋팅
 			if(confirm("해당 일자에 상영 시간표가 없습니다.\n선택하신 영화의 가장 빠른 예매일로 변경하시겠습니까?")){
 				$.ajax({
 					type:"post",
 					url: "/Jsp_project/screenListOpen.do",
 					dataType: "json",
+					async: false,
 					data: {
 							"flag" : "movieBase",
 						    "value" : moviecode
@@ -213,6 +217,7 @@
 					}
 				});
 			} else {
+				// 선택한 영화가 상영 정보에 있는 영화인 경우 : 오늘 날짜를 기준으로 상영정보 가져오기
 				
 			}
 		}
@@ -313,8 +318,8 @@
 				</td>
 			</tr>
 			<tr>
-				<td style="height:250px;" id="select_movie">선택한 영화</td>
-				<td style="height:250px;" id="select_cinema" colspan="2">선택한 극장</td>
+				<td style="height:250px;" id="select_movie_under">선택한 영화</td>
+				<td style="height:250px;" id="select_cinema_under" colspan="2">선택한 극장</td>
 			</tr>
 		</table>
 	</div>

@@ -22,7 +22,7 @@ public class MovieQBookingAction implements Action {
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		MovieDAO mdao = MovieDAO.getInstance();
-		List<MovieDTO> mlist = mdao.movieOpen();
+		List<MovieDTO> mlist = mdao.NowmovieList();
 		request.setAttribute("movielist", mlist);
 		
 		CinemaDAO cdao = CinemaDAO.getInstance();
