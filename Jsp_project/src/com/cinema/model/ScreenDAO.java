@@ -220,33 +220,35 @@ public class ScreenDAO {
 		
 	}
 	
-	public List<ScreenDTO> bookingScreenOpen(String flag, String value) {
+	public List<ScreenDTO> bookingScreenOpen(String flag, String value, int code) {
 		List<ScreenDTO> list = new ArrayList<>();
 		
 		try {
 			openConn();
 			
 			if(flag.equals("dayBase")) {
-				sql = "select * from screen where ? between start_date and end_date";
+				sql = "select s.*, m.*, c.localcode from screen s, movie m, cinema c " + 
+						"where s.moviecode = m.moviecode " + 
+						"and s.cinemacode = c.cinemacode " +
+						"and m.mstate = '상영중' " + 
+						"and ? between start_date and end_date";
 				
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, value);
 				rs = pstmt.executeQuery();
 				
-				while(rs.next()) {
-					ScreenDTO dto = new ScreenDTO();
-					dto.setScreencode(rs.getInt("screencode"));
-					dto.setMoviecode(rs.getInt("moviecode"));
-					dto.setCinemacode(rs.getInt("cinemacode"));
-					dto.setCincode(rs.getInt("cincode"));
-					dto.setStart_time(rs.getInt("start_time"));
-					dto.setEnd_time(rs.getInt("end_time"));
-					dto.setStart_date(rs.getString("start_date").substring(0, 10));
-					dto.setEnd_date(rs.getString("end_date").substring(0, 10));
-					dto.setCinemaname(rs.getString("cinemaname"));
-					
-					list.add(dto);
-				}
+			} else if(flag.equals("dayBase_re")) {
+				sql = "select s.*, m.*, c.localcode from screen s, movie m, cinema c " + 
+						"where s.moviecode = m.moviecode " + 
+						"and s.cinemacode = c.cinemacode " +
+						"and m.mstate = '상영중' " + 
+						"and ? between start_date and end_date " +
+						"and s.moviecode = ?";
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, value);
+				pstmt.setInt(2, code);
+				rs = pstmt.executeQuery();
 				
 			} else if(flag.equals("movieBase")) {
 				sql = "select TO_CHAR(min(start_date), 'YYYY-MM-DD') "
@@ -263,29 +265,81 @@ public class ScreenDAO {
 					start_date = rs.getString("start_date");
 				}
 				
-				sql = "select * from screen where ? between start_date and end_date";
+				sql = "select s.*, m.*, c.localcode from screen s, movie m, cinema c " + 
+						"where s.moviecode = m.moviecode " +
+						"and s.cinemacode = c.cinemacode " +
+						"and m.mstate = '상영중' " +
+						"and start_date >= ?"+
+						"and s.moviecode = ?";
 				
 				pstmt = con.prepareStatement(sql);
 				pstmt.setString(1, start_date);
+				pstmt.setString(2, value);
+				rs = pstmt.executeQuery();
+
+			} else if(flag.equals("cinemaBase")) {
+				
+				String[] value_arr = value.split(":");
+				
+				if(value_arr.length == 1) {
+					sql = "select s.*, m.*, c.localcode from screen s, movie m, cinema c " + 
+							"where s.moviecode = m.moviecode " + 
+							"and s.cinemacode = c.cinemacode " +
+							"and m.mstate = '상영중' " + 
+							"and ? between start_date and end_date " +
+							"and s.cinemacode = ?";
+					
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, value_arr[0]);
+					pstmt.setInt(2, code);
+				} else {
+					sql = "select s.*, m.*, c.localcode from screen s, movie m, cinema c " + 
+							"where s.moviecode = m.moviecode " + 
+							"and s.cinemacode = c.cinemacode " +
+							"and m.mstate = '상영중' " + 
+							"and ? between start_date and end_date " +
+							"and s.cinemacode = ? " +
+							"and s.moviecode = ? ";
+					
+					pstmt = con.prepareStatement(sql);
+					pstmt.setString(1, value_arr[0]);
+					pstmt.setInt(2, code);
+					pstmt.setString(3, value_arr[1]);
+				}
 				rs = pstmt.executeQuery();
 				
-				while(rs.next()) {
-					ScreenDTO dto = new ScreenDTO();
-					dto.setScreencode(rs.getInt("screencode"));
-					dto.setMoviecode(rs.getInt("moviecode"));
-					dto.setCinemacode(rs.getInt("cinemacode"));
-					dto.setCincode(rs.getInt("cincode"));
-					dto.setStart_time(rs.getInt("start_time"));
-					dto.setEnd_time(rs.getInt("end_time"));
-					dto.setStart_date(rs.getString("start_date").substring(0, 10));
-					dto.setEnd_date(rs.getString("end_date").substring(0, 10));
-					dto.setCinemaname(rs.getString("cinemaname"));
-					
-					list.add(dto);
-				}
+			} else if(flag.equals("movieBase_re")) {
+				sql = "select s.*, m.*, c.localcode from screen s, movie m, cinema c " + 
+						"where s.moviecode = m.moviecode " + 
+						"and s.cinemacode = c.cinemacode " +
+						"and m.mstate = '상영중' " + 
+						"and ? between start_date and end_date " +
+						"and s.moviecode = ?";
+				
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, value);
+				pstmt.setInt(2, code);
+				rs = pstmt.executeQuery();
 			}
 			
-			
+			while(rs.next()) {
+				ScreenDTO dto = new ScreenDTO();
+				dto.setScreencode(rs.getInt("screencode"));
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCincode(rs.getInt("cincode"));
+				dto.setStart_time(rs.getInt("start_time"));
+				dto.setEnd_time(rs.getInt("end_time"));
+				dto.setStart_date(rs.getString("start_date").substring(0, 10));
+				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
+				dto.setCinemaname(rs.getString("cinemaname"));
+				dto.setPoster(rs.getString("poster"));
+				dto.setMoviename(rs.getString("title_ko"));
+				dto.setMtype(rs.getString("mtype"));
+				dto.setLocalcode(rs.getString("localcode"));
+				
+				list.add(dto);
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
