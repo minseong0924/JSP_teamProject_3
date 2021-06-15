@@ -207,7 +207,9 @@
 						} else {
 							daySetting("movie", today);
 						}
-
+						
+						$("#day1").addClass('active');
+						
 						// 선택 영화 포스터, 영화 제목 하단에 추가
 						var addHtml = "<img src='upload/"+movie_poster+"' alt='이미지가없습니다' width='60' height='90'>";
 						addHtml += "<font color='blue'> "+movie_name+"</font>";
@@ -519,6 +521,11 @@
 					
 					var end_time = slist[i].end_time;
 					
+					// 0시 이후
+					if(end_time >= 1440) {
+						end_time = end_time - 1440;
+					}
+					
 					if(Math.floor(end_time % 60) < 10) {
 						end_time = Math.floor(end_time / 60) + ":0" + Math.floor(end_time % 60);
 					} else {
@@ -565,7 +572,7 @@
 	}
 	
 	function booking(screencode) {
-		alert("예매하기! "+screencode);
+		location.href="<%=request.getContextPath()%>/movieBookingReady.do?screencode="+screencode;
 	}
 	
 	$(document).ready(function() {
@@ -634,7 +641,7 @@
 				</td>
 				<td style="width:500px;" rowspan="2"><span class="booking_title">시간</span>
 					<div class="booking_list panel panel-default">
-					  <div id="screen_div" class="list-group" style="height:400px;">
+					  <div id="screen_div" class="list-group" style="height:400px; overFlow : auto;">
 					    	영화와 극장을 선택하시면 상영시간표를 비교하여 볼 수 있습니다.
 					  </div>
 					</div>
