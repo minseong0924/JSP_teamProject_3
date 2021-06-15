@@ -20,7 +20,6 @@ public class MovieContentAction implements Action {
 		int moviecode = Integer.parseInt(request.getParameter("moviecode"));
 		
 		MovieDAO dao = MovieDAO.getInstance();
-		ReviewDAO rdao = ReviewDAO.getInstance();
 		
 		MovieDTO dto = dao.MovieContent(moviecode);
 		

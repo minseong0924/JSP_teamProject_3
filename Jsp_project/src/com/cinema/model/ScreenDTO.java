@@ -14,7 +14,14 @@ public class ScreenDTO {
 	private String mtype;
 	private String poster;
 	private String localcode;
+	private String localname;
 	
+	public String getLocalname() {
+		return localname;
+	}
+	public void setLocalname(String localname) {
+		this.localname = localname;
+	}
 	public String getLocalcode() {
 		return localcode;
 	}

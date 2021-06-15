@@ -153,4 +153,30 @@ public class ReviewDAO {
 		}
 		return list;
 	}
+	
+	public int ReviewIdCheck(String id, String title_ko) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "select * from review where title_ko = ? and id = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title_ko);
+			pstmt.setString(2, id);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = 1;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }

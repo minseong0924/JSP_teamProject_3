@@ -7,9 +7,10 @@
 <meta charset="UTF-8">
 <title>영화 상세정보</title>
 <link href="./css/style.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <script>
 $(document).ready(function(){
-	
+	loadReview();
 });
 function loadReview() {
 	
@@ -21,10 +22,14 @@ function loadReview() {
 		success: function(data) {
 			var Rlist = data.list;
 			
-			for(var i=0; i<Rlist.length; i++) {
-				
-			}
 			
+			for(var i=0; i<Rlist.length; i++) {
+				$(".review").append("<div class='review-list' name='review-list"+i+"'>");
+				$("div[name=review-list"+i+"]").append("<div class='review_id'><span>"+Rlist[i].id+"</span></div>");
+				$("div[name=review-list"+i+"]").append("<div class='review_point'><span>"+Rlist[i].point+"점</span></div>");
+				$("div[name=review-list"+i+"]").append("<div class='review_text'><span>"+Rlist[i].content+"</span></div>");
+				$(".review").append("</div>");		
+			}
 			
 		},
 		error: function(request,status,error){
@@ -33,6 +38,33 @@ function loadReview() {
 	});
 }
 
+function loginCheck(id) {
+	if(id == null) {
+		alert('로그인을 하셔야 리뷰를 작성할 수 있습니다.');
+	}else {
+		return;
+	}
+}
+
+function check(id) {
+	$.ajax({
+		type:"post",
+		url: "/Jsp_project/ReviewIdCheck.do",
+		dataType: "json",
+		data: {"title_ko" : $(".movie-title").text(),
+			"id": id},
+		success: function(data) {
+			
+			if(data == 1) {
+				alert('')
+			}
+			
+		},
+		error: function(request,status,error){
+	       alert("error!!!");
+		}
+	});
+}
 </script>
 
 </head>
@@ -48,10 +80,10 @@ function loadReview() {
 		<div class="movie-detail-cont">
 			<br><br>
 			<c:if test="${dto.getMstate() == '상영중' }">
-			<p class="d-day">1</p>
+			<p class="d-day">상영중</p>
 			</c:if>
 			<c:if test="${dto.getMstate() == '개봉 예정' }">
-			<p class="d-day">2</p>
+			<p class="d-day">${dto.getOpendate() } 개봉</p>
 			</c:if>
 			<br><br>
 			<p class="movie-title">${dto.getTitle_ko() }</p>
@@ -98,49 +130,33 @@ function loadReview() {
 			<div class="memberName">
 				<span>box</span>
 			</div>
-			<form method="post" action="<%=request.getContextPath() %>/reviewWriteOk.do">
-				<div class="review-write">
+			<form method="post" action="<%=request.getContextPath() %>/reviewWriteOk.do"
+					onsubmit="check(${memSession.id})">
+				<div class="review_write" onclick="loginCheck(${memSession.id})">
 					<input type="hidden" name="moviecode" value="${dto.getMoviecode() }">
 					<input type="hidden" name="title_ko" value="${dto.getTitle_ko() }">
 					<input type="hidden" name="id" value="${memSession.id}">
-					<div class="review-point">
-						<select name="point" required>
+					<div class="review_write_point">
+						<select class="point_area" name="point" required>
 									<option value="" selected disabled>:::평점:::</option>
-							<% for(int i=0; i<11; i++) { %>
-									<option value="<%=i%>"><%=i %></option>
+							<% for(int i=1; i<11; i++) { %>
+									<option value="<%=i%>"><%=i %>점</option>
 							<%} %>
 						</select>
 					</div>
-					<div class="review-text">
+					<div class="review_write_text">
 						<textarea rows="7" cols="10" name="review-text" 
 							placeholder="${dto.getTitle_ko() }재미있게 보셨나요? 영화의 어떤점이 좋았는지 평가해주세요"
 							required></textarea>
 					</div>
-					<div class="write-review">
+					<div class="review_write_button">
 						<input type="submit" value="관람평 쓰기">
 					</div>
 				</div>
 			</form>
-			
-			<div class="review-list">
-				<div class="id">
-					<span>id</span>
-				</div>
-				<div class="point">
-					<span>5점</span>
-				</div>
-				<div class="text">
-					<span>text</span>
-				</div>
-			</div>
-			
 		</div>
 	</div>
 	
-	
-	
-	
-
 	<jsp:include page="../include/mfooter.jsp" />
 </body>
 </html>

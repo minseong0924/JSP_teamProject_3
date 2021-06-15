@@ -668,7 +668,7 @@ public class ScreenDAO {
 					"where s.moviecode = m.moviecode\n" + 
 					"and s.cinemacode in(select cinemacode from cinema where localcode = ?)\n" + 
 					"and s.moviecode = ?\n" + 
-					"and start_date = TO_DATE(?, 'YYYY-MM-DD') order by s.cinemacode, s.cincode";
+					"and start_date = TO_DATE(?, 'YYYY-MM-DD') order by s.cinemacode, s.cincode, s.start_time";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, localcode);
@@ -747,4 +747,98 @@ public class ScreenDAO {
 		}
 		return list;
 	} 
+	
+	public List<ScreenDTO> TableScreenList(String title_ko) {
+		List<ScreenDTO> list = new ArrayList<>();
+		int moviecode = 0;
+		try {
+			openConn();
+			
+			sql = "select moviecode from movie where title_ko=?";
+			
+			pstmt=con.prepareStatement(sql);
+			pstmt.setString(1, title_ko);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				moviecode = rs.getInt(1);
+			}
+			
+			sql = "select s.*, localname \n" + 
+					"from screen s, local l\n" + 
+					"where localcode in(select localcode from screen s, cinema c where s.cinemacode = c.cinemacode)\n" + 
+					"and moviecode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, moviecode);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScreenDTO dto = new ScreenDTO();
+				
+				dto.setScreencode(rs.getInt("screencode"));
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCinemaname(rs.getString("cinemaname"));
+				dto.setCincode(rs.getInt("cincode"));
+				dto.setStart_time(rs.getInt("start_time"));
+				dto.setEnd_time(rs.getInt("end_time"));
+				dto.setStart_date(rs.getString("start_date").substring(0, 10));
+				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
+				dto.setLocalname(rs.getString("localname"));
+				
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return list;
+	}
+	
+	public List<ScreenDTO> TableScreenList1(String title_ko2) {
+		List<ScreenDTO> list = new ArrayList<>();
+		try {
+			openConn();
+			
+			sql = "select s.*, localname \n" + 
+					"from screen s, local l\n" + 
+					"where localcode in(select localcode from screen s, cinema c where s.cinemacode = c.cinemacode)\n" + 
+					"and cinemaname = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, title_ko2);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				ScreenDTO dto = new ScreenDTO();
+				
+				dto.setScreencode(rs.getInt("screencode"));
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setCinemacode(rs.getInt("cinemacode"));
+				dto.setCinemaname(rs.getString("cinemaname"));
+				dto.setCincode(rs.getInt("cincode"));
+				dto.setStart_time(rs.getInt("start_time"));
+				dto.setEnd_time(rs.getInt("end_time"));
+				dto.setStart_date(rs.getString("start_date").substring(0, 10));
+				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
+				dto.setLocalname(rs.getString("localname"));
+				
+				list.add(dto);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return list;
+	}
 }

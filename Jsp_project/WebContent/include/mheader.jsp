@@ -74,7 +74,7 @@
 					</li>
 					
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="timeTable.do" data-toggle="dropdown">상영시간표 </a> 
+						<a class="nav-link dropdown-toggle" href="<%=request.getContextPath() %>/timeTable.do">상영시간표 </a> 
 					</li>
 					
 					

@@ -11,6 +11,8 @@
 <meta charset="UTF-8">
 <title>영화 차트</title>
 <link href="./css/style.css" rel="stylesheet" type="text/css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
@@ -35,14 +37,13 @@
 				<c:forEach begin="<%=(i*4) %>" end="<%=(i*4)+3 %>" step="1" items="${list }" var="dto">
 					<td>
 					<div class="movie-list-info">
-							<div class="movie-list">
+							<div id="${dto.getTitle_ko() }" class="movie-list">
 							<img src="upload/${dto.getPoster() }" alt="이미지가없습니다"
 								width="200" height="300">
 							</div>
-							<div class="summary">
+							<div class="summary ${dto.getTitle_ko() }">
 								<a href="movieContent.do?moviecode=${dto.getMoviecode() }" style="opacity:1;">
-								${dto.getSummary() }asdasdasdasdasdasdㅁㄴㅇㅈ머룽랴ㅜㄴ혀ㅑㅠ갼여휴겨ㅑ유향륳ㅇ러ㅏ휴아러
-								</a>
+								${dto.getSummary() }</a>
 							</div>
 					</div>
 					
@@ -69,4 +70,31 @@
 	</div>
 	<jsp:include page="../include/mfooter.jsp" />
 </body>
+<script>
+$(document).ready(function() {
+	$(".summary").hide();
+});
+$(".movie-list").hover(function(){
+	var id = $(this).attr("id");
+	$("."+id).show();
+	$(this).css('opacity','0.1');
+});
+$("td").mouseenter(function() {
+	$(".summary").hide();
+	$(".movie-list").css('opacity','1');
+});
+
+
+/* $(".movie-list").mouseenter(function(){
+	var id = $(this).attr("id");
+	$("."+id).show();
+	$(this).css('opacity','0.1');
+	
+})
+.mouseleave(function() {
+	$(".summary").hide();
+	$(this).css('opacity','1');
+}); */
+
+</script>
 </html>

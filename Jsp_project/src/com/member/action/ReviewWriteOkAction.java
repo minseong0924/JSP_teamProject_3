@@ -18,11 +18,6 @@ public class ReviewWriteOkAction implements Action {
 		String title_ko = request.getParameter("title_ko");
 		String id = request.getParameter("id");
 		int point = Integer.parseInt(request.getParameter("point"));
-		System.out.println(cont );
-		System.out.println( moviecode );
-		System.out.println(title_ko );
-		System.out.println(id );
-		System.out.println(point);
 		
 		ReviewDAO dao = ReviewDAO.getInstance();
 		
@@ -30,8 +25,8 @@ public class ReviewWriteOkAction implements Action {
 		
 		ActionForward forward = new ActionForward();
 		
-		forward.setRedirect(false);
-		forward.setPath("view/movieContent.jsp");
+		forward.setRedirect(true);
+		forward.setPath("movieContent.do?moviecode="+moviecode);
 		
 		return forward;
 	}

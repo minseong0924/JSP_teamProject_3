@@ -50,13 +50,14 @@ function movie() {
 						+list[i].title_ko+"</button></li>");
 			}
 			$("#title_ko").text(list[0].title_ko);
-			dateButton('서울', tym);
+			/* dateButton(tym); */
+			dateButton($(".wrap").find(".bk").val());	
 			opendate(0,new Date());
 			$("#list_theater").attr("class" ,"btn");
 			$("#list_movie").attr("class" ,"btn bk");
 			$(".movie-choise1").find("button").first().attr("class" ,"btn bk");
 			$("#day1").attr("class" ,"on bk");
-			
+			$("#img").attr("src", "/Jsp_project/upload/"+list[0].poster);
 		},
 		error:function(request, status, error){
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -176,14 +177,78 @@ function movieNameB(moviecode) {
 		},
 	});
 }
+//영화별에서 상영정보가 없는 버튼을 비활성화 하는 함수 
+function dateButtonDisabled() {
+	$.ajax({
+		type: "post",		
+		dataType : "json",	
+		url : "/Jsp_project/TableScreenList.do",	
+		data: {"title_ko": $("#title_ko").text()},	
+		success: function(data) {	
+			$(".wrap").find(".on").attr("disabled", true);
+			$(".btn1").attr("disabled", true)
+			 var slist = data.slist;
+			 var today = new Date();
+			 
+			 if(slist != null) {
+				 for(var i=0; i<slist.length; i++) {
+						console.log("slist[i].localname >>>" +slist[i].localname);
+						var starttime = slist[i].start_time;
+						if(Math.floor(starttime % 60) < 10) {
+								srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
+							} else {
+								srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
+							}
+								var moviedate = new Date(slist[i].start_date);
+								var mYear = moviedate.getFullYear();
+								var mMonth = moviedate.getMonth() + 1;
+								var mMonth1 = moviedate.getMonth();
+								var mDate = moviedate.getDate();
+								var moviedate1 = new Date(mYear, mMonth1, mDate+1);
+								mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
+								mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
+								
+								
+						if(moviedate1.toISOString().slice(0, 10) == today.toISOString().slice(0, 10)){
+							if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())) {
+								var ymd = mYear + '-' + mMonth + '-' + mDate;
+								$("button[value="+ymd+"]").attr("disabled", false);
+								$("button[name="+slist[i].localname+"]").attr("disabled", false);
+							}
+						}else {
+							var ymd = mYear + '-' + mMonth + '-' + mDate;
+							$("button[value="+ymd+"]").attr("disabled", false);
+							$("button[name="+slist[i].localname+"]").attr("disabled", false);
+						}
+						
+					 }
+						if($(".wrap").find(".bk").attr("disabled")=='disabled') {
+								var moviedate = new Date(slist[0].start_date);
+								var mYear = moviedate.getFullYear();
+								var mMonth = moviedate.getMonth() + 1;
+								var mMonth1 = moviedate.getMonth();
+								var mDate = moviedate.getDate();
+								var moviedate1 = new Date(mYear, mMonth1, mDate+1);
+								mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
+								mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
+								$(".wrap").find(".bk").attr("class", "on");
+								$("button[value="+ymd+"]").attr("class", "on bk");
+						} 
+			}
+		},
+		error:function(request, status, error){
+			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		},
+	});
 
+}
 //영화별에서 날짜 버튼을 눌렀을 때 이벤트	
 function dateButton(date) {
 		$(".wrap").find(".bk").attr("class", "on");
 		$("button[value='"+date+"']").attr("class", "on bk");
-		
-		date_data = date;
-		load('서울',date_data);
+	
+		console.log(date);
+		load('서울',date);
 }
 
 //영화별에서 아래 서울 ~제주 버튼을 눌렀을 때 이벤트
@@ -201,18 +266,19 @@ function load(location, date_data) {
 			var pre = "";
 			var cincode = 0;
 			var srt_time = "";
-			var starttime = 0;
-				console.log(date_data);
+			var starttime = 0;				
+			
 			//극장 뿌리기
 			dat.each(function(){
-				
 				var moviedate = new Date($("start_date",this).text());
 				var nowdate = new Date();
 				var mYear = moviedate.getFullYear();
 				var mMonth = moviedate.getMonth();
+				var mMonth1 = moviedate.getMonth() + 1;
 				var mDate = moviedate.getDate();
 				var moviedate1 = new Date(mYear, mMonth, mDate+1);
-
+			
+				
 				if(moviedate1.toISOString().slice(0, 10) == nowdate.toISOString().slice(0, 10)) {
 					today = new Date();
 					starttime = $("start_time", this).text();
@@ -269,7 +335,7 @@ function load(location, date_data) {
 			});
 				$(".btn-group1").find(".bk").attr("class","btn btn1");
 				$("button[name='"+location+"']").attr("class", "btn btn1 bk");
-			
+				dateButtonDisabled();
 		},
 		error:function(request, status, error){
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -356,6 +422,70 @@ function local_button(local) {
 	});
 }
 
+//영화별에서 상영정보가 없는 버튼을 비활성화 하는 함수 
+function dateButtonDisabled1() {
+	$.ajax({
+		type: "post",		
+		dataType : "json",	
+		url : "/Jsp_project/TableScreenList1.do",	
+		data: {"title_ko2": $("#title_ko2").text()},	
+		success: function(data) {	
+			$(".wrap").find(".on").attr("disabled", true);
+			//$(".local").find(".btn").attr("disabled", true);
+			 var slist = data.slist;
+			 var today = new Date();
+			 if(slist != null) {
+				 for(var i=0; i<slist.length; i++) {
+						var starttime = slist[i].start_time;
+						if(Math.floor(starttime % 60) < 10) {
+								srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
+							} else {
+								srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
+							}
+								var moviedate = new Date(slist[i].start_date);
+								var mYear = moviedate.getFullYear();
+								var mMonth = moviedate.getMonth() + 1;
+								var mMonth1 = moviedate.getMonth();
+								var mDate = moviedate.getDate();
+								var moviedate1 = new Date(mYear, mMonth1, mDate+1);
+								mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
+								mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
+							
+						if(moviedate1.toISOString().slice(0, 10) == today.toISOString().slice(0, 10)){
+							if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())) {
+								var ymd = mYear + '-' + mMonth + '-' + mDate;
+								$("button[value="+ymd+"]").attr("disabled", false);
+								//$("#"+slist[i].localname).attr("disabled", false);
+								console.log(ymd);
+							}
+						}else {
+							var ymd = mYear + '-' + mMonth + '-' + mDate;
+							$("button[value="+ymd+"]").attr("disabled", false);
+							//$("#"+slist[i].localname).attr("disabled", false);
+								console.log(ymd);
+						}
+						
+					 }
+				 if($(".wrap").find(".bk").attr("disabled")=='disabled') {
+						var moviedate = new Date(slist[0].start_date);
+						var mYear = moviedate.getFullYear();
+						var mMonth = moviedate.getMonth() + 1;
+						var mMonth1 = moviedate.getMonth();
+						var mDate = moviedate.getDate();
+						var moviedate1 = new Date(mYear, mMonth1, mDate+1);
+						mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
+						mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
+						$(".wrap").find(".bk").attr("class", "on");
+						$("button[value="+ymd+"]").attr("class", "on bk");
+				} 
+			}
+		},
+		error:function(request, status, error){
+			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		},
+	});
+
+}
 // 극장명을 눌렀을 때 정보를 가져오는 함수
 function changecinema(cinemaname) {
 	$.ajax({
@@ -413,7 +543,7 @@ function load1(cinemaname, chandate) {
 			var pre = "";
 			var cincode = 0;
 			var moviedate = "";
-			if(slist[0].start_date != null) {
+			if(slist != null) {
 				moviedate = new Date(slist[0].start_date);
 			}else {
 				moviedate = new Date();
@@ -424,7 +554,7 @@ function load1(cinemaname, chandate) {
 			var mMonth = moviedate.getMonth();
 			var mDate = moviedate.getDate();
 			var moviedate1 = new Date(mYear, mMonth, mDate+1);
-	
+			
 			if(moviedate1.toISOString().slice(0, 10) == nowdate.toISOString().slice(0, 10))	{
 				//영화명 뿌리기
 				for(var i=0; i<slist.length; i++) {
@@ -502,6 +632,7 @@ function load1(cinemaname, chandate) {
 							pre = slist[i].moviename;
 				}
 			}
+			dateButtonDisabled1();
 		},
 		
 		error:function(request, status, error){
@@ -623,7 +754,6 @@ function dayAfterSetting1() {
 				</div>
 			</div>	
 			
-
 			<div class="movieposter">
 				<img id="img" src="<%=request.getContextPath() %>/upload/${list[0].getPoster() }" height="300px" >
 			</div>
@@ -640,14 +770,14 @@ function dayAfterSetting1() {
 			</div>
 			
 			<div class="btn-group1" role="group" aria-label="...">
-			  <button type="button" class="btn btn1" name="서울" onclick="load('서울')">서울</button>
-			  <button type="button" class="btn btn1" name="경기" onclick="load('경기')">경기</button>
-			  <button type="button" class="btn btn1" name="인천" onclick="load('인천')">인천</button>
-			  <button type="button" class="btn btn1" name="대전/충청/세종" onclick="load('대전/충청/세종')">대전/충청/세종</button>
-			  <button type="button" class="btn btn1" name="부산/대구/경상" onclick="load('부산/대구/경상')">부산/대구/경상</button>
-			  <button type="button" class="btn btn1" name="광주/전라" onclick="load('광주/전라')">광주/전라</button>
-			  <button type="button" class="btn btn1" name="강원" onclick="load('강원')">강원</button>
-			  <button type="button" class="btn btn1" name="제주" onclick="load('제주')">제주</button>
+			  <button type="button" class="btn btn1" name="서울" onclick="load('서울',0)">서울</button>
+			  <button type="button" class="btn btn1" name="경기" onclick="load('경기',0)">경기</button>
+			  <button type="button" class="btn btn1" name="인천" onclick="load('인천',0)">인천</button>
+			  <button type="button" class="btn btn1" name="대전/충청/세종" onclick="load('대전/충청/세종',0)">대전/충청/세종</button>
+			  <button type="button" class="btn btn1" name="부산/대구/경상" onclick="load('부산/대구/경상',0)">부산/대구/경상</button>
+			  <button type="button" class="btn btn1" name="광주/전라" onclick="load('광주/전라',0)">광주/전라</button>
+			  <button type="button" class="btn btn1" name="강원" onclick="load('강원',0)">강원</button>
+			  <button type="button" class="btn btn1" name="제주" onclick="load('제주',0)">제주</button>
 			</div>
 			
 			<div class="theater-list">

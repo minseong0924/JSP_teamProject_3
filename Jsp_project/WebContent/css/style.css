@@ -62,7 +62,7 @@ a.menu:after, .dropdown-toggle:after {
     left: 0;
     z-index: 1;
 }
-    
+
 .modal_close{
     width: 26px;
     height: 26px;
@@ -70,7 +70,7 @@ a.menu:after, .dropdown-toggle:after {
     top: -30px;
     right: 0;
 }
-    
+
 .modal_close> a{
     display: block;
     width: 100%;
@@ -138,7 +138,6 @@ input[type=date]::-webkit-calendar-picker-indicator {
 	margin:0 0 0 350px;
 	opacity: 0.3;
 }
-
 .movie-detail-cont {
 	position : absolute;
 	width : 1100px;
@@ -147,11 +146,13 @@ input[type=date]::-webkit-calendar-picker-indicator {
 }
 
 .d-day {
-	background-color : #432e75;	
-	height: 22px;
-	width: 50px;
+	color : white;	
+	height: 30px;
+	width: 300px;
 	text-align:cetner;
+	font-size:2em;
 }
+
 .movie-title {
 	font-size: 3.0666em;
 }
@@ -226,16 +227,16 @@ input[type=date]::-webkit-calendar-picker-indicator {
     text-align: center;
     line-height: 80px;
 }
-.review-text{
+.review_write_text{
 	float:left;
 }
-.review-point{
+.review_write_point{
 	padding-top:25px;
 	padding-right: 20px;
 	float:left;	
 	clear:both;
 }
-.review-text textarea{
+.review_write_text textarea{
 	width:800px;
 	height:80px;
 }
@@ -251,7 +252,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
     line-height: 80px;
     bottom:0px;
 }
-.write-review{
+.review_write_button{
 	float:left;
 	display:block;
 	padding: 25px 0 0 10px;
@@ -290,23 +291,23 @@ input[type=date]::-webkit-calendar-picker-indicator {
     margin-top: -25px;
     background-color: rgba(0,0,0,.1);
 }
-.review-write{
+.review_write{
 	overflow:auto;
 }
 .review-list {
-	border:1px solid black;
+	height:80px;
 	padding-top:20px;
 	overflow:auto;
 }
-.id {
+.review_id {
 	clear:both;
 	float:left;
 }
-.point {
+.review_point {
 	padding-left:50px;
 	float:left;
 }
-.text{
+.review_text{
 	float:left;
 	padding-left:80px;
 }
@@ -502,6 +503,10 @@ movie-choise1 {
 
 .bk {
 	background-color:gray;
+}
+
+.timetable button:disabled {
+  background: #ccc;
 }
 /* 상영시간표 페이지 end */
 /* 관리 페이지 	*/
