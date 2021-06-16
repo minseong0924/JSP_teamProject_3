@@ -16,6 +16,12 @@
 	
 	// 인원 선택 (4명까지)
 	function selectPerson(btn) {
+		// 커버 삭제 / 선택한 좌석 초기화
+		$("#seat_cover_div").hide();
+		$("#seat_arr_div").children("button").removeClass("selected_seat");
+		$("#seat_arr_div").children("button").css("background-color","");
+		$("#seat_select_span").html("좌석번호");
+		
 		// 누른 버튼의 클래스 값
 		var btn_class = $("#"+btn.id).attr("class").split(" ");
 		
@@ -73,78 +79,29 @@
 			}
 		}
 		
-		/*
-		// 고른 값이 0이면 다른 버튼 disable 전부 풀기
-		if($("#junior_gr").children().hasClass("selected_person")
-								&& (btn_class[0] == "adult_btn")) {
-			
-			$("#adult_gr").children().css('background-color','');
-			
-		} 
-		else if($("#adult_gr").children().hasClass("selected_person")
-									&& (btn_class[0] == "junior_btn")) {
-						
-			$("#junior_gr").children().css('background-color','');
-			
-		} else {
-			if(btn_class[0] == "adult_btn") {
-				if(btn.value == 0) {
-					$("#junior_gr").children().attr('disabled', false);
-				} else {
-					
-				}
-				$("#adult_gr").children().removeClass("selected_person");
-				$("#adult_gr").children().css('background-color','');
-			} else {
-				if(btn.value == 0) {
-					$("#adult_gr").children().attr('disabled', false);
-				} else {
-					
-				}
-				$("#junior_gr").children().removeClass("selected_person");
-				$("#junior_gr").children().css('background-color','');
-			}
-			// 고른 인원수 만큼 다른 유형의 버튼 disabled
-			for(var i=4; i>(4-btn.value); i--) {
-				if(btn_class[0] == "adult_btn") {
-					$("#junior"+i).attr('disabled',true);
-				} else {
-					$("#adult"+i).attr('disabled',true);
-				}
-			}
+		// 총인원 셋팅
+		var adultsel = 0;
+		
+		if($("#adult_gr").children(".selected_person").val() != null) {
+			adultsel = $("#adult_gr").children(".selected_person").val();
 		}
 		
-		*/
+		var juniorsel = 0;
 		
-		/*
-		var adultsel = Number($("#adult").val());
-		var juniorsel = Number($("#junior").val());
-		var seniorsel = Number($("#senior").val());
-		var total_person = adultsel + juniorsel + seniorsel;
-		select_person = total_person;
-
-		console.log(inputbox);
-		
-		if((total_person) > 4) {
-			alert("인원선택은 총 4명까지 가능합니다.");
-			inputbox.value = (inputbox.value-1);
-			select_person = select_person-1;
-			return;
+		if($("#junior_gr").children(".selected_person").val() != null) {
+			juniorsel = $("#junior_gr").children(".selected_person").val();
 		}
 		
-		var addHtml = "선택좌석"
-		addHtml += "<div>"
-		for(var i=0; i<select_person; i++ ) {
-			addHtml += "<p>■</p>"
-		}
-		addHtml += "</div>"
+		//var total_person = adultsel + juniorsel;
+		select_person = Number(adultsel) + Number(juniorsel);
 		
-		$("#seat_select").html(addHtml);*/
 	}
 	
 	// 좌석 선택 체크 메서드(선택한 좌석, 총 좌석수)
 	function seatCheck(seat, allseat) {
 		var select_seat = 0;
+		var addHtml = "좌석번호<br>"
+			addHtml += "<div>"
 		
 		// 선택되지 않은 좌석이면
 		if(!($("#"+seat.id).hasClass("selected_seat"))) {
@@ -154,21 +111,71 @@
 					select_seat++;
 				}
 			}
+			
 			if(select_seat == select_person) {
 				alert("좌석은 관람 인원만큼만 선택할 수 있습니다.");
 				return;
 			}
 			
 			$("#"+seat.id).addClass("selected_seat");
-			$("#"+seat.id).addClass("active");
+			$("#"+seat.id).css('background-color','orange');
+			
 			
 		} else {// 이미 선택된 좌석이면 선택 해제
 			$("#"+seat.id).removeClass("selected_seat");
-			$("#"+seat.id).removeClass("active");
+			$("#"+seat.id).css('background-color','');
 		}
 		
+		for(var i=1; i<=allseat; i++) {
+			if($("#seat"+i).hasClass("selected_seat")) {
+				addHtml += $("#seat"+i).val() + "번<br>";
+			}
+		}
+		
+		$("#seat_select_span").html(addHtml);
+		
+		if(select_seat == (select_person-1)) {
+			price_cal();
+		}
 		console.log(seat.id);
 	}
+	
+	// 금액 계산 메서드
+	function price_cal() {
+		var htmlStr = "";
+		var adultsel = 0;
+		var juniorsel = 0;
+		var adultPrice = 0;
+		var juniorPrice = 0;
+		
+		if($("#adult_gr").children(".selected_person").val() != null) {
+			adultsel = $("#adult_gr").children(".selected_person").val();
+			adultPrice = 15000 * Number(adultsel);
+			adultsel = 15000 * Number(adultsel);
+			adultsel = adultsel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+			htmlStr += "일반&nbsp;&nbsp;"+adultsel+"원<br>";
+		} else {
+			htmlStr += "일반&nbsp;&nbsp;0원<br>";
+		}
+		
+		if($("#junior_gr").children(".selected_person").val() != null) {
+			juniorsel = $("#junior_gr").children(".selected_person").val();
+			juniorPrice = 10000 * Number(juniorsel);
+			juniorsel = 10000 * Number(juniorsel);
+			juniorsel = juniorsel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			htmlStr += "청소년&nbsp;&nbsp;"+ juniorsel +"원<br>";
+		} else {
+			htmlStr += "청소년&nbsp;&nbsp;0원<br>";
+		}
+
+		var totalPrice = adultPrice + juniorPrice;
+		totalPrice = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		htmlStr += "총금액&nbsp;&nbsp;" + totalPrice + "원";
+		
+		$("#total_price_span").html(htmlStr);
+	}
+	
 </script>
 <style type="text/css">
 	.bottm_div {
@@ -177,6 +184,15 @@
 		height: 150px;
 		vertical-align: top;
 		margin-right: 10px;
+	}
+	
+	.top_div {
+		display: inline-block;
+		width: auto;
+		height: 80px;
+		vertical-align: top;
+		margin-right: 10px;
+		margin-top: 20px;
 	}
 	
 	.adult_btn {
@@ -189,8 +205,22 @@
 		height:40px;
 	}
 	
-	.selected_btn {
-		background-color: #e00;
+	#seat_cover_div {
+		position: absolute;
+		width: 570px;
+		height: 310px;
+		background-color: #aaa;
+		opacity: 90%;
+		z-index: 5;
+		top: 50%;
+		left:50%;
+		margin: -190px 0 0 -290px;
+	}
+	
+	#cover_span {
+		font-size: 1.8em;
+		font-weight: bold;
+		color: tomato;
 	}
 
 </style>
@@ -201,10 +231,10 @@
 		<div id="top_title_div" align="center">
 			인원/좌석
 		</div>
-		
+		<!-- 상단 인원 선택 / 영화 상영 일시 -->
 		<div id="person_seat_div" align="center">
 			<div align="center" class="booking_person" style="display: inline-block;">
-				<div id="adult_gr" class="btn-group" role="group" align="left">
+				<div id="adult_gr" class="top_div btn-group" role="group" align="left">
 					<span>일반</span><br>
 					<button
 					  	onclick="selectPerson(this)"
@@ -227,7 +257,7 @@
 					  	class="adult_btn btn btn-secondary"
 					  	type="button" id="adult4" value="4">4</button>
 				</div>&nbsp;&nbsp;
-				<div id="junior_gr" class="btn-group" role="group" align="left">
+				<div id="junior_gr" class="top_div btn-group" role="group" align="left">
 					<span>청소년</span><br>
 					<button
 					  	onclick="selectPerson(this)"
@@ -252,7 +282,7 @@
 				</div>
 	   		</div>
 	   		
-	   		<div id="top_movie_info_div" align="left" style="display: inline-block;">
+	   		<div id="top_movie_info_div" class="top_div" align="left">
 	   			<span>${sdto.cinemaname }</span>&nbsp;|&nbsp;
 	   			<span>${sdto.cincode }관</span>&nbsp;|&nbsp;
 	   			<span>남은좌석&nbsp;&nbsp;&nbsp;00/${seat.allseat }</span>&nbsp;|&nbsp;
@@ -271,35 +301,39 @@
 		</div>
 		
 		<hr>
-		
-		<div id="seat_div" align="center">
+		<!-- 좌석 셋팅 -->
+		<div id="seat_div" align="center" style="positon :relative; z-index: 1;">
+			<div id="seat_cover_div" align="center"><span id="cover_span">관람할 인원을 선택해주세요.</span></div>
 			<div id="screen_image_div">
 				<img id="main_screen"
 					src="<%=request.getContextPath() %>/image/screen.JPG"
 	 		width="570px" height="40px" >
 			</div><br>
 			
-			<div id="seat_div" align="center">
+			<div id="seat_arr_div" align="center">
 				<c:forEach var="seatno" begin="1" end="${seat.allseat }" >
 					<button 
 						type="button"
-						style="width: 25px; height: 25px; font-size: 8px; font-variant: "
-						class="btn btn-info"
+						style="width: 30px; height: 30px; font-size: 8px; font-variant: "
+						class="btn btn-outline-info"
 						id="seat${seatno }"
-						onclick="seatCheck(this,${seat.allseat })">${seatno }</button>
+						value="${seatno }"
+						onclick="seatCheck(this,${seat.allseat })">
+						<i class='glyphicon glyphicon-unchecked'></i>
+					</button>
 					<c:if test="${seatno%13 == 0 }"><br><br></c:if>
 				</c:forEach>
 			</div>
 		</div>
 		
 		<hr>
-		
+		<!-- 하단 영화정보 / 좌석 선택 정보 / 결제 금액 -->
 		<div id="movie_div" align="center">
 			<div id="before_btn_div" class="bottm_div">
 				<button 
 					type="button"
 					id="before"
-					class="btn btn-default btn-block"
+					class="btn btn-light btn-block"
 					style="width:150px; height:150px;">
 					<i class='glyphicon glyphicon-backward'></i>
 				</button>
@@ -326,19 +360,19 @@
 				</span>
 			</div>
 			
-			<div id="seat_info_div" class="bottm_div">
+			<div id="seat_info_div" class="bottm_div" align="left" >
 				<span id="seat_select_span">좌석번호</span>
 			</div>
 			
-			<div id="price_info_div" class="bottm_div">
-				<span id="total_price">총금액</span>
+			<div id="price_info_div" class="bottm_div" align="left" >
+				<span id="total_price_span">총금액</span>
 			</div>
 			
 			<div id="next_btn_div" class="bottm_div">
 				<button 
 					type="button"
 					id="next"
-					class="btn btn-default btn-block"
+					class="btn btn-light btn-block"
 					style="width:150px; height:150px;">
 				<i class='glyphicon glyphicon-credit-card'></i>
 				</button>
