@@ -148,9 +148,23 @@
 		var etime = $("#new_e_time_"+code).val();
 		var sdate = $("#start_date"+code).val();
 		var edate = $("#end_date"+code).val();
+
+		// 날짜 차이 계산
+		var sdt = new Date(sdate);
+		var edt = new Date(edate);
+		var dateDiff = Math.ceil((edt.getTime()-sdt.getTime())/(1000*3600*24));
 		
-		if($("#start_date"+code).val() > $("#end_date"+code).val()) {
+		if(sdate > edate) {
 			alert("상영 시작일이 상영 종료일보다 늦습니다.");
+			return;
+		} else if(dateDiff > 1) {
+			alert("상영 종료일은 상영 시작일의 최대 다음 날까지만 설정할 수 있습니다.");
+			return;
+		} else if(etime >= '09:00' && etime <= '23:59' && dateDiff > 0) {
+			alert("상영 종료 시간이 당일이므로 상영 종료일을 상영 시작일과 같도록 수정하시기 바랍니다.");
+			return;
+		} else if(etime >= '00:00' && etime <= '03:00' && dateDiff == 0) {
+			alert("상영 종료 시간이 0시 이후이므로 상영 종료일을 다음 날로 설정해주시기 바랍니다.");
 			return;
 		}
 
@@ -311,8 +325,22 @@
 	// 상영 정보 추가 AJAX
 	$(function () {
 		$("#insert_btn").mousedown(function() {
+			// 날짜 차이 계산
+			var sdt = new Date($("#start_date").val());
+			var edt = new Date($("#end_date").val());
+			var dateDiff = Math.ceil((edt.getTime()-sdt.getTime())/(1000*3600*24));
+			
 			if($("#start_date").val() > $("#end_date").val()) {
 				alert("상영 시작일이 상영 종료일보다 늦습니다.");
+				return;
+			} else if(dateDiff > 1) {
+				alert("상영 종료일은 상영 시작일의 최대 다음 날까지만 설정할 수 있습니다.");
+				return;
+			} else if($("#timepick_end").val() >= '09:00' && $("#timepick_end").val() <= '23:59' && dateDiff > 0) {
+				alert("상영 종료 시간이 당일이므로 상영 종료일을 상영 시작일과 같도록 수정하시기 바랍니다.");
+				return;
+			} else if($("#timepick_end").val() >= '00:00' && $("#timepick_end").val() <= '03:00' && dateDiff == 0) {
+				alert("상영 종료 시간이 0시 이후이므로 상영 종료일을 다음 날로 설정해주시기 바랍니다.");
 				return;
 			}
 			
@@ -554,7 +582,12 @@
 		               	</td>
 		               	
 		               	<td id="end_time_td_${screen.screencode }">
-		               		<fmt:parseNumber value="${(screen.end_time / 60) }" integerOnly="true" />시
+		               		<c:if test="${screen.end_time >= 1440}">
+		               			<fmt:parseNumber value="${((screen.end_time- 1440) / 60) }" integerOnly="true" />시
+		               		</c:if>
+		               		<c:if test="${screen.end_time < 1440}">
+		               			<fmt:parseNumber value="${(screen.end_time / 60) }" integerOnly="true" />시
+		               		</c:if>
 		               		<fmt:parseNumber value="${(screen.end_time % 60) }" integerOnly="true" />분
 		               	</td>
 		               	
