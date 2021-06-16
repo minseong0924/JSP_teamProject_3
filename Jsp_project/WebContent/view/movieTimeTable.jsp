@@ -26,6 +26,7 @@ let tym = yearmonth+"-"+today.getDate();
 // 페이지 시작 시 
 $(document).ready(function(){	
 		movie();
+		movie();
 }); 
 
 //영화별 start
@@ -50,7 +51,7 @@ function movie() {
 						+list[i].title_ko+"</button></li>");
 			}
 			$("#title_ko").text(list[0].title_ko);
-			/* dateButton(tym); */
+			
 			dateButton($(".wrap").find(".bk").val());	
 			opendate(0,new Date());
 			$("#list_theater").attr("class" ,"btn");
@@ -134,18 +135,55 @@ function dayBeforeSetting() {
 	today = today.toISOString().slice(0, 10);
 	day = $("#day1").val();
 	var checked = $(".wrap").find(".bk").prev().val();
+	var attrid = $(".wrap").find(".bk").attr("id");
+	var bk = $(".wrap").find(".bk").prev();
 	if(day == today) {
 		return;
 	} else {
 		opendate("before", day);
 	}
-	dateButton(checked);
+		var day1 = day.substring(0,4) + "-" + day.substring(5,7) +"-" +(String)((Number)(day.substring(8,10)) - 1);
+
+		if(bk.attr("disabled")=='disabled') {
+			while(true) {
+				bk = bk.prev();
+				day1 = bk.val();
+				day = $("#day1").val();
+				day1 = day.substring(0,4) + "-" 
+				+ day.substring(5,7) +"-" 
+				+(String)((Number)(day.substring(8,10)) - 1);
+				if(bk.attr("disabled")==null) {
+					break;
+				}
+			}
+		}
+	if(attrid == "day1") {
+		dateButton(day1);	
+	}else {
+		dateButton(day);
+	}
+	
+	
 	
 }
 
 function dayAfterSetting() {
 	var day = $("#day1").val();
 	var checked = $(".wrap").find(".bk").next().val();
+	var bk = $(".wrap").find(".bk").next();
+	if(bk.attr("disabled")=='disabled') {
+		while(true) {
+			
+			bk = bk.next();
+			console.log(bk.attr("disabled"));
+			checked = bk.val();
+			console.log(checked);
+			
+			if(bk.attr("disabled")==null) {
+				break;
+			}
+		}
+	} 
 	opendate("after", day);
 	dateButton(checked);
 }
@@ -186,54 +224,59 @@ function dateButtonDisabled() {
 		data: {"title_ko": $("#title_ko").text()},	
 		success: function(data) {	
 			$(".wrap").find(".on").attr("disabled", true);
-			$(".btn1").attr("disabled", true)
+			$(".btn1").attr("disabled", true);
 			 var slist = data.slist;
 			 var today = new Date();
-			 
-			 if(slist != null) {
+			/*  if($(".wrap").find(".bk").val() != null) {
+				 today = new Date($(".wrap").find(".bk").val());
+			 } */
+			 var srt_time = "";
+			 if(slist.length != 0) {
 				 for(var i=0; i<slist.length; i++) {
-						console.log("slist[i].localname >>>" +slist[i].localname);
-						var starttime = slist[i].start_time;
-						if(Math.floor(starttime % 60) < 10) {
-								srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
-							} else {
-								srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
-							}
-								var moviedate = new Date(slist[i].start_date);
-								var mYear = moviedate.getFullYear();
-								var mMonth = moviedate.getMonth() + 1;
-								var mMonth1 = moviedate.getMonth();
-								var mDate = moviedate.getDate();
-								var moviedate1 = new Date(mYear, mMonth1, mDate+1);
-								mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
-								mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
-								
-								
-						if(moviedate1.toISOString().slice(0, 10) == today.toISOString().slice(0, 10)){
-							if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())) {
-								var ymd = mYear + '-' + mMonth + '-' + mDate;
-								$("button[value="+ymd+"]").attr("disabled", false);
-								$("button[name="+slist[i].localname+"]").attr("disabled", false);
-							}
-						}else {
+					var starttime = slist[i].start_time;
+					if(Math.floor(starttime % 60) < 10) {
+						srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
+					} else {
+						srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
+					}
+					
+					var moviedate = new Date(slist[i].start_date);
+					var mYear = moviedate.getFullYear();
+					var mMonth = moviedate.getMonth() + 1;
+					var mMonth1 = moviedate.getMonth();
+					var mDate = moviedate.getDate();
+					var moviedate1 = new Date(mYear, mMonth1, mDate+1);
+					mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
+					mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
+
+					if(moviedate1.toISOString().slice(0, 10) == today.toISOString().slice(0, 10)){
+						if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())) {
 							var ymd = mYear + '-' + mMonth + '-' + mDate;
 							$("button[value="+ymd+"]").attr("disabled", false);
 							$("button[name="+slist[i].localname+"]").attr("disabled", false);
 						}
-						
-					 }
-						if($(".wrap").find(".bk").attr("disabled")=='disabled') {
-								var moviedate = new Date(slist[0].start_date);
-								var mYear = moviedate.getFullYear();
-								var mMonth = moviedate.getMonth() + 1;
-								var mMonth1 = moviedate.getMonth();
-								var mDate = moviedate.getDate();
-								var moviedate1 = new Date(mYear, mMonth1, mDate+1);
-								mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
-								mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
-								$(".wrap").find(".bk").attr("class", "on");
-								$("button[value="+ymd+"]").attr("class", "on bk");
-						} 
+					}else if(moviedate1.toISOString().slice(0, 10) > today.toISOString().slice(0, 10)){
+						var ymd = mYear + '-' + mMonth + '-' + mDate;
+						$("button[value="+ymd+"]").attr("disabled", false);
+						$("button[name="+slist[i].localname+"]").attr("disabled", false);
+					}
+
+				}
+				
+				 if($(".wrap").find(".bk").attr("disabled")=='disabled') {
+						var moviedate = new Date(slist[0].start_date);
+						var mYear = moviedate.getFullYear();
+						var mMonth = moviedate.getMonth() + 1;
+						var mMonth1 = moviedate.getMonth();
+						var mDate = moviedate.getDate();
+						var moviedate1 = new Date(mYear, mMonth1, mDate+1);
+						mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
+						mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
+						$(".wrap").find(".bk").attr("class", "on");
+						$("button[value="+ymd+"]").attr("class", "on bk");
+						dateButton(ymd);
+				} 
+						console.log('돌아감');
 			}
 		},
 		error:function(request, status, error){
@@ -246,19 +289,23 @@ function dateButtonDisabled() {
 function dateButton(date) {
 		$(".wrap").find(".bk").attr("class", "on");
 		$("button[value='"+date+"']").attr("class", "on bk");
-	
 		console.log(date);
 		load('서울',date);
 }
 
 //영화별에서 아래 서울 ~제주 버튼을 눌렀을 때 이벤트
 function load(location, date_data) {
+	if($(".wrap").find(".bk").val() != null) {
+		date_data = $(".wrap").find(".bk").val();
+	}else {
+		date_data = $(".wrap").find(".on").first().val();
+	}
 	$.ajax({
 		type: "post",		
 		dataType : "xml",	
 		url : "/Jsp_project/data/timeTableLocation.jsp",	
 		data: {"location": location, "title_ko":$("#title_ko").text(),
-				"today": $(".wrap").find(".bk").val()	},	
+				"today": date_data	},	
 		success: function(data) {
 			$(".theater-list").empty();
 			var dat = $(data).find("screen1").find("screen");
@@ -266,7 +313,7 @@ function load(location, date_data) {
 			var pre = "";
 			var cincode = 0;
 			var srt_time = "";
-			var starttime = 0;				
+			var starttime = 0;
 			
 			//극장 뿌리기
 			dat.each(function(){
@@ -278,7 +325,6 @@ function load(location, date_data) {
 				var mDate = moviedate.getDate();
 				var moviedate1 = new Date(mYear, mMonth, mDate+1);
 			
-				
 				if(moviedate1.toISOString().slice(0, 10) == nowdate.toISOString().slice(0, 10)) {
 					today = new Date();
 					starttime = $("start_time", this).text();
@@ -333,6 +379,11 @@ function load(location, date_data) {
 						cincode = $("cincode", this).text();
 				}
 			});
+			
+			if($(".theater-list-box").attr("id") == null) {
+				$(".theater-list").append("<div class='theater-list-box'><div class='locationInfo'><h3 class='localarea'>상영가능한 극장이 없습니다.</h3></div>"
+						+"</div>");
+			}
 				$(".btn-group1").find(".bk").attr("class","btn btn1");
 				$("button[name='"+location+"']").attr("class", "btn btn1 bk");
 				dateButtonDisabled();
@@ -369,6 +420,7 @@ function theater() {
 			$("#list_theater").attr("class" ,"btn bk");
 			$(".local").find("button").first().attr("class", "btn bk");
 			$("#day1").attr("class" ,"on bk");
+			
 			dat.each(function(){
 			var localname = "'"+$("localname",this).text()+"'";
 				if($("localname",this).text() != prev){
@@ -383,8 +435,10 @@ function theater() {
 					prev = $("localname",this).text();
 					
 			});
-			$(".movie-choise1").find("button").first().attr("class" ,"btn bk");
 			
+			$(".movie-choise1").find("button").first().attr("class" ,"btn bk");
+			changecinema($("tit0").text());
+			console.log($("tit0").text() + "$('tit0').name()");
 		},
 		error:function(request, status, error){
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -422,7 +476,7 @@ function local_button(local) {
 	});
 }
 
-//영화별에서 상영정보가 없는 버튼을 비활성화 하는 함수 
+//극장별에서 상영정보가 없는 버튼을 비활성화 하는 함수 
 function dateButtonDisabled1() {
 	$.ajax({
 		type: "post",		
@@ -430,38 +484,37 @@ function dateButtonDisabled1() {
 		url : "/Jsp_project/TableScreenList1.do",	
 		data: {"title_ko2": $("#title_ko2").text()},	
 		success: function(data) {	
-			$(".wrap").find(".on").attr("disabled", true);
-			//$(".local").find(".btn").attr("disabled", true);
 			 var slist = data.slist;
 			 var today = new Date();
-			 if(slist != null) {
+			$(".wrap").find(".on").attr("disabled", true);
+			 if(slist.length != 0) {
 				 for(var i=0; i<slist.length; i++) {
 						var starttime = slist[i].start_time;
-						if(Math.floor(starttime % 60) < 10) {
+							
+							if(Math.floor(starttime % 60) < 10) {
 								srt_time = Math.floor(starttime / 60) + ":0" + Math.floor(starttime % 60);
 							} else {
 								srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
 							}
-								var moviedate = new Date(slist[i].start_date);
-								var mYear = moviedate.getFullYear();
-								var mMonth = moviedate.getMonth() + 1;
-								var mMonth1 = moviedate.getMonth();
-								var mDate = moviedate.getDate();
-								var moviedate1 = new Date(mYear, mMonth1, mDate+1);
-								mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
-								mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
+							
+							var moviedate = new Date(slist[i].start_date);
+							var mYear = moviedate.getFullYear();
+							var mMonth = moviedate.getMonth() + 1;
+							var mMonth1 = moviedate.getMonth();
+							var mDate = moviedate.getDate();
+							var moviedate1 = new Date(mYear, mMonth1, mDate+1);
+							mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
+							mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
 							
 						if(moviedate1.toISOString().slice(0, 10) == today.toISOString().slice(0, 10)){
 							if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())) {
 								var ymd = mYear + '-' + mMonth + '-' + mDate;
 								$("button[value="+ymd+"]").attr("disabled", false);
-								//$("#"+slist[i].localname).attr("disabled", false);
 								console.log(ymd);
 							}
 						}else {
 							var ymd = mYear + '-' + mMonth + '-' + mDate;
 							$("button[value="+ymd+"]").attr("disabled", false);
-							//$("#"+slist[i].localname).attr("disabled", false);
 								console.log(ymd);
 						}
 						
@@ -477,7 +530,9 @@ function dateButtonDisabled1() {
 						mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
 						$(".wrap").find(".bk").attr("class", "on");
 						$("button[value="+ymd+"]").attr("class", "on bk");
+						dateButton1(ymd);
 				} 
+				 console.log('작동함');
 			}
 		},
 		error:function(request, status, error){
@@ -496,8 +551,6 @@ function changecinema(cinemaname) {
 		success: function(data) {
 			$(".theater-list").empty();			
 			var slist = data.list;
-			
-			//dat.find("cinemaname").text() 저장용
 			var pre = "";
 
 			$("#title_ko2").text(cinemaname);
@@ -505,7 +558,7 @@ function changecinema(cinemaname) {
 			var today2 = new Date();
 			var todaydate2 = today2.getFullYear()+ "-0" + (today2.getMonth() + 1)+ "-" +today2.getDate();
 
-			dateButton1(todaydate2);
+			dateButton1($(".wrap").find(".bk").val());
 			$(".movie-choise1").find(".bk").attr("class", "btn");
 			$("button[name="+cinemaname+"]").attr("class", "btn bk");
 
@@ -523,30 +576,39 @@ function dateButton1(date_data) {
 		$(".wrap").find(".bk").attr("class", "on");
 		$("button[value='"+date_data+"']").attr("class", "on bk");
 		load1($("#title_ko2").text(), date_data);
-
 }
 
 // 극장별에서 정보를 보여주는 메서드
 function load1(cinemaname, chandate) {
+	if($(".wrap").find(".bk").val() != null) {
+		chandate = $(".wrap").find(".bk").val();
+	}else {
+		chandate = $(".wrap").find(".on").first().val();
+	}
+	console.log(cinemaname);
 	$.ajax({
 		type: "post",		
 		dataType : "json",	
 		url : "/Jsp_project/cinematable.do",	
 		data: {"cinemaname": cinemaname,
-				"today" :  $(".wrap").find(".bk").val()},	
+				"today" :  chandate},	
 		success: function(data) {
 			$(".theater-list").empty();			
 			
 			var slist = data.list;
+		
+			console.log(slist.length);
+
 			
 			//dat.find("cinemaname").text() 저장용
 			var pre = "";
 			var cincode = 0;
 			var moviedate = "";
-			if(slist != null) {
-				moviedate = new Date(slist[0].start_date);
-			}else {
+			console.log(slist.length==0);
+			if(slist.length==0) {
 				moviedate = new Date();
+			}else {
+				moviedate = new Date(slist[0].start_date);
 			}
 			
 			var nowdate = new Date();
@@ -566,6 +628,7 @@ function load1(cinemaname, chandate) {
 					} else {
 						srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
 					}
+					
 					if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())){
 						
 						if(slist[i].moviename != pre) {
@@ -619,7 +682,6 @@ function load1(cinemaname, chandate) {
 					}
 				
 					// 관이 중복되지 않게하는 조건문
-					
 						if(slist[i].moviename != pre ||slist[i].cincode != cincode){
 							$("#"+slist[i].moviename).append("<div id='"+slist[i].cincode+"'class='theater-list-box1'><span class='localscreen'>"+slist[i].cincode+"관</span>" +
 								"<div class='movietype'><span class='movietype-text'>"+slist[i].mtype+"</span></div>"+
@@ -631,6 +693,10 @@ function load1(cinemaname, chandate) {
 							cincode = slist[i].cincode;
 							pre = slist[i].moviename;
 				}
+			}
+			if($(".theater-list-box").attr("id") == null) {
+				$(".theater-list").append("<div class='theater-list-box'><div class='locationInfo'><h3 class='localarea'>상영가능한 영화가 없습니다.</h3></div>"
+						+"</div>");
 			}
 			dateButtonDisabled1();
 		},
@@ -709,13 +775,36 @@ function dayBeforeSetting1() {
 	today = today.toISOString().slice(0, 10);
 	day = $("#tday1").val();
 	var checked = $(".wrap").find(".bk").prev().val();
-	console.log(checked);
+	var attrid = $(".wrap").find(".bk").attr("id");
+	var bk = $(".wrap").find(".bk").prev();
 	if(day == today) {
 		return;
 	} else {
 		opendate1("before", day);
 	}
-	dateButton1(checked);
+	
+	var day1 = day.substring(0,4) + "-" + day.substring(5,7) +"-" +(String)((Number)(day.substring(8,10)) - 1);
+	
+	if(bk.attr("disabled")=='disabled') {
+		while(true) {
+			bk = bk.prev();
+			day1 = bk.val();
+			day = $("#tday1").val();
+			day1 = day.substring(0,4) + "-" 
+			+ day.substring(5,7) +"-" 
+			+(String)((Number)(day.substring(8,10)) - 1);
+			if(bk.attr("disabled")==null) {
+				break;
+			}
+		}
+	}
+	
+	if(attrid == "tday1") {
+		dateButton1(day1);	
+	}else {
+		dateButton1(day);	
+	}
+
 }
 
 function dayAfterSetting1() {
@@ -723,9 +812,6 @@ function dayAfterSetting1() {
 	var checked = $(".wrap").find(".bk").next().val();
 	opendate1("after", day);
 	dateButton1(checked);
-	
-	
-
 }
 //극장별 end
 </script>
@@ -787,7 +873,7 @@ function dayAfterSetting1() {
 						<hr width="70%" align="left">
 					</div>
 					<div class="theater-list-box1">
-					
+						
 					</div>
 	
 					

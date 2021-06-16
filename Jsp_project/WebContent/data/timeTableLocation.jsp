@@ -4,8 +4,12 @@
 <%
 	String location = request.getParameter("location");
 	String title = request.getParameter("title_ko");
-			
 	String today = request.getParameter("today");
+	
+	System.out.println(location);
+	System.out.println(title);
+	System.out.println(today);
+	
 	
 	ScreenDAO dao = ScreenDAO.getInstance();
 	String list = dao.ScreenList(location, title, today);

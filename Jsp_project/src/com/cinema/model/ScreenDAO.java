@@ -813,10 +813,10 @@ public class ScreenDAO {
 				moviecode = rs.getInt(1);
 			}
 			
-			sql = "select s.*, localname \n" + 
-					"from screen s, local l\n" + 
-					"where localcode in(select localcode from screen s, cinema c where s.cinemacode = c.cinemacode)\n" + 
-					"and moviecode = ?";
+			sql = "select s.*, l.localname from screen s, local l, cinema c\n" + 
+					"where c.localcode = l.localcode\n" + 
+					"and s.cinemacode = c.cinemacode\n" + 
+					"and s.moviecode = ? order by s.cinemacode, s.start_date, s.start_time";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, moviecode);
@@ -854,10 +854,10 @@ public class ScreenDAO {
 		try {
 			openConn();
 			
-			sql = "select s.*, localname \n" + 
-					"from screen s, local l\n" + 
-					"where localcode in(select localcode from screen s, cinema c where s.cinemacode = c.cinemacode)\n" + 
-					"and cinemaname = ?";
+			sql = "select s.*, l.localname from screen s, local l, cinema c\n" + 
+					"where c.localcode = l.localcode\n" + 
+					"and s.cinemacode = c.cinemacode\n" + 
+					"and s.cinemaname = ?  order by s.cinemacode, s.start_date, s.start_time";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, title_ko2);
