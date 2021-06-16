@@ -399,6 +399,12 @@
 		$("#start_date").val(today.toISOString().slice(0, 10));
 		$("#end_date").val(today.toISOString().slice(0, 10));
 		
+		//상영시작일 설정시 상영종료일 자동 셋팅
+		$("#start_date").on("change", function() {
+		    var date = $(this).val();
+		    $("#end_date").val(date);
+		});
+		
 		$(".sc_modify_ok").hide();
 		$(".sc_modify_cc").hide();
 

@@ -594,7 +594,7 @@
 			<tr>
 				<td style="width:300px;"><span class="booking_title">영화</span>
 					<div class="booking_list panel panel-default" align="left">
-					  <div id="movielist_div" class="list-group list-group-flush" role="group">
+					  <div style="height:400px; overFlow : auto;" id="movielist_div" class="list-group list-group-flush" role="group">
 					  	<c:if test="${!empty movielist }">
 		                   <c:forEach items="${movielist }" var="mdto">
 		                      <button type="button" 
