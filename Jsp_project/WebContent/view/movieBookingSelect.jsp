@@ -13,14 +13,17 @@
 	
 	// 관람 인원 총 합계
 	var select_person = 0;
+	var select_seat_loc = 999;
 	
 	// 인원 선택 (4명까지)
 	function selectPerson(btn) {
 		// 커버 삭제 / 선택한 좌석 초기화
+		select_seat_loc = 999;
 		$("#seat_cover_div").hide();
 		$("#seat_arr_div").children("button").removeClass("selected_seat");
 		$("#seat_arr_div").children("button").css("background-color","");
 		$("#seat_select_span").html("좌석번호");
+		$("#total_price_span").html("총금액");
 		
 		// 누른 버튼의 클래스 값
 		var btn_class = $("#"+btn.id).attr("class").split(" ");
@@ -124,6 +127,7 @@
 		} else {// 이미 선택된 좌석이면 선택 해제
 			$("#"+seat.id).removeClass("selected_seat");
 			$("#"+seat.id).css('background-color','');
+			select_seat_loc = 999;
 		}
 		
 		for(var i=1; i<=allseat; i++) {
@@ -136,6 +140,7 @@
 		
 		if(select_seat == (select_person-1)) {
 			price_cal();
+			select_seat_loc = select_seat+1;
 		}
 		console.log(seat.id);
 	}
@@ -171,59 +176,56 @@
 
 		var totalPrice = adultPrice + juniorPrice;
 		totalPrice = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-		htmlStr += "총금액&nbsp;&nbsp;" + totalPrice + "원";
+		htmlStr += "<br>총금액&nbsp;&nbsp;" + totalPrice + "원";
 		
 		$("#total_price_span").html(htmlStr);
 	}
 	
-</script>
-<style type="text/css">
-	.bottm_div {
-		display: inline-block;
-		width: auto;
-		height: 150px;
-		vertical-align: top;
-		margin-right: 10px;
-	}
-	
-	.top_div {
-		display: inline-block;
-		width: auto;
-		height: 80px;
-		vertical-align: top;
-		margin-right: 10px;
-		margin-top: 20px;
-	}
-	
-	.adult_btn {
-		width:60px;
-		height:40px;
-	}
-	
-	.junior_btn {
-		width:60px;
-		height:40px;
-	}
-	
-	#seat_cover_div {
-		position: absolute;
-		width: 570px;
-		height: 310px;
-		background-color: #aaa;
-		opacity: 90%;
-		z-index: 5;
-		top: 50%;
-		left:50%;
-		margin: -190px 0 0 -290px;
-	}
-	
-	#cover_span {
-		font-size: 1.8em;
-		font-weight: bold;
-		color: tomato;
-	}
+	// 결제 화면 넘어가기 메서드(스크린코드, 총좌석수)
+	function payment(code, allseat) {
+		if(select_seat_loc != select_person) {
+			alert("선택한 인원 수만큼 좌석을 선택해주세요!");
+			return;
+		}
 
-</style>
+		var form = document.createElement("form");
+
+		form.setAttribute("method", "post");
+		form.setAttribute("action", "<%=request.getContextPath() %>/movieBookingPayment.do");
+		
+		var params = new Array();
+		
+		//스크린코드
+		params[0] = code;
+		
+		//선택 좌석
+		for(var i=1; i<=allseat; i++) {
+			if($("#seat"+i).hasClass("selected_seat")) {
+				params[1] += $("#seat"+i).val() + ":";
+			}
+		}
+		
+		console.log(params[0]);
+		console.log(params[1]);
+			
+		for ( var key in params) {
+
+			var hiddenField = document.createElement('input');
+
+			hiddenField.setAttribute('type', 'hidden');
+			hiddenField.setAttribute('name', key);
+			hiddenField.setAttribute('value', params[key]);
+
+			form.appendChild(hiddenField);
+
+		}
+
+		document.body.appendChild(form);
+
+		form.submit();
+
+	}
+</script>
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
@@ -373,6 +375,7 @@
 					type="button"
 					id="next"
 					class="btn btn-light btn-block"
+					onclick="payment('${sdto.screencode}', '${seat.allseat }')"
 					style="width:150px; height:150px;">
 				<i class='glyphicon glyphicon-credit-card'></i>
 				</button>
