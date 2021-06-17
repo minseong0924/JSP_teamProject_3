@@ -22,7 +22,6 @@ function loadReview() {
 		success: function(data) {
 			var Rlist = data.list;
 			
-			
 			for(var i=0; i<Rlist.length; i++) {
 				$(".review").append("<div class='review-list' name='review-list"+i+"'>");
 				$("div[name=review-list"+i+"]").append("<div class='review_id'><span>"+Rlist[i].id+"</span></div>");
@@ -73,8 +72,8 @@ function check(id) {
 	<br><br>
 	<c:set var="dto" value="${List }"/>
 	<div class="movie-content">
-		<div class="movie-content-img" style="background-image:url('https://img.megabox.co.kr/SharedImg/2021/05/06/WkhMtd7UfrrFwj8wML9FAKAtUKwPPMR5_570.jpg');">
-			
+		<div class="movie-content-img" style="background-image:url('./upload/${dto.getPoster() }');">
+			<!-- https://img.megabox.co.kr/SharedImg/2021/05/06/WkhMtd7UfrrFwj8wML9FAKAtUKwPPMR5_570.jpg -->
 		</div>
 		
 		<div class="movie-detail-cont">

@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="./css/style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <script>
 function getSelectValue(index)
 {
@@ -79,7 +80,6 @@ function getSelectValue(index)
 							onclick="if(confirm('정말 삭제하시겠습니까?')) {
 							location.href='memDelete.do?id=${dto.getId()}'}else{return;}"></td>
 					</tr>
-					
 				</c:forEach>
 			</c:if>
 

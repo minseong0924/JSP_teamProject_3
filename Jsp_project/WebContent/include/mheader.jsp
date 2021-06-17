@@ -57,12 +57,7 @@
 					</li> 
 					
 					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> 영화 </a> 
-						<ul class="dropdown-menu"> 
-							<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieChart.do">전체영화</a></li>
-							<li><a class="dropdown-item" href="#">N스크린</a></li>
-							<li><a class="dropdown-item" href="#">무비포스트</a></li>
-						</ul> 
+						<a class="nav-link dropdown-toggle" href="<%=request.getContextPath() %>/movieChart.do">전체영화 </a> 
 					</li>
 					
 					<li class="nav-item dropdown">

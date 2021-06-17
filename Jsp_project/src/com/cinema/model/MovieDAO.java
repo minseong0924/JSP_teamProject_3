@@ -515,11 +515,15 @@ public class MovieDAO {
 	
 	public List<MovieDTO> NowmovieList() {
 		List<MovieDTO> list = new ArrayList<>();
-		
+
 		try {
 			openConn();
 			
-			sql = "select * from movie where mstate='상영중'"; 
+			sql = "select distinct m.*,\n" + 
+					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate \n" + 
+					"from movie m, booking b \n" + 
+					"where b.title_ko = m.title_ko \n" + 
+					"and m.mstate='상영중'"; 
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -542,7 +546,7 @@ public class MovieDAO {
 				dto.setOpendate(rs.getString("opendate").substring(0,8));
 				dto.setMstate(rs.getString("mstate"));
 				dto.setMtype(rs.getString("mtype"));
-				
+				dto.setRate(rs.getString("rate"));
 				list.add(dto);
 			}
 			
@@ -560,7 +564,11 @@ public class MovieDAO {
 		try {
 			openConn();
 			
-			sql = "select * from movie where mstate='개봉 예정'"; 
+			sql = "select distinct m.*,\n" + 
+					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate \n" + 
+					"from movie m, booking b \n" + 
+					"where b.title_ko = m.title_ko \n" + 
+					"and m.mstate='개봉 예정'"; 
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -583,7 +591,7 @@ public class MovieDAO {
 				dto.setOpendate(rs.getString("opendate").substring(0,8));
 				dto.setMstate(rs.getString("mstate"));
 				dto.setMtype(rs.getString("mtype"));
-				
+				dto.setRate(rs.getString("rate"));
 				list.add(dto);
 			}
 			

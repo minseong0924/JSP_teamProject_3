@@ -15,15 +15,17 @@ public class MemberApplyAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		PrintWriter out = response.getWriter();
 		
 		String id = request.getParameter("id");
 		String per = request.getParameter("perchange");
+		System.out.println(id);
+		System.out.println(per);
 		
 		AdminDAO dao = AdminDAO.getInstance();
 		
 		int res = dao.memApply(id, per);
 		ActionForward forward = new ActionForward();
-		PrintWriter out = response.getWriter();
 
 		if(res > 0) {
 			forward.setRedirect(true);

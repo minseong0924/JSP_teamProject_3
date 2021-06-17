@@ -42,14 +42,17 @@
 								width="200" height="300">
 							</div>
 							<div class="summary ${dto.getTitle_ko() }">
-								<a href="movieContent.do?moviecode=${dto.getMoviecode() }" style="opacity:1;">
+								<a href="movieContent.do?moviecode=${dto.getMoviecode() }" style="opacity:1;"
+								title="${dto.getTitle_ko() } 상세보기">
 								${dto.getSummary() }</a>
 							</div>
 					</div>
 					
 					<div class="title-area">
 						${dto.getTitle_ko() }
-						<br>
+					<br>
+						예매율 : ${dto.getRate()}
+					<br>
 					<button onclick="location.href='booking.do?moviecode=${dto.getMoviecode()}'">예매</button>
 					</div>
 					

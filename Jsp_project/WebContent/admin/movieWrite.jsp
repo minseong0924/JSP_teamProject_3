@@ -52,7 +52,7 @@ function fn_checkByte(obj){
 			<table class="movieWrite">
 				<tr>
 					<th>영화명(국문) : </th>
-					<td><input name="movie_title_kor" placeholder="내용을 입력하세요" required pattern="^[가-힣0-9\s]{1,50}$">
+					<td><input name="movie_title_kor" placeholder="내용을 입력하세요" required pattern="^[가-힣0-9\s\d,;!@#$%^*+=-]{1,50}$">
 					 <div class="valid-feedback">
 					      Looks good!
 					    </div>
@@ -61,7 +61,7 @@ function fn_checkByte(obj){
 				
 				<tr>
 					<th>영화명(영문) : </th>
-					<td><input name="movie_title_eng" placeholder="내용을 입력하세요" required pattern="^[a-zA-Z0-9\s]{1,50}$"></td>
+					<td><input name="movie_title_eng" placeholder="내용을 입력하세요" required pattern="^[a-zA-Z0-9\s\d,;!@#$%^*+=-]{1,50}$"></td>
 				</tr>
 				
 				<tr>
@@ -78,9 +78,14 @@ function fn_checkByte(obj){
 						<select name="movie_genre" required>
 							<option selected disabled value="">:::선택:::</option>
 							<option value="드라마">드라마</option>
-							<option value="로맨스">로맨스</option>
+							<option value="멜로/로맨스">멜로/로맨스</option>
 							<option value="코미디">코미디</option>
 							<option value="스릴러">스릴러</option>
+							<option value="가족">가족</option>
+							<option value="애니메이션">애니메이션</option>
+							<option value="공포">공포</option>
+							<option value="액션">액션</option>
+							<option value="모험">모험</option>
 						</select>
 					</td>
 				</tr>

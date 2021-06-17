@@ -83,8 +83,7 @@ function opendate(dayflag, day) {
 		currentDay = new Date(day);
 		currentDay = new Date(currentDay.setDate(currentDay.getDate()));
 	}
-	
-	
+
 	var weekName = ['일', '월', '화', '수', '목', '금', '토'];
 	var theYear = currentDay.getFullYear();
 	var theMonth = currentDay.getMonth();
@@ -162,9 +161,6 @@ function dayBeforeSetting() {
 	}else {
 		dateButton(day);
 	}
-	
-	
-	
 }
 
 function dayAfterSetting() {
@@ -173,11 +169,8 @@ function dayAfterSetting() {
 	var bk = $(".wrap").find(".bk").next();
 	if(bk.attr("disabled")=='disabled') {
 		while(true) {
-			
 			bk = bk.next();
-			console.log(bk.attr("disabled"));
 			checked = bk.val();
-			console.log(checked);
 			
 			if(bk.attr("disabled")==null) {
 				break;
@@ -347,9 +340,9 @@ function load(location, date_data) {
 						if($("cincode", this).text() != cincode){	
 							$("#"+$("cinemaname", this).text()).append("<div id='"+$("cincode", this).text()+"'class='theater-list-box1'><span class='localscreen'>"+$("cincode", this).text()+"관</span>" +
 								"<div class='movietype'><span class='movietype-text'>"+$("mtype", this).text()+"</span></div>"+
-								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div></div>");
+								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div></div>");
 						}else {
-							$("#"+$("cinemaname", this).text()).find("#"+$("cincode", this).text()).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div>");
+							$("#"+$("cinemaname", this).text()).find("#"+$("cincode", this).text()).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div>");
 						}
 							cincode = $("cincode", this).text();
 					}
@@ -372,9 +365,9 @@ function load(location, date_data) {
 					if($("cincode", this).text() != cincode){	
 						$("#"+$("cinemaname", this).text()).append("<div id='"+$("cincode", this).text()+"'class='theater-list-box1'><span class='localscreen'>"+$("cincode", this).text()+"관</span>" +
 							"<div class='movietype'><span class='movietype-text'>"+$("mtype", this).text()+"</span></div>"+
-							"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div></div>");
+							"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div></div>");
 					}else {
-						$("#"+$("cinemaname", this).text()).find("#"+$("cincode", this).text()).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div>");
+						$("#"+$("cinemaname", this).text()).find("#"+$("cincode", this).text()).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div>");
 					}
 						cincode = $("cincode", this).text();
 				}
@@ -653,9 +646,9 @@ function load1(cinemaname, chandate) {
 						if(slist[i].moviename != pre ||slist[i].cincode != cincode){
 							$("#"+slist[i].moviename).append("<div id='"+slist[i].cincode+"'class='theater-list-box1'><span class='localscreen'>"+slist[i].cincode+"관</span>" +
 								"<div class='movietype'><span class='movietype-text'>"+slist[i].mtype+"</span></div>"+
-								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div></div>");
+								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div></div>");
 						}else {
-							$("#"+slist[i].moviename).find("#"+slist[i].cincode).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div>");
+							$("#"+slist[i].moviename).find("#"+slist[i].cincode).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div>");
 						}
 							cincode = slist[i].cincode;
 							pre = slist[i].moviename;
@@ -685,9 +678,9 @@ function load1(cinemaname, chandate) {
 						if(slist[i].moviename != pre ||slist[i].cincode != cincode){
 							$("#"+slist[i].moviename).append("<div id='"+slist[i].cincode+"'class='theater-list-box1'><span class='localscreen'>"+slist[i].cincode+"관</span>" +
 								"<div class='movietype'><span class='movietype-text'>"+slist[i].mtype+"</span></div>"+
-								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div></div>");
+								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div></div>");
 						}else {
-							$("#"+slist[i].moviename).find("#"+slist[i].cincode).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a></div>");
+							$("#"+slist[i].moviename).find("#"+slist[i].cincode).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div>");
 						}
 					
 							cincode = slist[i].cincode;
@@ -810,6 +803,18 @@ function dayBeforeSetting1() {
 function dayAfterSetting1() {
 	var day = $("#tday1").val();
 	var checked = $(".wrap").find(".bk").next().val();
+	var bk = $(".wrap").find(".bk").next();
+
+	if(bk.attr("disabled")=='disabled') {
+		while(true) {
+			bk = bk.next();
+			checked = bk.val();
+			
+			if(bk.attr("disabled")==null) {
+				break;
+			}
+		}
+	} 
 	opendate1("after", day);
 	dateButton1(checked);
 }

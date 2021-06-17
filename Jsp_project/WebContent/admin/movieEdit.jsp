@@ -61,13 +61,13 @@ function fn_checkByte(obj){
 				<tr>
 					<th>영화명(국문) : </th>
 					<td><input name="movie_title_kor" value="${dto.getTitle_ko() }"
-						placeholder="내용을 입력하세요" required pattern="^[가-힣1-50000]{1,30}$"></td>
+						placeholder="내용을 입력하세요" required pattern="^[가-힣0-9\s\d,;!@#$%^*+=-]{1,30}$"></td>
 				</tr>
 				
 				<tr>
 					<th>영화명(영문) : </th>
 					<td><input name="movie_title_eng" value="${dto.getTitle_en() }" 
-						placeholder="내용을 입력하세요" placeholder="내용을 입력하세요" required pattern="^[a-zA-Z1-50000]{1,50}$"></td>
+						placeholder="내용을 입력하세요" placeholder="내용을 입력하세요" required pattern="^[a-zA-Z0-9\s\d,;!@#$%^*+=-]{1,50}$"></td>
 				</tr>
 				
 				<tr>
@@ -83,9 +83,14 @@ function fn_checkByte(obj){
 						<select name="movie_genre" required>
 							<option selected disabled value="">:::선택:::</option>
 							<option value="드라마" <% if(list.getGenre().equals("드라마")) {%>selected<%} %>>드라마</option>
-							<option value="로맨스" <% if(list.getGenre().equals("로맨스")) {%>selected<%} %>>로맨스</option>
+							<option value="멜로/로맨스" <% if(list.getGenre().equals("멜로/로맨스")) {%>selected<%} %>>멜로/로맨스</option>
 							<option value="코미디" <% if(list.getGenre().equals("코미디")) {%>selected<%} %>>코미디</option>
 							<option value="스릴러" <% if(list.getGenre().equals("스릴러")) {%>selected<%} %>>스릴러</option>
+							<option value="가족" <% if(list.getGenre().equals("가족")) {%>selected<%} %>>가족</option>
+							<option value="애니메이션" <% if(list.getGenre().equals("애니메이션")) {%>selected<%} %>>애니메이션</option>
+							<option value="공포" <% if(list.getGenre().equals("공포")) {%>selected<%} %>>공포</option>
+							<option value="액션" <% if(list.getGenre().equals("액션")) {%>selected<%} %>>액션</option>
+							<option value="모험" <% if(list.getGenre().equals("모험")) {%>selected<%} %>>모험</option>
 						</select>
 					</td>
 				</tr>

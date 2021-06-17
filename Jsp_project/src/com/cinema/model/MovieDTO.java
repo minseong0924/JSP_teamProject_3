@@ -15,7 +15,14 @@ public class MovieDTO {
 	private String opendate;
 	private String mstate;
 	private String mtype;
+	private String rate;
 	
+	public String getRate() {
+		return rate;
+	}
+	public void setRate(String rate) {
+		this.rate = rate;
+	}
 	public int getMoviecode() {
 		return moviecode;
 	}

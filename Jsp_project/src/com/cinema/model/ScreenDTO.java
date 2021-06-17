@@ -15,7 +15,15 @@ public class ScreenDTO {
 	private String poster;
 	private String localcode;
 	private String localname;
+	private int remaining_seats;
 	
+	
+	public int getRemaining_seats() {
+		return remaining_seats;
+	}
+	public void setRemaining_seats(int remaining_seats) {
+		this.remaining_seats = remaining_seats;
+	}
 	public String getLocalname() {
 		return localname;
 	}

@@ -711,12 +711,16 @@ public class ScreenDAO {
 				moviecode = rs.getInt(1);
 			}
 			
-			sql = "select s.*,m.mtype\n" + 
-					"from screen s, movie m\n" + 
+			sql = "select s.*,m.mtype, \n" + 
+					"(select 50-count(*) \n" + 
+					"from booking b \n" + 
+					"where b.screencode = s.screencode) as remaining_seats\n" + 
+					"from screen s, movie m \n" + 
 					"where s.moviecode = m.moviecode\n" + 
 					"and s.cinemacode in(select cinemacode from cinema where localcode = ?)\n" + 
 					"and s.moviecode = ?\n" + 
-					"and start_date = TO_DATE(?, 'YYYY-MM-DD') order by s.cinemacode, s.cincode, s.start_time";
+					"and start_date = TO_DATE(?, 'YYYY-MM-DD') " +
+					"order by s.cinemacode, s.cincode, s.start_time";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, localcode);
@@ -738,6 +742,7 @@ public class ScreenDAO {
 				result += "<end_time>" + rs.getInt("end_time") + "</end_time>";
 				result += "<start_date>" + rs.getString("start_date") + "</start_date>";
 				result += "<mtype>" + rs.getString("mtype") + "</mtype>";
+				result += "<remaining_seats>" + rs.getString("remaining_seats") + "</remaining_seats>";
 				result += "</screen>";
 			}
 				result += "</screen1>";
@@ -757,16 +762,19 @@ public class ScreenDAO {
 		try {
 			openConn();
 			
-			sql = "select s.*, m.title_ko, m.mtype\n" + 
-					"from screen s, movie m \n" + 
-					"where s.cinemaname=? \n" + 
+			sql = "select distinct s.*,m.title_ko,m.mtype, \n" + 
+					"(select 50-count(*) \n" + 
+					"from booking b \n" + 
+					"where b.screencode = s.screencode) as remaining_seats\n" + 
+					"from screen s, movie m, booking b\n" + 
+					"where s.start_date = TO_DATE(?, 'YYYY-MM-DD') \n" + 
 					"and s.moviecode = m.moviecode\n" + 
-					"and start_date = TO_DATE(?, 'YYYY-MM-DD') \n" + 
-					"order by title_ko, cincode, start_time";
+					"and s.cinemaname=?\n" + 
+					"order by s.cinemacode, s.cincode, s.start_time";
 			
 			pstmt = con.prepareStatement(sql);
-			pstmt.setString(1, cinemaname);
-			pstmt.setString(2, date);
+			pstmt.setString(1, date);
+			pstmt.setString(2, cinemaname);
 			
 			rs = pstmt.executeQuery();
 			
@@ -784,6 +792,7 @@ public class ScreenDAO {
 				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
 				dto.setMoviename(rs.getString("title_ko"));
 				dto.setMtype(rs.getString("mtype"));
+				dto.setRemaining_seats(rs.getInt("remaining_seats"));
 				
 				list.add(dto);
 			}
