@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -104,8 +107,8 @@ public class BookDAO {
 				dto.setCincode(rs.getInt("cincode"));
 				dto.setStart_date(rs.getString("start_date"));
 				dto.setEnd_date(rs.getString("end_date"));
-				dto.setStart_time(rs.getInt("start_time"));
-				dto.setEnd_time(rs.getInt("end_time"));
+				dto.setStart_time(rs.getString("start_time"));
+				dto.setEnd_time(rs.getString("end_time"));
 				dto.setSeat_no(rs.getString("seat_no"));
 
 				list.add(dto);
@@ -138,7 +141,6 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			closeConn(rs, pstmt, con);
@@ -170,7 +172,6 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			closeConn(rs, pstmt, con);
@@ -205,11 +206,86 @@ public class BookDAO {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			closeConn(rs, pstmt, con);
 		}
+		return result;
+	}
+	
+	// 예매 좌석 조회
+	public String bookingSeatOpen(int screencode) {
+		String result = "";
+		
+		try {
+			openConn();
+
+			sql = "select * from booking where screencode = ?";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, screencode);
+
+			rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				result += rs.getString("seat_no");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	//예매 추가
+	public int bookingInsert(BookDTO dto) {
+		int result = 0;
+		String bookingcode = "";
+		
+		try {
+			openConn();
+			
+			SimpleDateFormat format1 = new SimpleDateFormat ("yyyyMMdd");
+			SimpleDateFormat format2 = new SimpleDateFormat ("HHmm");
+					
+			Date date = new Date();
+					
+			String day = format1.format(date);
+			String time = format2.format(date);
+			
+			Random random = new Random();
+			bookingcode = day + "-" + time + "-" + random.nextInt(10000);
+			
+			
+			sql = "insert into booking "
+					+ " values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			
+			pstmt = con.prepareStatement(sql);
+
+			pstmt.setString(1, bookingcode);
+			pstmt.setString(2, dto.getId());
+			pstmt.setInt(3, dto.getLocalcode());
+			pstmt.setString(4, dto.getCinemaname());
+			pstmt.setString(5, dto.getTitle_ko());
+			pstmt.setInt(6, dto.getScreencode());
+			pstmt.setInt(7, dto.getCincode());
+			pstmt.setString(8, dto.getStart_date());
+			pstmt.setString(9, dto.getEnd_date());
+			pstmt.setString(10, dto.getStart_time());
+			pstmt.setString(11, dto.getEnd_time());
+			pstmt.setString(12, dto.getSeat_no());
+			pstmt.setString(13, dto.getCredit());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
 		return result;
 	}
 }

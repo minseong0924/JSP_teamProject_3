@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.cinema.controller.Action;
 import com.cinema.controller.ActionForward;
+import com.cinema.model.BookDAO;
 import com.cinema.model.ScreenDAO;
 import com.cinema.model.ScreenDTO;
 import com.cinema.model.SeatDAO;
@@ -18,16 +19,21 @@ public class MovieBookingReadyAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		int screencode = Integer.parseInt(request.getParameter("screencode"));
 		
-		ActionForward forward = new ActionForward();
-		
 		ScreenDAO sdao = ScreenDAO.getInstance();
 		ScreenDTO sdto = sdao.bookingScreenDetailOpen(screencode);
 		
 		SeatDAO tdao = SeatDAO.getInstance();
 		SeatDTO tdto = tdao.seatOpen(sdto.getCinemacode(), sdto.getCincode());
 		
+		BookDAO bdao = BookDAO.getInstance();
+		String bookingSeat = bdao.bookingSeatOpen(screencode);
+		String[] bookingSeatarr = bookingSeat.split("/");
+		
 		request.setAttribute("sdto", sdto);
 		request.setAttribute("seat", tdto);
+		request.setAttribute("bookseat", bookingSeatarr);
+		
+		ActionForward forward = new ActionForward();
 		
 		forward.setRedirect(false);
 		forward.setPath("movieBookingSelect.do");

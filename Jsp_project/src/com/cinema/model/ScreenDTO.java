@@ -11,21 +11,35 @@ public class ScreenDTO {
 	private String end_date;
 	private String cinemaname;
 	private String moviename;
+	private String movienameEng;
 	private String mtype;
 	private String poster;
-	private String localcode;
+	private int localcode;
 	private String localname;
+	private String age;
 	
+	public String getAge() {
+		return age;
+	}
+	public void setAge(String age) {
+		this.age = age;
+	}
+	public String getMovienameEng() {
+		return movienameEng;
+	}
+	public void setMovienameEng(String movienameEng) {
+		this.movienameEng = movienameEng;
+	}
 	public String getLocalname() {
 		return localname;
 	}
 	public void setLocalname(String localname) {
 		this.localname = localname;
 	}
-	public String getLocalcode() {
+	public int getLocalcode() {
 		return localcode;
 	}
-	public void setLocalcode(String localcode) {
+	public void setLocalcode(int localcode) {
 		this.localcode = localcode;
 	}
 	public String getMtype() {

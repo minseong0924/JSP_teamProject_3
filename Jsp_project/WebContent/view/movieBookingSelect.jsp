@@ -2,11 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>  
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>쌍용박스 : 예매하기</title>
 <link href="./css/style.css" rel="stylesheet" type="text/css" />
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript">
@@ -14,6 +15,7 @@
 	// 관람 인원 총 합계
 	var select_person = 0;
 	var select_seat_loc = 999;
+	var total_price_loc = 0;
 	
 	// 인원 선택 (4명까지)
 	function selectPerson(btn) {
@@ -21,7 +23,7 @@
 		select_seat_loc = 999;
 		$("#seat_cover_div").hide();
 		$("#seat_arr_div").children("button").removeClass("selected_seat");
-		$("#seat_arr_div").children("button").css("background-color","");
+		$(".seat_btn[disabled!='disabled']").css("background-color","#B2EBF4");
 		$("#seat_select_span").html("좌석번호");
 		$("#total_price_span").html("총금액");
 		
@@ -126,7 +128,7 @@
 			
 		} else {// 이미 선택된 좌석이면 선택 해제
 			$("#"+seat.id).removeClass("selected_seat");
-			$("#"+seat.id).css('background-color','');
+			$("#"+seat.id).css('background-color','#B2EBF4');
 			select_seat_loc = 999;
 		}
 		
@@ -175,6 +177,7 @@
 		}
 
 		var totalPrice = adultPrice + juniorPrice;
+		total_price_loc = totalPrice;
 		totalPrice = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 		htmlStr += "<br>총금액&nbsp;&nbsp;" + totalPrice + "원";
 		
@@ -182,9 +185,23 @@
 	}
 	
 	// 결제 화면 넘어가기 메서드(스크린코드, 총좌석수)
-	function payment(code, allseat) {
+	function payment(id, code, allseat) {
+		if(select_seat_loc == 999) {
+			alert("좌석을 선택해주세요!");
+			return;
+		}
+		
 		if(select_seat_loc != select_person) {
 			alert("선택한 인원 수만큼 좌석을 선택해주세요!");
+			return;
+		}
+		
+		if(id == "") {
+			var login = window.location.search;
+			var logincode = login.split("=");
+			onClick();
+			$("#loginValue").val(logincode[1]);
+			console.log($("#loginValue").val());
 			return;
 		}
 
@@ -197,17 +214,34 @@
 		
 		//스크린코드
 		params[0] = code;
+		params[1] = "";
 		
 		//선택 좌석
 		for(var i=1; i<=allseat; i++) {
 			if($("#seat"+i).hasClass("selected_seat")) {
-				params[1] += $("#seat"+i).val() + ":";
+				params[1] += $("#seat"+i).val() + "/";
 			}
 		}
 		
-		console.log(params[0]);
-		console.log(params[1]);
-			
+		//선택 인원 명수 : 일반
+		if($("#adult_gr").children(".selected_person").val() == null) {
+			params[2] = 0;
+		} else {
+			params[2] = $("#adult_gr").children(".selected_person").val();
+		}
+		
+		//선택 인원 명수 : 청소년
+		if($("#junior_gr").children(".selected_person").val() == null) {
+			params[3] = 0;
+		} else {
+			params[3] = $("#junior_gr").children(".selected_person").val();
+		}
+		
+		
+		//총 금액
+		params[4] = total_price_loc;
+		console.log(params);
+
 		for ( var key in params) {
 
 			var hiddenField = document.createElement('input');
@@ -225,6 +259,13 @@
 		form.submit();
 
 	}
+	
+	$(document).ready(function() {
+		
+		// 예매 좌석/일반 좌석 색상 설정
+		$(".seat_btn[disabled='disabled']").css("background-color","#EAEAEA");
+		$(".seat_btn[disabled!='disabled']").css("background-color","#B2EBF4");
+    });
 </script>
 </head>
 <body>
@@ -285,20 +326,31 @@
 	   		</div>
 	   		
 	   		<div id="top_movie_info_div" class="top_div" align="left">
-	   			<span>${sdto.cinemaname }</span>&nbsp;|&nbsp;
-	   			<span>${sdto.cincode }관</span>&nbsp;|&nbsp;
-	   			<span>남은좌석&nbsp;&nbsp;&nbsp;00/${seat.allseat }</span>&nbsp;|&nbsp;
+	   			<span>${sdto.cinemaname }</span>&nbsp;│&nbsp;
+	   			<span>${sdto.cincode }관</span>&nbsp;│&nbsp;
+	   			<span style="color: orange; font-weight: bold;">
+	   				남은좌석&nbsp;&nbsp;&nbsp;
+	   				<c:if test="${bookseat[0] == '' }">
+	   					${seat.allseat }/${seat.allseat }
+	   				</c:if>
+	   				<c:if test="${bookseat[0] != '' }">
+	   					${(seat.allseat-fn:length(bookseat)) }/${seat.allseat }
+	   				</c:if>
+	   			</span>&nbsp;│&nbsp;
 	   			<h4>일시&nbsp;&nbsp;&nbsp;${sdto.start_date }&nbsp;
-						<fmt:parseNumber value="${(sdto.start_time / 60) }" integerOnly="true" />:
-	               		<fmt:parseNumber value="${(sdto.start_time % 60) }" integerOnly="true" />&nbsp;~
+	   					<c:if test="${(sdto.start_time / 60) < 10}">0</c:if><fmt:parseNumber value="${(sdto.start_time / 60) }" integerOnly="true" />:
+						<c:if test="${(sdto.start_time % 60) < 10}">0</c:if><fmt:parseNumber value="${(sdto.start_time % 60) }" integerOnly="true" />&nbsp;~
 	               		<c:if test="${sdto.end_time >= 1440}">
-	               			<fmt:parseNumber value="${((sdto.end_time- 1440) / 60) }" integerOnly="true" />:
+	               			<c:if test="${((sdto.end_time-1440) / 60) < 10}">0</c:if><fmt:parseNumber value="${((sdto.end_time- 1440) / 60) }" integerOnly="true" />:
 	               		</c:if>
 	               		<c:if test="${sdto.end_time < 1440}">
-	               			<fmt:parseNumber value="${(sdto.end_time / 60) }" integerOnly="true" />:
+	               			<c:if test="${((sdto.end_time) / 60) < 10}">0</c:if><fmt:parseNumber value="${(sdto.end_time / 60) }" integerOnly="true" />:
 	               		</c:if>
-	               		<fmt:parseNumber value="${(sdto.end_time % 60) }" integerOnly="true" />
+	               		<c:if test="${((sdto.end_time) % 60) < 10}">0</c:if><fmt:parseNumber value="${(sdto.end_time % 60) }" integerOnly="true" />
 				</h4>
+				<img id="seat_info_img"
+					 src="<%=request.getContextPath() %>/image/seat_info2.jpg"
+		 		     width="110px" height="75px" >
 			</div>
 		</div>
 		
@@ -308,24 +360,30 @@
 			<div id="seat_cover_div" align="center"><span id="cover_span">관람할 인원을 선택해주세요.</span></div>
 			<div id="screen_image_div">
 				<img id="main_screen"
-					src="<%=request.getContextPath() %>/image/screen.JPG"
-	 		width="570px" height="40px" >
+					 src="<%=request.getContextPath() %>/image/screen.JPG"
+	 				 width="570px" height="40px" >
 			</div><br>
-			
 			<div id="seat_arr_div" align="center">
 				<c:forEach var="seatno" begin="1" end="${seat.allseat }" >
 					<button 
 						type="button"
-						style="width: 30px; height: 30px; font-size: 8px; font-variant: "
-						class="btn btn-outline-info"
+						style="width: 30px; height: 30px; border: 0px;"
 						id="seat${seatno }"
 						value="${seatno }"
-						onclick="seatCheck(this,${seat.allseat })">
-						<i class='glyphicon glyphicon-unchecked'></i>
+						class="seat_btn"
+						onclick="seatCheck(this,${seat.allseat })"
+						<c:forEach var="i" begin="1" end="${fn:length(bookseat) }" >
+							<c:if test="${bookseat[i] == seatno}">
+								disabled="disabled"
+							</c:if>
+						</c:forEach>>
 					</button>
 					<c:if test="${seatno%13 == 0 }"><br><br></c:if>
 				</c:forEach>
 			</div>
+		</div>
+		<div id="seat_info_img_div" style="float: right;">
+			
 		</div>
 		
 		<hr>
@@ -336,6 +394,7 @@
 					type="button"
 					id="before"
 					class="btn btn-light btn-block"
+					onclick="history.back()"
 					style="width:150px; height:150px;">
 					<i class='glyphicon glyphicon-backward'></i>
 				</button>
@@ -375,7 +434,7 @@
 					type="button"
 					id="next"
 					class="btn btn-light btn-block"
-					onclick="payment('${sdto.screencode}', '${seat.allseat }')"
+					onclick="payment('${memSession.id }','${sdto.screencode}', '${seat.allseat }')"
 					style="width:150px; height:150px;">
 				<i class='glyphicon glyphicon-credit-card'></i>
 				</button>

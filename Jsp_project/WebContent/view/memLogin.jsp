@@ -27,6 +27,7 @@
 				
 				<tr>
 					<td align="center" colspan="2">
+						<input type="hidden" id="loginValue" name="loginValue" value="###">
 						<button type="submit" class="btn btn-default btn-block">LOGIN</button>
 					</td>
 				</tr>
