@@ -20,8 +20,6 @@ public class CinemaSearchAction implements Action {
 		
 		int local_code = Integer.parseInt(request.getParameter("local_code"));
 		
-		System.out.println(local_code);
-		
 		CinemaDAO cdao = CinemaDAO.getInstance();
 		List<CinemaDTO> clist = cdao.cinemaSearch(local_code);
 		

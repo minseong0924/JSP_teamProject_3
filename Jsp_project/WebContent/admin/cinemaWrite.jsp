@@ -10,6 +10,54 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript">
 
+	function textboxable1(frm) {
+		if(frm.seat_no1.disabled == true) {
+			frm.seat_no1.disabled = false;
+		}else {
+			frm.seat_no1.disabled = true;
+		}
+	}
+	
+	function textboxable2(frm) {
+		if(frm.seat_no2.disabled == true) {
+			frm.seat_no2.disabled = false;
+		}else {
+			frm.seat_no2.disabled = true;
+		}
+	}
+	
+	function textboxable3(frm) {
+		if(frm.seat_no3.disabled == true) {
+			frm.seat_no3.disabled = false;
+		}else {
+			frm.seat_no3.disabled = true;
+		}
+	}
+	
+	function textboxable4(frm) {
+		if(frm.seat_no4.disabled == true) {
+			frm.seat_no4.disabled = false;
+		}else {
+			frm.seat_no4.disabled = true;
+		}
+	}
+	
+	function textboxable5(frm) {
+		if(frm.seat_no5.disabled == true) {
+			frm.seat_no5.disabled = false;
+		}else {
+			frm.seat_no5.disabled = true;
+		}
+	}
+	
+	function textboxable6(frm) {
+		if(frm.seat_no6.disabled == true) {
+			frm.seat_no6.disabled = false;
+		}else {
+			frm.seat_no6.disabled = true;
+		}
+	}
+
 	function fn_checkByte(obj) {
 		var maxByte = 100; //최대 100바이트
 		var text_val = obj.value; //입력한 문자
@@ -107,33 +155,41 @@
 				<tr>
 					<th>사용할 관 : </th>
 					<td>
-						<input type="checkbox" name="cin_check" value="1"> 1관
+						<input type="checkbox" name="cin_check" value="1" onclick="textboxable1(this.form)"> 1관
+						<input type="text" name="seat_no1" placeholder="좌석 수" style="width:60px" disabled>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" name="cin_check" value="2"> 2관
+						<input type="checkbox" name="cin_check" value="2" onclick="textboxable2(this.form)"> 2관
+						<input type="text" name="seat_no2" placeholder="좌석 수" style="width:60px" disabled>
 					</td>
 				</tr>
 				
 				<tr>
 					<th></th>
 					<td>
-						<input type="checkbox" name="cin_check" value="3"> 3관
+						<input type="checkbox" name="cin_check" value="3" onclick="textboxable3(this.form)"> 3관
+						<input type="text" name="seat_no3" placeholder="좌석 수" style="width:60px" disabled>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" name="cin_check" value="4"> 4관
+						<input type="checkbox" name="cin_check" value="4" onclick="textboxable4(this.form)"> 4관
+						<input type="text" name="seat_no4" placeholder="좌석 수" style="width:60px" disabled>
 					</td>
 				</tr>
 				
 				<tr>
 					<th></th>
 					<td>
-						<input type="checkbox" name="cin_check" value="5"> 5관
+						<input type="checkbox" name="cin_check" value="5" onclick="textboxable5(this.form)"> 5관
+						<input type="text" name="seat_no5" placeholder="좌석 수" style="width:60px" disabled>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<input type="checkbox" name="cin_check" value="6"> 6관
+						<input type="checkbox" name="cin_check" value="6" onclick="textboxable6(this.form)"> 6관
+						<input type="text" name="seat_no6" placeholder="좌석 수" style="width:60px" disabled>
 					</td>
 				</tr>
 				
 				<tr>
 					<td colspan="4" align="right">
 						<input type="submit" value="등록">
+						&nbsp;&nbsp;
+						<input type="submit" onclick="history.back()" value="취소">
 					</td>
 				</tr>
 				

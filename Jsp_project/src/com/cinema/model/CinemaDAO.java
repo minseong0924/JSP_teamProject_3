@@ -354,4 +354,29 @@ public class CinemaDAO {
 		}
 		return result;
 	}
+	
+	
+	public int cinemaGetCode(String cinema_name) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "select cinemacode from cinema where cinemaname = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, cinema_name);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				result = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }
