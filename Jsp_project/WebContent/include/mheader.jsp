@@ -94,7 +94,18 @@
 						</ul> 
 					</li>
 					
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> 마이페이지 </a> 
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/#">개인정보 수정</a></li>
+						</ul> 
+					</li>
+					
 				</ul>
+				
+				
 				
 				<!-- 메뉴를 오른쪽 정렬로 설정 가능 -->
 				<ul class="nav navbar-nav navbar-right">
