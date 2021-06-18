@@ -583,7 +583,9 @@
 		$("#day1").addClass('active');
 		
 		if($("#movie_page").val() != "") {
+			selectMovie = $("#movie_page").val();
 			movieSelect($("#movie_page").val());
+			selectDay = $("#day1").val();
 		}
     });
 </script>
