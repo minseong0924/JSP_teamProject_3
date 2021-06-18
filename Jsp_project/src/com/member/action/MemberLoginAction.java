@@ -28,7 +28,7 @@ public class MemberLoginAction implements Action {
 		HttpSession session = request.getSession();
 		
 		if(res > 0) {
-			if(loginValue == "###") {
+			if(loginValue.equals("###")) {
 				forward.setRedirect(false);
 				forward.setPath("main.do");
 			} else {

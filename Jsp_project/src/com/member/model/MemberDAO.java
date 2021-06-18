@@ -291,10 +291,10 @@ public class MemberDAO {
 				dto.setId(rs.getString("id"));
 				dto.setPwd(rs.getString("pwd"));
 				dto.setName(rs.getString("name"));
-				dto.setPhone(rs.getString("phone"));
+				dto.setPhone(rs.getString("phone").replace("-", ""));
 				dto.setPoint(rs.getInt("point"));
 				dto.setPermission(rs.getString("permission"));
-				dto.setBirth(rs.getString("birth"));
+				dto.setBirth(rs.getString("birth").substring(0, 10).replace("-", ""));
 				dto.setRegdate(rs.getString("regdate"));
 			}
 		} catch (SQLException e) {
@@ -305,9 +305,52 @@ public class MemberDAO {
 		}
 		return dto;
 	}
+	
+	
+	public int memberEditOk(String id, String name, String pwd, String phone) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "update member1 set name = ?, pwd = ?, phone = ? where id = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, name);
+			pstmt.setString(2, pwd);
+			pstmt.setString(3, phone);
+			pstmt.setString(4, id);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	
+	public int memberDelete(String id) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "delete from member1 where id = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }
-
-
-
-
-

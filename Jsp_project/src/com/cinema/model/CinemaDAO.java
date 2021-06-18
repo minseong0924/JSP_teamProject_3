@@ -293,25 +293,6 @@ public class CinemaDAO {
 	}
 	
 	
-	// 삭제한 지점보다 code값이 큰 지점들의 code값을 -1 해주는 메서드
-	public void cinemaCodeDown(int code) {
-		
-		try {openConn();
-		
-			sql = "update cinema set cinemacode = cinemacode - 1 where cinemacode > ?";
-		
-			pstmt = con.prepareStatement(sql);
-			pstmt.setInt(1, code);
-			
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			closeConn(rs, pstmt, con);
-		}
-	}
-	
 	public String LocalCinemaList(String local) {
 		String result = "";
 		int localcode = 0;
