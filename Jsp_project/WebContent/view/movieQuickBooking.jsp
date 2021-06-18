@@ -341,6 +341,7 @@
 		}
 		selectMovie = "";
 		selectDay = day;
+		$("#screen_div").html("");
 		
 		$.ajax({
 			type:"post",
