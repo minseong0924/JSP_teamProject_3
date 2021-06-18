@@ -21,6 +21,7 @@ public class MovieBookingSendAction implements Action {
 		String select_seat = request.getParameter("select_seat");
 		String userid = request.getParameter("userid");
 		String credit = request.getParameter("credit");
+		int price = Integer.parseInt(request.getParameter("price"));
 		
 		ScreenDAO sdao = ScreenDAO.getInstance();
 		ScreenDTO sdto = sdao.bookingScreenDetailOpen(screencode);
@@ -101,13 +102,19 @@ public class MovieBookingSendAction implements Action {
 		bdto.setCredit(credit);
 		
 		BookDAO bdao = BookDAO.getInstance();
-		int res = bdao.bookingInsert(bdto);
+		String res = bdao.bookingInsert(bdto);
 		
 		ActionForward forward = new ActionForward();
 		PrintWriter out = response.getWriter();
 		
-		if(res > 0) {
-			forward.setRedirect(true);
+		if(!res.equals("")) { //예매코드 반화되었으면
+			BookDTO dto = bdao.bookingDetailOpen(res);
+			
+			request.setAttribute("booking", dto);
+			request.setAttribute("screen", sdto);
+			request.setAttribute("price", price);
+			
+			forward.setRedirect(false);
 			forward.setPath("movieBookingComplete.do");
 		}else {
 			out.println("<script>");

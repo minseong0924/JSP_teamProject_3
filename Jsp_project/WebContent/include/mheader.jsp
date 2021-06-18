@@ -60,30 +60,33 @@
 					</li>
 					
 					
-					<!-- 관리자일 때 if문 추가 -->
-					<li class="nav-item">
-						<a class="nav-link" href="<%=request.getContextPath() %>/memberManagement.do">사용자관리</a> 
-					</li>
+					<c:if test="${memSession.permission == '관리자'}">
+						<li class="nav-item">
+							<a class="nav-link" href="<%=request.getContextPath() %>/memberManagement.do">사용자관리</a> 
+						</li>
+						
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">홈페이지관리</a> 
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/cinemaList.do">전체 지점 목록</a></li>
+								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/cinemaWrite.do">지점 등록</a></li>
+								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieList.do">전체 영화 목록</a></li>
+								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieWrite.do">영화 등록</a></li>
+								<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieScreenSetting.do">영화 상영 설정</a></li>
+							</ul> 
+						</li>
+					</c:if>
 					
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">홈페이지관리</a> 
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/cinemaList.do">전체 지점 목록</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/cinemaWrite.do">지점 등록</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieList.do">전체 영화 목록</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieWrite.do">영화 등록</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieScreenSetting.do">영화 상영 설정</a></li>
-						</ul> 
-					</li>
-					
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> 마이페이지 </a> 
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }">개인정보 수정</a></li>
-						</ul> 
-					</li>
+					<c:if test="${!empty memSession }">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> 마이페이지 </a> 
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
+								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역</a></li>
+								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }">개인정보 수정</a></li>
+							</ul> 
+						</li>
+					</c:if>
 					
 				</ul>
 				
