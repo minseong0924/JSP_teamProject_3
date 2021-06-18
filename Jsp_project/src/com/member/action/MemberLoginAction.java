@@ -18,6 +18,7 @@ public class MemberLoginAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String id = request.getParameter("id").trim();
 		String pwd = request.getParameter("pwd").trim();
+		String loginValue = request.getParameter("loginValue").trim();
 		
 		MemberDAO mdao = MemberDAO.getInstance();
 		int res = mdao.memberLogin(id, pwd);
@@ -27,9 +28,13 @@ public class MemberLoginAction implements Action {
 		HttpSession session = request.getSession();
 		
 		if(res > 0) {
-			forward.setRedirect(false);
-			forward.setPath("main.do");
-			
+			if(loginValue == "###") {
+				forward.setRedirect(false);
+				forward.setPath("main.do");
+			} else {
+				forward.setRedirect(false);
+				forward.setPath("movieBookingReady.do?screencode="+loginValue);
+			}
 			MemberSession ms = new MemberSession();
 			ms = mdao.getMember(id, pwd);
 			session.setAttribute("memSession", ms);

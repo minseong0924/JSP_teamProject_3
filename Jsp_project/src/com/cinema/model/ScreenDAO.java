@@ -343,7 +343,7 @@ public class ScreenDAO {
 				dto.setPoster(rs.getString("poster"));
 				dto.setMoviename(rs.getString("title_ko"));
 				dto.setMtype(rs.getString("mtype"));
-				dto.setLocalcode(rs.getString("localcode"));
+				dto.setLocalcode(rs.getInt("localcode"));
 				
 				list.add(dto);
 			}
@@ -398,9 +398,10 @@ public class ScreenDAO {
 		try {
 			openConn();
 			
-			sql = "select s.*, m.* " + 
-					"from screen s, movie m " + 
-					"where s.moviecode = m.moviecode " + 
+			sql = "select s.*, m.*, c.localcode " + 
+					"from screen s, movie m, cinema c " + 
+					"where s.moviecode = m.moviecode " +
+					"and s.cinemacode = c.cinemacode " + 
 					"and s.screencode = ?";
 			
 			pstmt = con.prepareStatement(sql);
@@ -418,8 +419,11 @@ public class ScreenDAO {
 				dto.setStart_date(rs.getString("start_date").substring(0, 10));
 				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
 				dto.setMtype(rs.getString("mtype"));
+				dto.setAge(rs.getString("age"));
 				dto.setMoviename(rs.getString("title_ko"));
+				dto.setMovienameEng(rs.getString("title_en"));
 				dto.setPoster(rs.getString("poster"));
+				dto.setLocalcode(rs.getInt("localcode"));
 			}
 			
 			

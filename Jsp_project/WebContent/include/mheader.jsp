@@ -5,17 +5,8 @@
 <meta charset="UTF-8">
 
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="./js/loginout.js"></script>
 <script>
-
-	function onClick() {
-	    document.querySelector('.modal_wrap').style.display ='block';
-	    document.querySelector('.black_bg').style.display ='block';
-	}
-	
-	function offClick() {
-	    document.querySelector('.modal_wrap').style.display ='none';
-	    document.querySelector('.black_bg').style.display ='none';
-	}
 	
     window.onload = function() {
 	    //document.getElementById('modal_btn').addEventListener('click', onClick);
