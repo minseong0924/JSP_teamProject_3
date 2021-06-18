@@ -357,7 +357,7 @@
 		<hr>
 		<!-- 좌석 셋팅 -->
 		<div id="seat_div" align="center" style="positon :relative; z-index: 1;">
-			<div id="seat_cover_div" align="center"><span id="cover_span">관람할 인원을 선택해주세요.</span></div>
+			<!--<div id="seat_cover_div" align="center"><span id="cover_span">관람할 인원을 선택해주세요.</span></div>  -->
 			<div id="screen_image_div">
 				<img id="main_screen"
 					 src="<%=request.getContextPath() %>/image/screen.JPG"

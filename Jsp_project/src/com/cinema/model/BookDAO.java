@@ -240,7 +240,7 @@ public class BookDAO {
 	}
 	
 	//예매 추가
-	public int bookingInsert(BookDTO dto) {
+	public String bookingInsert(BookDTO dto) {
 		int result = 0;
 		String bookingcode = "";
 		
@@ -277,6 +277,72 @@ public class BookDAO {
 			pstmt.setString(11, dto.getEnd_time());
 			pstmt.setString(12, dto.getSeat_no());
 			pstmt.setString(13, dto.getCredit());
+			
+			result = pstmt.executeUpdate();
+			
+			if(result>0) {
+				return bookingcode;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return "";
+	}
+	
+	public BookDTO bookingDetailOpen(String bookingcode) {
+		BookDTO dto = new BookDTO();
+
+		try {
+			openConn();
+
+			sql = "select * from booking where bookingcode= ?";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, bookingcode);
+
+			rs = pstmt.executeQuery();
+
+			if(rs.next()) {
+
+				dto.setBookingcode(rs.getString("bookingcode"));
+				dto.setId(rs.getString("id"));
+				dto.setLocalcode(rs.getInt("localcode"));
+				dto.setCinemaname(rs.getString("cinemaname"));
+				dto.setTitle_ko(rs.getString("title_ko"));
+				dto.setScreencode(rs.getInt("screencode"));
+				dto.setCincode(rs.getInt("cincode"));
+				dto.setStart_date(rs.getString("start_date").substring(0, 10));
+				dto.setEnd_date(rs.getString("end_date").substring(0, 10));
+				dto.setStart_time(rs.getString("start_time"));
+				dto.setEnd_time(rs.getString("end_time"));
+				dto.setSeat_no(rs.getString("seat_no"));
+				dto.setCredit(rs.getString("credit"));
+
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		
+		return dto;
+	}
+	
+	public int bookingDelete(String code) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "delete from booking where bookingcode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setString(1, code);
 			
 			result = pstmt.executeUpdate();
 			

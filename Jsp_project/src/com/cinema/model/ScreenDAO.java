@@ -272,7 +272,7 @@ public class ScreenDAO {
 						"where s.moviecode = m.moviecode " +
 						"and s.cinemacode = c.cinemacode " +
 						"and m.mstate = '상영중' " +
-						"and start_date >= ?"+
+						"and ? between start_date and end_date "+
 						"and s.moviecode = ?"
 						+" order by start_time";
 				

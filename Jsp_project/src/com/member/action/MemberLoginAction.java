@@ -38,6 +38,7 @@ public class MemberLoginAction implements Action {
 			MemberSession ms = new MemberSession();
 			ms = mdao.getMember(id, pwd);
 			session.setAttribute("memSession", ms);
+			session.setMaxInactiveInterval(60*60); //클라이언트가 20분동안 요청이 없으면 세션 제거
 		} else {
 			out.println("<script>");
 			out.println("alert('로그인에 실패했습니다. 고객센터로 문의바랍니다.')");
