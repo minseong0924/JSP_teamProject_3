@@ -8,6 +8,31 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 메인</title>
 <link rel="stylesheet" href="./css/style.css">
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script type="text/javascript">
+	
+	function pwdCheck() {
+		
+		var count = 0;
+		var pass = prompt('암호를 입력하십시오',''); // 초기시 암호 물어보는 멘트
+		
+		while(count < 2) {
+			if(pass == "${memSession.pwd }") { // 암호지정
+				alert('개인 수정페이지로 이동합니다.'); // 암호가 맞았을때 나오는 멘트
+				return;
+			}
+			count++;
+			var pass = prompt('암호를 확인 하시고 다시 입력하세요!.',''); // 암호가 틀렸을때 멘트
+		}
+		
+		if(count == 2) {
+			alert('3번 잘못 누르셨습니다.');
+			return false;
+		}
+	}
+	
+	
+</script>
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
@@ -15,7 +40,7 @@
 		<nav id="side_bar">
 			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
 			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역</a></li>
-			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }">개인정보 수정</a></li>
+			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }" onclick="pwdCheck()">개인정보 수정</a></li>
 		</nav>
 	</div>
 	<div align="center">
@@ -26,7 +51,7 @@
 			<span class="memname">${memSession.name }님</span>
 			<span class="mempoint">포인트</span>
 			<br>
-			<span><a class="memedit" href="<%=request.getContextPath() %>/memEdit.do?memid=${memSession.id }">개인정보수정 ≫</a></span>
+			<span><a class="memedit" href="<%=request.getContextPath() %>/myPageEdit.do?memid=${memSession.id }" onclick="pwdCheck()">개인정보수정 ≫</a></span>
 			<span class="mempoint1">${memSession.point }P</span>
 			<br><br><br><br>
 			<div class="memleft">
@@ -77,7 +102,8 @@
 									<td>${dto.bookingcode }</td>
 									<td>${dto.cinemaname }</td>
 									<td>${dto.title_ko }</td>
-									<td>${dto.start_time } ~ ${dto.end_time }</td>
+									<td>${dto.start_time.substring(0, 2) }:${dto.start_time.substring(2, 4) } 
+										~ ${dto.end_time.substring(0, 2) }:${dto.end_time.substring(2, 4) }</td>
 								</tr>
 							</c:forEach>
 									<td colspan="4" align="center">······</td>
@@ -89,7 +115,8 @@
 									<td>${dto.bookingcode }</td>
 									<td>${dto.cinemaname }</td>
 									<td>${dto.title_ko }</td>
-									<td>${dto.start_time } ~ ${dto.end_time }</td>
+									<td>${dto.start_time.substring(0, 2) }:${dto.start_time.substring(2, 4) } 
+										~ ${dto.end_time.substring(0, 2) }:${dto.end_time.substring(2, 4) }</td>
 								</tr>
 							</c:forEach>
 						</c:if>

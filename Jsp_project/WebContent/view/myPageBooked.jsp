@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지 - 예매내역</title>
+<title>마이페이지 - 예매내역 관리</title>
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
@@ -14,24 +14,24 @@
 		<nav id="side_bar">
 			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
 			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역</a></li>
-			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }">개인정보 수정</a></li>
+			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }" onclick="pwdCheck()">개인정보 수정</a></li>
 		</nav>
 	</div>
 	<div align="center">
 		<div class="title">
 			<br><br>
-			<h2>예매내역</h2>
+			<h2>예매내역 관리</h2>
 			<br><br>
 			<div class="memleft" style="width:1110px;">
-				<span class="mypage">나의 예매내역</span>
-				<span><a class="membooted" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">더보기 ≫</a></span>
-
+				<span class="mypage">예매내역</span>
+				<br><br>
 				<table class="table table-striped table-hover">
 					<tr>
 						<th>예매번호</th>
 						<th>지점</th>
 						<th>영화제목</th>
 						<th>상영시간</th>
+						<th>취소</th>
 					</tr>
 
 					<c:if test="${!empty blist }">
@@ -40,7 +40,11 @@
 								<td>${dto.bookingcode }</td>
 								<td>${dto.cinemaname }</td>
 								<td>${dto.title_ko }</td>
-								<td>${dto.start_time } ~ ${dto.end_time }</td>
+								<td>${dto.start_time.substring(0, 2) }:${dto.start_time.substring(2, 4) } 
+									~ ${dto.end_time.substring(0, 2) }:${dto.end_time.substring(2, 4) }</td>
+								<td><input type="button" value="취소"
+									onclick="if(confirm('정말 취소하시겠습니까?')){location.href='bootedDelete.do?bookingcode=${dto.bookingcode }'}
+											else{return false}"></td>
 							</tr>
 						</c:forEach>
 					</c:if>

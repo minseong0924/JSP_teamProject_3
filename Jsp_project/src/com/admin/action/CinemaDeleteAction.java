@@ -20,8 +20,6 @@ public class CinemaDeleteAction implements Action {
 		CinemaDAO cdao = CinemaDAO.getInstance();
 		// 지점을 삭제하는 메서드 사용
 		int res = cdao.cinemaDelete(cinemacode);
-		// 삭제한 지점보다 code값이 큰 지점들의 code값 -1 해주는 메서드
-		cdao.cinemaCodeDown(cinemacode);
 		
 		SeatDAO sdao = SeatDAO.getInstance();
 		int res1 = sdao.seatDelete(cinemacode);

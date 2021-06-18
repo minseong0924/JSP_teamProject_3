@@ -288,4 +288,81 @@ public class BookDAO {
 		
 		return result;
 	}
+	
+	
+	public int bookingDelete(String bookingcode) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "delete from booking where bookingcode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, bookingcode);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	
+	public String getId(String bookingcode) {
+		String result = "";
+		
+		try {
+			openConn();
+			
+			sql = "select id from booking where bookingcode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, bookingcode);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				result = rs.getString(1);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	
+	public int bookedDelete(String id) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "delete from booking where id = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }
+
+
+
+
+
+
