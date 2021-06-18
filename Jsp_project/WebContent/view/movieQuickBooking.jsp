@@ -145,7 +145,7 @@
 		
 		if((selectDay == "") && !movieExist) {
 			// 선택한 날짜가 없고, 선택한 극장이 없고, 영화가 오늘 날짜의 상영 정보에 없는 영화인 경우 : 제일 빠른 상영일로 셋팅
-			if(confirm("해당 영화는 오늘 상영 시간표가 없습니다.\n선택하신 영화의 가장 빠른 예매일로 변경하시겠습니까?")){
+			//if(confirm("해당 영화는 오늘 상영 시간표가 없습니다.\n선택하신 영화의 가장 빠른 예매일로 변경하시겠습니까?")){
 				$.ajax({
 					type:"post",
 					url: "/Jsp_project/screenListOpen.do",
@@ -221,7 +221,7 @@
 				       alert("error!!!");
 					}
 				});
-			}
+			//}
 		} else if((selectDay == "") && movieExist) {
 			// 선택한 날짜/극장이 없고, 영화가 오늘 날짜의 상영 정보에 있는 영화인 경우 : 오늘 날짜를 기준으로 상영정보 가져오기
 			$.ajax({
@@ -339,7 +339,7 @@
 				 return;
 			 }
 		}
-		
+		selectMovie = "";
 		selectDay = day;
 		
 		$.ajax({
@@ -581,6 +581,10 @@
 		daySetting("open");
 		
 		$("#day1").addClass('active');
+		
+		if($("#movie_page").val() != "") {
+			movieSelect($("#movie_page").val());
+		}
     });
 </script>
 
@@ -590,6 +594,12 @@
 	<div align="center" style="min-width:1100px;">
 		<div id="header_day" align="center" class="list-group list-group-horizontal-md" role="group">
 		</div>
+		<c:if test="${moviecode != ''}">
+			<input type="hidden" id="movie_page" value="${moviecode }">
+		</c:if>
+		<c:if test="${moviecode == ''}">
+			<input type="hidden" id="movie_page" value="">
+		</c:if>
 		<table class="table">
 			<tr>
 				<td style="width:300px;"><span class="booking_title">영화</span>

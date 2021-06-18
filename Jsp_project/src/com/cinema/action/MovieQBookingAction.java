@@ -36,7 +36,10 @@ public class MovieQBookingAction implements Action {
 		ScreenDAO sdao = ScreenDAO.getInstance();
 		List<ScreenDTO> slist = sdao.screenOpen();
 		request.setAttribute("screenlist", slist);
-
+		
+		String moviecode = request.getParameter("moviecode") == null ? "" : request.getParameter("moviecode");
+		request.setAttribute("moviecode", moviecode);
+		
 		ActionForward forward = new ActionForward();
 		
 		forward.setRedirect(false);
