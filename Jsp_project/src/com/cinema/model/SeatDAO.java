@@ -101,4 +101,103 @@ public class SeatDAO {
 		return dto;
 		
 	}
+	
+	
+	public int seatWrite(int allseat, int cinemacode, int cincode) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "insert into seat values((select max(seatno)+1 from seat), ?, ?, ?)";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, allseat);
+			pstmt.setInt(2, cinemacode);
+			pstmt.setInt(3, cincode);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	
+	public int seatDetailOpen(int cinemacode, int cincode) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "select allseat from seat where cinemacode = ? and cincode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, cinemacode);
+			pstmt.setInt(2, cincode);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				result = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	
+	public int seatEditOk(int allseat, int cinemacode, int cincode) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "update seat set allseat = ? where cinemacode = ? and cincode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			pstmt.setInt(1, allseat);
+			pstmt.setInt(2, cinemacode);
+			pstmt.setInt(3, cincode);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	
+	public int seatDelete(int cinemacode) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "delete from seat where cinemacode = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, cinemacode);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }

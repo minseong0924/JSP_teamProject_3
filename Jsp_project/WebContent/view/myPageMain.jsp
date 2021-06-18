@@ -15,7 +15,7 @@
 		<nav id="side_bar">
 			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
 			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역</a></li>
-			<li><a class="side_menu" href="#">개인정보 수정</a></li>
+			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }">개인정보 수정</a></li>
 		</nav>
 	</div>
 	<div align="center">

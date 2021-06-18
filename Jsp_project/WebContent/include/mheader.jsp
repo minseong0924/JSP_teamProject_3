@@ -85,7 +85,7 @@
 						<ul class="dropdown-menu">
 							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
 							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/#">개인정보 수정</a></li>
+							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }">개인정보 수정</a></li>
 						</ul> 
 					</li>
 					

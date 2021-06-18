@@ -274,4 +274,40 @@ public class MemberDAO {
 		return result;
 	}
 	
+	
+	public MemberDTO memDetailOpen(String id) {
+		MemberDTO dto = new MemberDTO();
+		
+		try {
+			openConn();
+			
+			sql = "select * from member1 where id = " + id;
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				dto.setId(rs.getString("id"));
+				dto.setPwd(rs.getString("pwd"));
+				dto.setName(rs.getString("name"));
+				dto.setPhone(rs.getString("phone"));
+				dto.setPoint(rs.getInt("point"));
+				dto.setPermission(rs.getString("permission"));
+				dto.setBirth(rs.getString("birth"));
+				dto.setRegdate(rs.getString("regdate"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return dto;
+	}
 }
+
+
+
+
+

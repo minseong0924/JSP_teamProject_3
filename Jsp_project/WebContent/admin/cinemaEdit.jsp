@@ -9,6 +9,54 @@
 <link rel="stylesheet" href="./css/style.css">
 <script type="text/javascript">
 
+	function textboxable1(frm) {
+		if(frm.seat_no1.disabled == true) {
+			frm.seat_no1.disabled = false;
+		}else {
+			frm.seat_no1.disabled = true;
+		}
+	}
+	
+	function textboxable2(frm) {
+		if(frm.seat_no2.disabled == true) {
+			frm.seat_no2.disabled = false;
+		}else {
+			frm.seat_no2.disabled = true;
+		}
+	}
+	
+	function textboxable3(frm) {
+		if(frm.seat_no3.disabled == true) {
+			frm.seat_no3.disabled = false;
+		}else {
+			frm.seat_no3.disabled = true;
+		}
+	}
+	
+	function textboxable4(frm) {
+		if(frm.seat_no4.disabled == true) {
+			frm.seat_no4.disabled = false;
+		}else {
+			frm.seat_no4.disabled = true;
+		}
+	}
+	
+	function textboxable5(frm) {
+		if(frm.seat_no5.disabled == true) {
+			frm.seat_no5.disabled = false;
+		}else {
+			frm.seat_no5.disabled = true;
+		}
+	}
+	
+	function textboxable6(frm) {
+		if(frm.seat_no6.disabled == true) {
+			frm.seat_no6.disabled = false;
+		}else {
+			frm.seat_no6.disabled = true;
+		}
+	}
+	
 	function fn_checkByte(obj) {
 		var maxByte = 100; //최대 100바이트
 		var text_val = obj.value; //입력한 문자
@@ -118,18 +166,22 @@
 					<th>사용할 관 : </th>
 					<td>
 						<c:if test="${dto.getOne_cin() == 1 }">
-							<input type="checkbox" name="cin_check" value="1" checked> 1관
+							<input type="checkbox" name="cin_check" value="1" onclick="textboxable1(this.form)" checked> 1관
+							<input type="text" name="seat_no1" placeholder="좌석 수" style="width:60px" value="${seat_no1 }">
 						</c:if>
 						<c:if test="${dto.getOne_cin() != 1 }">
-							<input type="checkbox" name="cin_check" value="1"> 1관
+							<input type="checkbox" name="cin_check" value="1" onclick="textboxable1(this.form)"> 1관
+							<input type="text" name="seat_no1" placeholder="좌석 수" style="width:60px" disabled>
 						</c:if>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						
 						<c:if test="${dto.getTwo_cin() == 1 }">
-							<input type="checkbox" name="cin_check" value="2" checked> 2관
+							<input type="checkbox" name="cin_check" value="2" onclick="textboxable2(this.form)" checked> 2관
+							<input type="text" name="seat_no2" placeholder="좌석 수" style="width:60px" value="${seat_no2 }" >
 						</c:if>
 						<c:if test="${dto.getTwo_cin() != 1 }">
-							<input type="checkbox" name="cin_check" value="2"> 2관
+							<input type="checkbox" name="cin_check" value="2" onclick="textboxable2(this.form)"> 2관
+							<input type="text" name="seat_no2" placeholder="좌석 수" style="width:60px" disabled>
 						</c:if>
 					</td>
 				</tr>
@@ -138,18 +190,22 @@
 					<th></th>
 					<td>
 						<c:if test="${dto.getThree_cin() == 1 }">
-							<input type="checkbox" name="cin_check" value="3" checked> 3관
+							<input type="checkbox" name="cin_check" value="3" onclick="textboxable3(this.form)" checked> 3관
+							<input type="text" name="seat_no3" placeholder="좌석 수" style="width:60px" value="${seat_no3 }">
 						</c:if>
 						<c:if test="${dto.getThree_cin() != 1 }">
-							<input type="checkbox" name="cin_check" value="3"> 3관
+							<input type="checkbox" name="cin_check" value="3" onclick="textboxable3(this.form)"> 3관
+							<input type="text" name="seat_no3" placeholder="좌석 수" style="width:60px" disabled>
 						</c:if>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						
 						<c:if test="${dto.getFour_cin() == 1 }">
-							<input type="checkbox" name="cin_check" value="4" checked> 4관
+							<input type="checkbox" name="cin_check" value="4" onclick="textboxable4(this.form)" checked> 4관
+							<input type="text" name="seat_no4" placeholder="좌석 수" style="width:60px" value="${seat_no4 }">
 						</c:if>
 						<c:if test="${dto.getFour_cin() != 1 }">
-							<input type="checkbox" name="cin_check" value="4"> 4관
+							<input type="checkbox" name="cin_check" value="4" onclick="textboxable4(this.form)"> 4관
+							<input type="text" name="seat_no4" placeholder="좌석 수" style="width:60px" disabled>
 						</c:if>
 					</td>
 				</tr>
@@ -158,18 +214,22 @@
 					<th></th>
 					<td>
 						<c:if test="${dto.getFive_cin() == 1 }">
-							<input type="checkbox" name="cin_check" value="5" checked> 5관
+							<input type="checkbox" name="cin_check" value="5" onclick="textboxable5(this.form)" checked> 5관
+							<input type="text" name="seat_no5" placeholder="좌석 수" style="width:60px" value="${seat_no5 }">
 						</c:if>
 						<c:if test="${dto.getFive_cin() != 1 }">
-							<input type="checkbox" name="cin_check" value="5"> 5관
+							<input type="checkbox" name="cin_check" value="5" onclick="textboxable5(this.form)"> 5관
+							<input type="text" name="seat_no5" placeholder="좌석 수" style="width:60px" disabled>
 						</c:if>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						
 						<c:if test="${dto.getSix_cin() == 1 }">
-							<input type="checkbox" name="cin_check" value="6" checked> 6관
+							<input type="checkbox" name="cin_check" value="6" onclick="textboxable6(this.form)" checked> 6관
+							<input type="text" name="seat_no6" placeholder="좌석 수" style="width:60px" value="${seat_no6 }">
 						</c:if>
 						<c:if test="${dto.getSix_cin() != 1 }">
-							<input type="checkbox" name="cin_check" value="6"> 6관
+							<input type="checkbox" name="cin_check" value="6" onclick="textboxable6(this.form)"> 6관
+							<input type="text" name="seat_no6" placeholder="좌석 수" style="width:60px" disabled>
 						</c:if>
 					</td>
 				</tr>
@@ -177,6 +237,8 @@
 				<tr>
 					<td colspan="4" align="right">
 						<input type="submit" value="등록">
+						&nbsp;&nbsp;
+						<input type="submit" onclick="history.back()" value="취소">
 					</td>
 				</tr>
 				
