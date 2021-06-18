@@ -40,11 +40,12 @@
 			</c:if>		
 		</div>
 		<br>
+		<form method="post" action="<%=request.getContextPath() %>/movieSearch2.do">
 		<div class="main_body_box">
 			<table>
 				<tr>
-					<td><input name="search_movie" placeholder="영화명을 입력해 주세요">
-						<input type="button" value="검색" onclick="location.href='movieSearch2.do'">
+					<td><input name="search_name" placeholder="영화명을 입력해 주세요">
+						<input type="submit" value="검색">
 					</td>
 					<td>
 						<input type="button" value="상영시간표" onclick="location.href='timeTable.do'"></td>
@@ -55,7 +56,7 @@
 				</tr>
 			</table>
 		</div>
-		
+		</form>
 	</div>
 	<jsp:include page="include/mfooter.jsp" />
 </body>

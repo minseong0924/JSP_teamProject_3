@@ -16,7 +16,14 @@ public class MovieDTO {
 	private String mstate;
 	private String mtype;
 	private String rate;
+	private int stack;
 	
+	public int getStack() {
+		return stack;
+	}
+	public void setStack(int stack) {
+		this.stack = stack;
+	}
 	public String getRate() {
 		return rate;
 	}

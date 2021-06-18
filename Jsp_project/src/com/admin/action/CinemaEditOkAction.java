@@ -83,7 +83,7 @@ public class CinemaEditOkAction implements Action {
 			forward.setPath("cinemaList.do");
 		}else {
 			out.println("<script>");
-			out.println("alert('수정 실패하였습니다.'");
+			out.println("alert('수정 실패하였습니다.')");
 			out.println("history.back()");
 			out.println("</script>");
 		}

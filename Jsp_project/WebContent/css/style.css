@@ -84,7 +84,7 @@ a.menu:after, .dropdown-toggle:after {
 .main_body_box{
 	width:900px;
 	align:center;
-	padding-left:32.5%;
+	padding-left:25%;
 }
 /* ### main css end ### */
 
@@ -218,8 +218,6 @@ input[type=date]::-webkit-calendar-picker-indicator {
 }
 
 .movie-info {
-	float:left;
-
 	left: 0px;
 	bottom:50px;
 	color: #fff;
@@ -268,7 +266,24 @@ input[type=date]::-webkit-calendar-picker-indicator {
 	height: 100%;
 	margin: 0 0 0 350px;
 }
+.review-list{
+	background-color:#f8f8fa;
+	margin-top:20px;
+	width:950px;
+}
 
+.review_text{
+	width:700px;
+	height: 50px;
+}
+
+.review_text textarea {
+	width:600px;
+	height:80px;
+}
+.review_id{
+	width:100px;
+}
 .memberName {
 	float:left;
 	padding:0 30px 0 0;
@@ -355,7 +370,7 @@ input[type=date]::-webkit-calendar-picker-indicator {
 	float:left;
 }
 .review_point {
-	padding-left:50px;
+	width:80px;
 	float:left;
 }
 .review_text{

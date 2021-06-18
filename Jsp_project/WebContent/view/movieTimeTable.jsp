@@ -26,7 +26,7 @@ let tym = yearmonth+"-"+today.getDate();
 // 페이지 시작 시 
 $(document).ready(function(){	
 		movie();
-		movie();
+
 }); 
 
 //영화별 start
@@ -141,22 +141,22 @@ function dayBeforeSetting() {
 	} else {
 		opendate("before", day);
 	}
-		var day1 = day.substring(0,4) + "-" + day.substring(5,7) +"-" +(String)((Number)(day.substring(8,10)) - 1);
 
-		if(bk.attr("disabled")=='disabled') {
+		/* if(bk.attr("disabled")=='disabled') {
 			while(true) {
 				bk = bk.prev();
 				day1 = bk.val();
-				day = $("#day1").val();
-				day1 = day.substring(0,4) + "-" 
-				+ day.substring(5,7) +"-" 
-				+(String)((Number)(day.substring(8,10)) - 1);
 				if(bk.attr("disabled")==null) {
 					break;
 				}
 			}
-		}
+		} */ 
 	if(attrid == "day1") {
+		var day1 = day.substring(0,4) + "-" + day.substring(5,7) +"-" +(String)((Number)(day.substring(8,10)) - 1);
+		day = $("#day1").val();
+		day1 = day.substring(0,4) + "-" 
+		+ day.substring(5,7) +"-" 
+		+(String)((Number)(day.substring(8,10)) - 1);
 		dateButton(day1);	
 	}else {
 		dateButton(day);
@@ -171,7 +171,7 @@ function dayAfterSetting() {
 		while(true) {
 			bk = bk.next();
 			checked = bk.val();
-			
+			console.log(checked);
 			if(bk.attr("disabled")==null) {
 				break;
 			}
@@ -224,7 +224,8 @@ function dateButtonDisabled() {
 				 today = new Date($(".wrap").find(".bk").val());
 			 } */
 			 var srt_time = "";
-			 if(slist.length != 0) {
+			 
+			if(slist.length != 0) {
 				 for(var i=0; i<slist.length; i++) {
 					var starttime = slist[i].start_time;
 					if(Math.floor(starttime % 60) < 10) {
@@ -256,6 +257,10 @@ function dateButtonDisabled() {
 
 				}
 				
+				 if(!$(".wrap").find(".bk").val()) {
+					 $(".wrap").find(".on").first().attr("class", "on bk");
+				 } 
+				 
 				 if($(".wrap").find(".bk").attr("disabled")=='disabled') {
 						var moviedate = new Date(slist[0].start_date);
 						var mYear = moviedate.getFullYear();
@@ -265,11 +270,12 @@ function dateButtonDisabled() {
 						var moviedate1 = new Date(mYear, mMonth1, mDate+1);
 						mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
 						mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
+						ymd = mYear + '-' + mMonth + '-' + mDate;
 						$(".wrap").find(".bk").attr("class", "on");
 						$("button[value="+ymd+"]").attr("class", "on bk");
+
 						dateButton(ymd);
 				} 
-						console.log('돌아감');
 			}
 		},
 		error:function(request, status, error){
@@ -340,9 +346,9 @@ function load(location, date_data) {
 						if($("cincode", this).text() != cincode){	
 							$("#"+$("cinemaname", this).text()).append("<div id='"+$("cincode", this).text()+"'class='theater-list-box1'><span class='localscreen'>"+$("cincode", this).text()+"관</span>" +
 								"<div class='movietype'><span class='movietype-text'>"+$("mtype", this).text()+"</span></div>"+
-								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div></div>");
+								"<div class='movietime-box'><a href='<%=request.getContextPath()%>/movieBookingReady.do?screencode="+$("screencode", this).text()+"' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div></div>");
 						}else {
-							$("#"+$("cinemaname", this).text()).find("#"+$("cincode", this).text()).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div>");
+							$("#"+$("cinemaname", this).text()).find("#"+$("cincode", this).text()).append("<div class='movietime-box'><a href='<%=request.getContextPath()%>/movieBookingReady.do?screencode="+$("screencode", this).text()+"' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div>");
 						}
 							cincode = $("cincode", this).text();
 					}
@@ -365,9 +371,9 @@ function load(location, date_data) {
 					if($("cincode", this).text() != cincode){	
 						$("#"+$("cinemaname", this).text()).append("<div id='"+$("cincode", this).text()+"'class='theater-list-box1'><span class='localscreen'>"+$("cincode", this).text()+"관</span>" +
 							"<div class='movietype'><span class='movietype-text'>"+$("mtype", this).text()+"</span></div>"+
-							"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div></div>");
+							"<div class='movietime-box'><a href='<%=request.getContextPath()%>/movieBookingReady.do?screencode="+$("screencode", this).text()+"' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div></div>");
 					}else {
-						$("#"+$("cinemaname", this).text()).find("#"+$("cincode", this).text()).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div>");
+						$("#"+$("cinemaname", this).text()).find("#"+$("cincode", this).text()).append("<div class='movietime-box'><a href='<%=request.getContextPath()%>/movieBookingReady.do?screencode="+$("screencode", this).text()+"' class='movietime'>"+srt_time+"</a><br><span>"+$("remaining_seats",this).text()+"석</span></div>");
 					}
 						cincode = $("cincode", this).text();
 				}
@@ -522,10 +528,10 @@ function dateButtonDisabled1() {
 						mMonth = String(mMonth).length === 1 ? '0' + mMonth : mMonth;
 						mDate = String(mDate).length === 1 ? '0' + mDate : mDate;
 						$(".wrap").find(".bk").attr("class", "on");
+						ymd = mYear + '-' + mMonth + '-' + mDate;
 						$("button[value="+ymd+"]").attr("class", "on bk");
 						dateButton1(ymd);
 				} 
-				 console.log('작동함');
 			}
 		},
 		error:function(request, status, error){

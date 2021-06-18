@@ -17,7 +17,7 @@ public class MovieSearchAction implements Action {
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String search_field = request.getParameter("search_field");
 		String search_name = request.getParameter("search_name").trim();
-		System.out.println(search_field);
+
 		// 페이징 작업
 		int rowsize = 5;      // 한 페이지당 보여질 게시물의 수
 		int block = 5;        // 아래에 보여질 페이지의 최대 수 - 예) [1][2][3] / [4][5][6]

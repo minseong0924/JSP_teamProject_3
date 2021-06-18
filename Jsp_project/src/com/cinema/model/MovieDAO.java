@@ -520,10 +520,9 @@ public class MovieDAO {
 			openConn();
 			
 			sql = "select distinct m.*,\n" + 
-					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate \n" + 
-					"from movie m, booking b \n" + 
-					"where b.title_ko = m.title_ko \n" + 
-					"and m.mstate='상영중'"; 
+					"trunc(((select count(*) from booking where b.title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate\n" + 
+					"from movie m, booking b  \n" + 
+					"where m.mstate='상영중'"; 
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -565,10 +564,9 @@ public class MovieDAO {
 			openConn();
 			
 			sql = "select distinct m.*,\n" + 
-					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate \n" + 
-					"from movie m, booking b \n" + 
-					"where b.title_ko = m.title_ko \n" + 
-					"and m.mstate='개봉 예정'"; 
+					"trunc(((select count(*) from booking where b.title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate\n" + 
+					"from movie m, booking b  \n" + 
+					"where m.mstate='개봉 예정'"; 
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -609,9 +607,13 @@ public class MovieDAO {
 		try {
 			openConn();
 			
-			sql = "select * from movie where moviecode =" + moviecode;
+			sql = "select distinct m.*,\n" + 
+					"trunc(((select count(*) from booking where b.title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate,\n" + 
+					"(select count(*) from booking where b.title_ko = m.title_ko) as stack\n" + 
+					"from movie m, booking b where moviecode = ?";
 			
 			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, moviecode);
 			
 			rs = pstmt.executeQuery();
 			
@@ -630,6 +632,8 @@ public class MovieDAO {
 				dto.setOpendate(rs.getString("opendate").substring(0,10));
 				dto.setMstate(rs.getString("mstate"));
 				dto.setMtype(rs.getString("mtype"));
+				dto.setRate(rs.getString("Rate"));
+				dto.setStack(rs.getInt("stack"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -680,5 +684,74 @@ public class MovieDAO {
 		}
 		return result;
 	}
+
+	public List<MovieDTO> mainMovieSearch(String title) {
+		List<MovieDTO> list = new ArrayList<>();
+		
+		try {
+			openConn();
+			
+			sql = "select * from movie where title_ko like ? or title_en like ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%"+title+"%");
+			pstmt.setString(2, "%"+title+"%");
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				MovieDTO dto = new MovieDTO();
+				
+				dto.setMoviecode(rs.getInt("moviecode"));
+				dto.setTitle_en(rs.getString("title_en"));
+				dto.setTitle_ko(rs.getString("title_ko"));
+				dto.setPoster(rs.getString("poster"));
+				dto.setGenre(rs.getString("genre"));
+				dto.setDirector(rs.getString("director"));
+				dto.setActor(rs.getString("actor"));
+				dto.setSummary(rs.getString("summary"));
+				dto.setRunning_time(rs.getInt("runningtime"));
+				dto.setAge(rs.getString("age"));
+				dto.setNation(rs.getString("nation"));
+				dto.setOpendate(rs.getString("opendate").substring(0,10));
+				dto.setMstate(rs.getString("mstate"));
+				dto.setMtype(rs.getString("mtype"));
+				
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return list;
+	}
 	
+	// 검색한 영화의 수를 가져오는 메서드
+	public int getSearchmovieCount(String title) {
+		int count = 0;
+		
+		try {
+			openConn();
+			
+			sql = "select count(*) from movie where title_ko like ? or title_en like ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%"+title+"%");
+			pstmt.setString(2, "%"+title+"%");
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				count = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return count;
+	}
 }

@@ -27,13 +27,13 @@ public class ReviewIdCheckAction implements Action {
 		
 		PrintWriter out = response.getWriter();
 		
-		JSONObject obj = new JSONObject();
+		/*JSONObject obj = new JSONObject();
 		
 		JSONArray ja = JSONArray.fromObject(res);
 		
-		obj.put("list", ja);
+		obj.put("list", ja);*/
 		
-		out.println(obj);
+		out.println(res);
 		
 		return null;
 	}

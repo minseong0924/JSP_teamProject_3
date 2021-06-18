@@ -1,6 +1,7 @@
 package com.member.action;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -8,28 +9,33 @@ import javax.servlet.http.HttpServletResponse;
 import com.cinema.controller.Action;
 import com.cinema.controller.ActionForward;
 import com.cinema.model.ReviewDAO;
-import com.member.model.MemberDAO;
-import com.member.model.MemberSession;
 
-public class ReviewWriteOkAction implements Action {
+public class ReviewDeleteAction implements Action {
 
 	@Override
 	public ActionForward execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String cont = request.getParameter("review-text");
+		int no = Integer.parseInt(request.getParameter("no"));
 		int moviecode = Integer.parseInt(request.getParameter("moviecode"));
-		String title_ko = request.getParameter("title_ko");
-		String id = request.getParameter("id");
-		int point = Integer.parseInt(request.getParameter("point"));
-		
+	
 		ReviewDAO dao = ReviewDAO.getInstance();
+		int res = dao.DeleteReview(no);
 		
-		int res = dao.reviewWriteOk(moviecode, title_ko, cont, id, point);
+		// 삭제시 번호를 -1 해주는 메서드
+		dao.DeleteCountDown(no);
 		
 		ActionForward forward = new ActionForward();
 		
-		forward.setRedirect(true);
-		forward.setPath("movieContent.do?moviecode="+moviecode);
+		PrintWriter out = response.getWriter();
 		
+		if(res > 0) {
+			forward.setRedirect(true);
+			forward.setPath("movieContent.do?moviecode="+moviecode);
+		}else {
+			out.println("<script>");
+			out.println("alert('삭제 실패하였습니다')");
+			out.println("history.back()");
+			out.println("</script>");
+		}
 		return forward;
 	}
 

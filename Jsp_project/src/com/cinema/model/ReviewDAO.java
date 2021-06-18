@@ -206,4 +206,67 @@ public class ReviewDAO {
 		}
 		return count;
 	}
+	
+	public int DeleteReview(int no) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "delete from review where no = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
+	
+	public void DeleteCountDown(int no) {
+		try {
+			openConn();
+			
+			sql = "update review set  no = no -1 where no > ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, no);
+			
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+	}
+	
+	public int UpdateReview(int no, int point, String text) {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "update review set point = ?, content = ? where no = ?";
+			
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, point);
+			pstmt.setNString(2, text);
+			pstmt.setInt(3, no);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }

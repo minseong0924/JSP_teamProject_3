@@ -829,7 +829,7 @@ public class ScreenDAO {
 			sql = "select s.*, l.localname from screen s, local l, cinema c\n" + 
 					"where c.localcode = l.localcode\n" + 
 					"and s.cinemacode = c.cinemacode\n" + 
-					"and s.moviecode = ? order by s.cinemacode, s.start_date, s.start_time";
+					"and s.moviecode = ? and start_date > sysdate order by s.cinemacode, s.start_date, s.start_time";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, moviecode);
