@@ -47,11 +47,11 @@
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
-	<div align="center" style="width: 700px">
-		<p>예매가 성공적으로 완료되었습니다!</p>
+	<div align="center">
+		<p><font color="purple">예매가 성공적으로 완료되었습니다!</font></p>
 		<hr>
 		<p>예매 번호 : ${booking.bookingcode }</p>
-		<div align="center" style="width: 700px;">
+		<div align="center">
 			<table align="center" border="0">
 				<tr><td rowspan="9">
 						<img src="<%=request.getContextPath() %>/upload/${screen.poster }"
