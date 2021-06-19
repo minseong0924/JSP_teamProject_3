@@ -30,7 +30,6 @@ public class BootedDeleteAction implements Action {
 		request.setAttribute("blist", blist);
 		
 		ActionForward forward = new ActionForward();
-		PrintWriter out = response.getWriter();
 		
 		forward.setRedirect(false);
 		forward.setPath("view/myPageBooked.jsp");

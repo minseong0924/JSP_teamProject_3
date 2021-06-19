@@ -666,32 +666,45 @@ textarea{
 }
 
 .mypageinfo {
-  border-collapse: collapse;
-  text-align: center;
-  line-height: 1.5;
-  margin : 20px 10px;
+	border-collapse: collapse;
+	text-align: center;
+	line-height: 1.5;
+	margin : 20px 10px;
 }
 
 .mypageinfo th {
-  width: 200px;
-  padding: 10px;
-  font-size: 15px;
-  font-weight: bold;
-  text-align: center;
-  vertical-align: top;
-  border: 1px solid #ccc;
+	width: 200px;
+	padding: 10px;
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+	vertical-align: top;
+	border: 1px solid #ccc;
 }
 
 .mypageinfo td {
-  width: 200px;
-  padding: 10px;
-  font-size: 12px;
-  text-align: center;
-  vertical-align: top;
-  border: 1px solid #ccc;
+  	width: 200px;
+  	padding: 10px;
+  	font-size: 12px;
+  	text-align: center;
+  	vertical-align: top;
+  	border: 1px solid #ccc;
 }
 
 .membooted{
 	margin-left: 950px;
 	color: black;
+}
+
+.mypagepwd{
+	font-size: 18px;
+	text-align: center;
+  	vertical-align: top;
+	line-height: 1.5;
+	margin : 20px 10px;
+	margin-left: 200px;
+}
+
+.pwd_btn{
+	width: 100px;
 }
