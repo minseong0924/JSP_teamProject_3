@@ -8,31 +8,6 @@
 <meta charset="UTF-8">
 <title>마이페이지 - 메인</title>
 <link rel="stylesheet" href="./css/style.css">
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script type="text/javascript">
-	
-	function pwdCheck() {
-		
-		var count = 0;
-		var pass = prompt('암호를 입력하십시오',''); // 초기시 암호 물어보는 멘트
-		
-		while(count < 2) {
-			if(pass == "${memSession.pwd }") { // 암호지정
-				alert('개인 수정페이지로 이동합니다.'); // 암호가 맞았을때 나오는 멘트
-				return;
-			}
-			count++;
-			var pass = prompt('암호를 확인 하시고 다시 입력하세요!.',''); // 암호가 틀렸을때 멘트
-		}
-		
-		if(count == 2) {
-			alert('3번 잘못 누르셨습니다.');
-			return false;
-		}
-	}
-	
-	
-</script>
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
@@ -40,7 +15,7 @@
 		<nav id="side_bar">
 			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
 			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역</a></li>
-			<li><a class="side_menu" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }" onclick="pwdCheck()">개인정보 수정</a></li>
+			<li><a class="side_menu" href="<%=request.getContextPath()%>/memPwdChk.do?memid=${memSession.id }">개인정보 수정</a></li>
 		</nav>
 	</div>
 	<div align="center">
@@ -51,7 +26,7 @@
 			<span class="memname">${memSession.name }님</span>
 			<span class="mempoint">포인트</span>
 			<br>
-			<span><a class="memedit" href="<%=request.getContextPath() %>/myPageEdit.do?memid=${memSession.id }" onclick="pwdCheck()">개인정보수정 ≫</a></span>
+			<span><a class="memedit" href="<%=request.getContextPath() %>/memPwdChk.do?memid=${memSession.id }">개인정보수정 ≫</a></span>
 			<span class="mempoint1">${memSession.point }P</span>
 			<br><br><br><br>
 			<div class="memleft">
@@ -86,7 +61,7 @@
 			<div class="memleft" style="width:1110px;">
 				<span class="mypage">나의 예매내역</span>
 				<span><a class="membooted" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">더보기 ≫</a></span>
-
+				
 				<table class="table table-striped table-hover">
 					<tr>
 						<th>예매번호</th>
@@ -94,7 +69,7 @@
 						<th>영화제목</th>
 						<th>상영시간</th>
 					</tr>
-
+					
 					<c:if test="${!empty blist }">
 						<c:if test="${fn:length(blist) > 3 }">
 							<c:forEach items="${blist }" var="dto" begin="0" end="2">
@@ -108,7 +83,7 @@
 							</c:forEach>
 									<td colspan="4" align="center">······</td>
 						</c:if>
-
+						
 						<c:if test="${fn:length(blist) < 4 }">
 							<c:forEach items="${blist }" var="dto">
 								<tr>
@@ -121,7 +96,7 @@
 							</c:forEach>
 						</c:if>
 					</c:if>
-
+	
 					<c:if test="${empty blist }">
 						<tr>
 							<td colspan="4" align="center">검색된 데이터가 없습니다.</td>
