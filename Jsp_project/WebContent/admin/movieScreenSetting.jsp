@@ -120,6 +120,10 @@
 		
 		var end_time = "";
 		
+		if(endtime > 1440) {
+			endtime = endtime - 1440;
+		}
+		
 		if(Math.floor(endtime % 60) < 10) {
 			end_time = Math.floor(endtime / 60) + "시 0" + Math.floor(endtime % 60)+"분";
 		} else {
