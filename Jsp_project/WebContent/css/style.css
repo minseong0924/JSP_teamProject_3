@@ -662,11 +662,22 @@ a.menu:after, .dropdown-toggle:after {
 
 .join_all_div {
 	width: 23%;
-    height: 500px;
+/*     height: 500px; */
     margin: 0 auto;
     background-color: white;
     border-radius: 7px;
     margin-top: 2%;
+}
+
+.join_all_ok_div {
+    width: 45%;
+    /* height: 500px; */
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 7px;
+    margin-top: 2%;
+    text-align: center;
+    padding: 1%;
 }
 
 .res_all_div {

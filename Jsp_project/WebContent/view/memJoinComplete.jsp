@@ -19,12 +19,15 @@
 <body>
 	<jsp:include page="../include/mheader.jsp"/>
 	<br><br>
-	<div align="center">
+	<div class="join_all_ok_div">
+		<div class="my_title_div">
+			<span>회원 가입 완료</span>
+		</div>
 		<c:set var="name" value="${username }"/>
 		<h3>${name }님, 쌍용박스에 오신 것을 환영합니다!</h3>
 		<h3>가입하신 아이디와 비밀번호로 로그인 해주세요.</h3>
 		<br>
-		<input type="button" onclick="goMain()" value="메인으로" class="btn btn-default">
+		<input type="button" onclick="goMain()" value="메인으로" class="btn join_btn">
 	</div>
 </body>
 </html>
