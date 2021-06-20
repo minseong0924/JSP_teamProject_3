@@ -29,7 +29,7 @@
 				<c:forEach begin="0" end="3" step="1" items="${list }" var="dto">
 					<td class="td_img"><img src="upload/${dto.getPoster() }" alt="이미지가없습니다"
 						width="250" height="370"><br>
-					<button onclick="location.href='booking.do?moviecode=${dto.getMoviecode()}'" class="btn btn-dark btn_bg">예매</button></td>
+					<button onclick="location.href='movieQuickBooking.do?moviecode=${dto.getMoviecode()}'" class="btn btn-dark btn_bg">예매</button></td>
 				</c:forEach>
 				</tr>
 			</table>
@@ -47,15 +47,15 @@
 				<input class="bottom_btn" type="submit" value="&#xf002;">
 			</div>
 			<div class="center_line">
-				<a href="location.href='timeTable.do'"><i class='glyphicon glyphicon-list-alt'></i><span>&nbsp;&nbsp;상영시간표</span></a>
+				<a href="<%=request.getContextPath() %>/timeTable.do"><i class='glyphicon glyphicon-list-alt'></i><span>&nbsp;&nbsp;상영시간표</span></a>
 				<!-- <input type="button" value="상영시간표" onclick="location.href='timeTable.do'"> -->
 			</div>
 			<div class="center_line">
-				<a href="location.href='movieChart.do'"><i class='glyphicon glyphicon-film'></i><span>&nbsp;&nbsp;영화차트</span></a>
+				<a href="<%=request.getContextPath() %>/movieChart.do"><i class='glyphicon glyphicon-film'></i><span>&nbsp;&nbsp;영화차트</span></a>
 				<!-- <input type="button" value="영화차트" onclick="location.href='movieChart.do'"> -->
 			</div>
 			<div class="right_line">
-				<a href="location.href='booking.do'"><i class='glyphicon glyphicon-barcode'></i><span>&nbsp;&nbsp;빠른예매</span></a>
+				<a href="<%=request.getContextPath() %>/movieQuickBooking.do"><i class='glyphicon glyphicon-barcode'></i><span>&nbsp;&nbsp;빠른예매</span></a>
 				<!-- <input type="button" value="빠른예매" onclick="location.href='booking.do'"> -->
 			</div>
 			<!-- <table class="search_bg">
