@@ -47,7 +47,7 @@ public class MovieSearchAction implements Action {
 		MovieDAO mdao = MovieDAO.getInstance();
 		
 		// DB상의 전체 게시물의 수를 확인하는 메서드
-		totalRecord = mdao.getListCount();
+		totalRecord = mdao.getListCount1(search_field, search_name);
 		
 		// 전체 게시물의 수를 한 페이지당 보여질 게시물의 수로 나누어 주어야 함.
 		// 이 과정을 거치면 전체 페이지 수가 나오게 됨.

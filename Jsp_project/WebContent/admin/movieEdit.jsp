@@ -60,13 +60,13 @@ function fn_checkByte(obj){
 				<tr>
 					<th>영화명(국문) : </th>
 					<td><input name="movie_title_kor" value="${dto.getTitle_ko() }"
-						placeholder="내용을 입력하세요" required pattern="^[가-힣0-9\s\d,;!@#$%^*+=-]{1,30}$"></td>
+						placeholder="내용을 입력하세요" required pattern="^[가-힣0-9\s\d,:;!@#$%^*+=-]{1,30}$"></td>
 				</tr>
 				
 				<tr>
 					<th>영화명(영문) : </th>
 					<td><input name="movie_title_eng" value="${dto.getTitle_en() }" 
-						placeholder="내용을 입력하세요" placeholder="내용을 입력하세요" required pattern="^[a-zA-Z0-9\s\d,;!@#$%^*+=-]{1,50}$"></td>
+						placeholder="내용을 입력하세요" placeholder="내용을 입력하세요"></td>
 				</tr>
 				
 				<tr>
@@ -109,13 +109,13 @@ function fn_checkByte(obj){
 				<tr>
 					<th>줄 거 리 : <br><span id="nowByte">0</span>/1000bytes</th>
 					<td> <textarea id="summary" rows="7" cols="30" name="movie_summary" 
-						placeholder="내용을 입력하세요" onkeyup="fn_checkByte(this)" required></textarea></td>
+						placeholder="내용을 입력하세요" onkeyup="fn_checkByte(this)" required>${dto.getSummary() }</textarea></td>
 				</tr>
 				
 				<tr>
 					<th>상영시간 (분) : </th>
 					<td> <input name="movie_runningtime" value="${dto.getRunning_time() }"
-						placeholder="숫자만 입력해주세요" required pattern="^[1-50000]{1,3}$"></td>
+						placeholder="숫자만 입력해주세요" required pattern="^[0-9]{1,3}$"></td>
 				</tr>
 				
 				<tr>
@@ -125,8 +125,8 @@ function fn_checkByte(obj){
 							<option selected disabled value="">:::선택:::</option>
 							<option value="전체연령가" <% if(list.getAge().equals("전체연령가")) {%>selected<%} %>>전체연령가</option>
 							<option value="12세" <% if(list.getAge().equals("12세")) {%>selected<%} %>>12세</option>
-							<option value="15세" <% if(list.getAge().equals("전체연령가")) {%>selected<%} %>>15세</option>
-							<option value="청소년 관람불가" <% if(list.getAge().equals("전체연령가")) {%>selected<%} %>>청소년 관람불가</option>
+							<option value="15세" <% if(list.getAge().equals("15세")) {%>selected<%} %>>15세</option>
+							<option value="청소년 관람불가" <% if(list.getAge().equals("청소년 관람불가")) {%>selected<%} %>>청소년 관람불가</option>
 						</select>
 					</td>
 				</tr>
@@ -150,7 +150,7 @@ function fn_checkByte(obj){
 						<select name="movie_state" required>
 							<option selected disabled value="">:::선택:::</option>
 							<option value="상영중" <% if(list.getMstate().equals("상영중")) {%>selected<%} %>>상영중</option>
-							<option value="개봉 예정" <% if(list.getMstate().equals("상영중")) {%>selected<%} %>>개봉예정</option>
+							<option value="개봉 예정" <% if(list.getMstate().equals("개봉 예정")) {%>selected<%} %>>개봉예정</option>
 						</select>
 					</td>
 				</tr>

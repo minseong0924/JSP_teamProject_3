@@ -51,7 +51,7 @@ function fn_checkByte(obj){
 			<table class="movieWrite">
 				<tr>
 					<th>영화명(국문) : </th>
-					<td><input name="movie_title_kor" placeholder="내용을 입력하세요" required pattern="^[가-힣0-9\s\d,;!@#$%^*+=-]{1,50}$">
+					<td><input name="movie_title_kor" placeholder="내용을 입력하세요" required pattern="^[가-힣0-9\s\d,;:!@#$%^*+=-]{1,50}$">
 					 <div class="valid-feedback">
 					      Looks good!
 					    </div>
@@ -60,7 +60,7 @@ function fn_checkByte(obj){
 				
 				<tr>
 					<th>영화명(영문) : </th>
-					<td><input name="movie_title_eng" placeholder="내용을 입력하세요" required pattern="^[a-zA-Z0-9\s\d,;!@#$%^*+=-]{1,50}$"></td>
+					<td><input name="movie_title_eng" placeholder="내용을 입력하세요"></td>
 				</tr>
 				
 				<tr>

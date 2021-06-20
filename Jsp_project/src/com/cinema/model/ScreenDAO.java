@@ -715,15 +715,20 @@ public class ScreenDAO {
 				moviecode = rs.getInt(1);
 			}
 			
-			sql = "select s.*,m.mtype, \n" + 
-					"(select 50-count(*) \n" + 
-					"from booking b \n" + 
+			sql = "select distinct s.*,m.mtype,\n" + 
+					"(select\n" + 
+					"(select ALLSEAT\n" + 
+					"from seat s1, \n" + 
+					"screen s\n" + 
+					"where s1.cinemacode = s.cinemacode \n" + 
+					"and s1.cincode = s.cincode) - (select count(*) from booking)\n" + 
+					"from booking b, screen s\n" + 
 					"where b.screencode = s.screencode) as remaining_seats\n" + 
-					"from screen s, movie m \n" + 
-					"where s.moviecode = m.moviecode\n" + 
+					"from screen s, movie m, seat s2\n" + 
+					"where s.moviecode = m.moviecode \n" + 
 					"and s.cinemacode in(select cinemacode from cinema where localcode = ?)\n" + 
 					"and s.moviecode = ?\n" + 
-					"and start_date = TO_DATE(?, 'YYYY-MM-DD') " +
+					"and start_date = TO_DATE(?, 'YYYY-MM-DD') \n" + 
 					"order by s.cinemacode, s.cincode, s.start_time";
 			
 			pstmt = con.prepareStatement(sql);
@@ -766,13 +771,18 @@ public class ScreenDAO {
 		try {
 			openConn();
 			
-			sql = "select distinct s.*,m.title_ko,m.mtype, \n" + 
-					"(select 50-count(*) \n" + 
-					"from booking b \n" + 
+			sql = "select distinct s.*,m.title_ko,m.mtype,\n" + 
+					"(select\n" + 
+					"(select ALLSEAT\n" + 
+					"from seat s1, \n" + 
+					"screen s\n" + 
+					"where s1.cinemacode = s.cinemacode \n" + 
+					"and s1.cincode = s.cincode) - (select count(*) from booking)\n" + 
+					"from booking b, screen s\n" + 
 					"where b.screencode = s.screencode) as remaining_seats\n" + 
-					"from screen s, movie m, booking b\n" + 
+					"from screen s, movie m, booking b \n" + 
 					"where s.start_date = TO_DATE(?, 'YYYY-MM-DD') \n" + 
-					"and s.moviecode = m.moviecode\n" + 
+					"and s.moviecode = m.moviecode \n" + 
 					"and s.cinemaname=?\n" + 
 					"order by s.cinemacode, s.cincode, s.start_time";
 			
