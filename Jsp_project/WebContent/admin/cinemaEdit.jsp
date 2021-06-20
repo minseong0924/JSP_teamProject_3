@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>쌍용박스 : 지점 정보 수정</title>
 <link rel="stylesheet" href="./css/style.css">
 <script type="text/javascript">
 
@@ -108,12 +108,11 @@
 <body>
 	<jsp:include page="../include/mheader.jsp" />
 	<br><br>
-	<div align="center">
-		<div class="title">
-			<h2>지점 정보 등록/수정</h2>
-			<br>
-			<br>
-			
+	<div class="man_all_div_sm" align="center">
+		<div class="my_title_div">
+			<span>지점 정보 등록/수정</span>
+		</div>
+		<div class="my_boo_div">
 		<form method="post" action="<%=request.getContextPath() %>/cinemaEditOk.do"
 			onsubmit="return test_checkbox()">
 		<c:set var="dto" value="${List }"/>
@@ -236,9 +235,8 @@
 				
 				<tr>
 					<td colspan="4" align="right">
-						<input type="submit" value="등록">
-						&nbsp;&nbsp;
-						<input type="submit" onclick="history.back()" value="취소">
+						<input type="submit" value="등록" class="btn join_btn">
+						<input type="submit" onclick="history.back()" value="취소" class="btn cancle_btn">
 					</td>
 				</tr>
 				

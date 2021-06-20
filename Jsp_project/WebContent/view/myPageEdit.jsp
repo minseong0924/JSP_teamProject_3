@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>마이페이지 - 개인정보수정</title>
+<title>쌍용박스 : 마이페이지 - 개인정보수정</title>
 <link rel="stylesheet" href="./css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript">

@@ -4,20 +4,16 @@
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>쌍용박스, 회원가입</title>
+<title>쌍용박스 : 회원가입</title>
 <link rel="stylesheet" href="./css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 </head>
 <body>
 <jsp:include page="../include/mheader.jsp"/>
-	<br><br>
-	<div align="center">
+	<div class="join_ready_all_div" align="center">
 		<form name="memJoinReady" method="post" action="<%=request.getContextPath() %>/memberJoin.do">
-
-			<table border="0" cellspacing="1">
-				<tr>
-					<td align="center"><h3>쌍용박스 회원가입 이용약관 동의</h3></td>
-				</tr>
+			<div class="join_title_div">쌍용박스 회원가입 이용약관 동의</div>
+			<table style="width: 93%;">
 				<tr>
 					<td>
 						<label>
@@ -186,8 +182,8 @@ NAVER 내의 개별 서비스 이용, 이벤트 응모 및 경품 신청 과정�
 				</tr>
 				<tr>
 					  <td colspan="4" align="center">
-						<button type="submit" class="btn btn-success">가입하기</button>
-						<button type="button" class="btn btn-default" 
+						<button type="submit" class="btn join_btn">가입하기</button>
+						<button type="button" class="btn" 
 							onclick="history.back()">가입취소</button>
 					</td>
 				</tr>

@@ -14,7 +14,7 @@
 
 
 <meta charset="UTF-8">
-<title></title>
+<title>쌍용박스 : 상영 정보 설정</title>
 
 <script type="text/javascript">
 
@@ -422,12 +422,15 @@
 	<jsp:include page="../include/mheader.jsp" />
 	
 	<!-- 새로운 상영 영화 추가 -->
-	<div class="container"> 
-	<p>영화 상영 추가</p>
+	<div class="man_all_div_lg" align="center">
+		<div class="my_title_div">
+			<span>영화 상영 정보 추가</span>
+		</div>
+	<div class="screen_div">
 	<form method="post">
-		<table class="table table-hover"> 
+		<table class="table table-hover boo_table"> 
 			<thead>
-				<tr> 
+				<tr class="boo_table_tr"> 
 					<th>영화명(코드)</th> 
 					<th>러닝타임(분)</th> 
 					<th>상영지점</th> 
@@ -503,7 +506,7 @@
 	               	</td>
 	               	
 	               	<td>
-	               		<input id="insert_btn" type="button" class="btn btn-default btn-sm" value="추가">
+	               		<input id="insert_btn" type="button" class="btn table_btn" value="추가">
 	               	</td>
 	               	 
 				</tr> 
@@ -512,13 +515,16 @@
 		</table>
 	</form>
 	</div>
+	</div>
 	
 	<br><br>
 	
 	<!-- 현재 상영 설정된 영화 목록 -->
-	<div class="container"> 
-		영화 상영 목록
-		<div align="right">
+	<div class="man_all_div_lg" align="center">
+		<div class="my_title_div">
+			<span>영화 상영 정보 목록</span>
+		</div>
+		<div class="screen_s_div">
 			<form method="post" action="<%=request.getContextPath() %>/movieScreenSearch.do">
 		      <select name="search_field" id="search_field">
 		         <option value="screencode" <c:if test="${search_field == 'screencode'}">selected</c:if>>상영코드</option>
@@ -527,14 +533,15 @@
 		      </select>
 		      
 		      <input type="text" id="search_name" name="search_name" size="15" value="${search_name }" required>
-		      <input type="submit" id="search_btn" class="btn btn-default btn-sm" value="검색">
-		      <input type="button" class="btn btn-default btn-sm" value="최신목록" onclick="screen_reset()">
+		      <input type="submit" id="search_btn" class="icon_btn" value="&#xf002;">
+		      <input type="button" class="btn recent_btn" value="최신목록" onclick="screen_reset()">
 	      </form>
 		</div>
+	<div class="screen_div">
 	<form method="post" name="frm" id="sform">
-		<table class="table table-hover"> 
+		<table class="table table-hover boo_table"> 
 			<thead>
-				<tr>
+				<tr class="boo_table_tr"> 
 					<th>상영코드</th> 
 					<th>영화명(코드)</th> 
 					<th>상영지점</th> 
@@ -598,22 +605,23 @@
 		               	</td>
 		               	
 		               	<td>
-			               		<input type="button" id="sc_modify${screen.screencode }" class="btn btn-default btn-sm"
+			               		<input type="button" id="sc_modify${screen.screencode }" class="btn table_btn"
 			               			value="수정" onclick="screen_modify(${screen.screencode },${screen.start_time },${screen.end_time })">
-			               		<input type="button" id="sc_modify_cc${screen.screencode }" class="sc_modify_cc btn btn-default btn-sm"
+			               		<input type="button" id="sc_modify_cc${screen.screencode }" class="sc_modify_cc btn table_btn"
 			               			value="취소" onclick="screen_cancle(${screen.screencode },${screen.start_time },${screen.end_time },new Date('${screen.start_date }'),new Date('${screen.end_date }'))">
-			               		<input type="button" id="sc_modify_ok${screen.screencode }" class="sc_modify_ok btn btn-default btn-sm"
+			               		<input type="button" id="sc_modify_ok${screen.screencode }" class="sc_modify_ok btn table_btn"
 			               			value="확인" onclick="screen_modify_ok(${screen.screencode })">
 		               	</td>
 		               	<td>
-	               			<input type="button" value="삭제" class="btn btn-default btn-sm" onclick="screen_delete(${screen.screencode })">
+	               			<input type="button" value="삭제" class="btn table_btn" onclick="screen_delete(${screen.screencode })">
 		               	</td>
 					</tr> 
 				</c:forEach>
 			</tbody>
 		</table>
 		</form>
-	</div>
+		</div>
+	
 	
 	<!-- 기본 페이징 -->
 	<c:if test="${empty search_name }">
@@ -685,5 +693,7 @@
 			</nav>
 		</div>
 	</c:if>
+	
+	</div>
 </body>
 </html>

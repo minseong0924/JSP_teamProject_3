@@ -88,9 +88,9 @@
 						<li class="nav-item dropdown">
 							<a class="nav-link dropdown-toggle nav_a" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }" data-toggle="dropdown"><i class='glyphicon glyphicon-user'></i> MY</a> 
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
-								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역 관리</a></li>
-								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }" onclick="pwdCheck()">개인정보 수정</a></li>
+								 <li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
+                            	<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역 관리</a></li>
+                            	<li><a class="dropdown-item" href="<%=request.getContextPath()%>/memPwdChk.do?memid=${memSession.id }">개인정보 수정</a></li>
 							</ul> 
 						</li>
 					</c:if>

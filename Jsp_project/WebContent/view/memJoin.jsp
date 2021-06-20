@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>SSANG YOUNG BOX</title>
+<title>쌍용박스 : 가입하기</title>
 <link rel="stylesheet" href="./css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript">
@@ -256,15 +256,11 @@
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp"/>
-	<br><br>
-	<div align="center">
+	<div class="join_all_div" align="center">
 		<form name="memJoin" method="post" onsubmit="return allCheck()" 
 			action="<%=request.getContextPath() %>/memberJoinOk.do">
-
+			<div class="join_title_div">회원가입</div>
 			<table class="memJoin">
-				<tr>
-					<td colspan="2" align="center"><h3>회원가입</h3></td>
-				</tr>
 				<tr>
 					<td>이름</td>
 					<td><input id="username" name="username" class="form-control" required></td>
@@ -275,7 +271,7 @@
 						<div class="input-group">
 					      <input name="userid" id="userid" class="form-control" placeholder="4자 이상 16자 이하" required>
 					      <span class="input-group-btn">
-					        <button class="btn btn-default" type="button" value="중복체크" id="idcheck_btn">id check</button>
+					        <button class="btn join_btn" type="button" value="중복체크" id="idcheck_btn">id check</button>
 					      </span>
 					    </div>
 					    <span id="idcheck"></span>
@@ -312,8 +308,8 @@
 				</tr>
 				<tr>
 					  <td colspan="2" align="center">
-						<button type="submit" class="btn btn-success">회원가입</button>
-						<button type="button" class="btn btn-default" 
+						<button type="submit" class="btn join_btn">회원가입</button>
+						<button type="button" class="btn" 
 							onclick="history.back()">돌아가기</button>
 					</td>
 				</tr>

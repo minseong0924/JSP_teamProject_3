@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>영화 관리</title>
+<title>쌍용박스 : 영화 관리</title>
 <link rel="stylesheet" href="./css/style.css">
 <script>
 
@@ -15,66 +15,63 @@
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
-	<div align="center">
-		<div class="title">
-			<h2>영화 목록</h2>
-			<br>
-			<br>
+	<div class="man_all_div" align="center">
+		<div class="my_title_div">
+			<span>영화 목록</span>
 		</div>
-		<form method="post"
-			action="<%=request.getContextPath()%>/movieSearch.do">
-			<div class="search">
-				<select name="search_field">
-					<option value="movie_name">영화 제목(한글)</option>
-					<option value="movie_state">상태</option>
-				</select> 
-					<input name="search_name" placeholder="내용을 입력하세요"> 
-					<input type="submit" value="검색">
-			</div>
-		</form>
-		<br>
-		<br>
-		<br>
-		<div style="width:900px;" align="center">
-		<table class="table table-striped table-hover">
-			<tr>
-				<th>영화제목</th>
-				<th>상태</th>
-				<th>상영설정</th>
-				<th>수정</th>
-				<th>삭제</th>
-			</tr>
-			
-			<c:set var="list" value="${List }" />
-			<c:if test="${!empty List}">
-				<c:forEach items="${List }" var="dto">
+		<div class="man_s_div">
+			<form method="post"
+				action="<%=request.getContextPath()%>/movieSearch.do">
+					<select name="search_field">
+						<option value="movie_name">영화 제목(한글)</option>
+						<option value="movie_state">상태</option>
+					</select> 
+						<input name="search_name" placeholder="내용을 입력하세요"> 
+						<input class="icon_btn" type="submit" value="&#xf002;">
+			</form>
+		</div>
+		
+		<div class="my_boo_div">
+			<table class="table table-hover boo_table">
+				<tr class="boo_table_tr">
+					<th>영화제목</th>
+					<th>상태</th>
+					<th>상영설정</th>
+					<th>수정</th>
+					<th>삭제</th>
+				</tr>
+				
+				<c:set var="list" value="${List }" />
+				<c:if test="${!empty List}">
+					<c:forEach items="${List }" var="dto">
+						<tr>
+							<td>${dto.getTitle_ko() }</td>
+							<td>${dto.getMstate() }</td>
+							<td><input type="button" value="관리" class="btn table_btn"
+								onclick="location.href='moiveManage.do?movieCode=${dto.getMoviecode()}'"></td>
+							<td><input type="button" value="수정" class="btn table_btn"
+								onclick="location.href='movieEdit.do?movieCode=${dto.getMoviecode()}'"></td>
+							<td><input type="button" value="삭제" class="btn table_btn"
+								onclick="if(confirm('정말 삭제하시겠습니까?')){location.href='movieDelete.do?movieCode=${dto.getMoviecode()}'}
+											else{return;}"></td>
+						</tr>
+					</c:forEach>
+				</c:if>
+	
+				<c:if test="${empty List}">
 					<tr>
-						<td>${dto.getTitle_ko() }</td>
-						<td>${dto.getMstate() }</td>
-						<td><input type="button" value="관리"
-							onclick="location.href='moiveManage.do?movieCode=${dto.getMoviecode()}'"></td>
-						<td><input type="button" value="수정"
-							onclick="location.href='movieEdit.do?movieCode=${dto.getMoviecode()}'"></td>
-						<td><input type="button" value="삭제"
-							onclick="if(confirm('정말 삭제하시겠습니까?')){location.href='movieDelete.do?movieCode=${dto.getMoviecode()}'}
-										else{return;}"></td>
-					</tr>
-				</c:forEach>
-			</c:if>
-
-			<c:if test="${empty List}">
-				<tr>
-					<td colspan="5" align="center">검색된 데이터가 없습니다.</td>
-			</c:if>
-		</table>
+						<td colspan="5" align="center">검색된 데이터가 없습니다.</td>
+				</c:if>
+			</table>
 		</div>
 		
 		<br><br>
-		<div class="search">
-			<input type="button" value="영화등록"
+		<div class="foot_div">
+			<input type="button" value="영화등록" class="btn join_btn"
 				onclick="location.href='<%=request.getContextPath()%>/movieWrite.do'">
 		</div>
-			<c:if test="${page > block }">
+		
+<%-- 			<c:if test="${page > block }">
 		      <a href="movieList.do?page=1">[맨처음]</a>
 		      <a href="movieList.do?page=${startBlock - 1 }">◀</a>
 		   </c:if>
@@ -92,8 +89,38 @@
 		   <c:if test="${endBlock < allPage }">
 		      <a href="movieList.do?page=${endBlock + 1 }">▶</a>
 		      <a href="movieList.do?page=${allPage }">[마지막]</a>
-		   </c:if>
-		</div>
-		<jsp:include page="../include/mfooter.jsp" />
+		   </c:if> --%>
+		   
+		   <nav>
+			  <ul class="pagination">
+			  	<c:if test="${page > block }">
+				    <li>
+				      <a href="movieList.do?page=${startBlock - 1 }" aria-label="Previous">
+				        <span aria-hidden="true">&laquo;</span>
+				      </a>
+				    </li>
+			    </c:if>
+			    
+			    <c:forEach begin="${startBlock }" end="${endBlock }" var="i">
+				    <c:if test="${i == page }">
+						<li class="active"><a href="movieList.do?page=${i }">${i }</a></li>
+					</c:if>
+					
+					<c:if test="${i != page }">
+						<li><a href="movieList.do?page=${i }">${i }</a></li>
+					</c:if>
+			    </c:forEach>
+			    
+			    <c:if test="${endBlock < allPage }">
+				    <li>
+				      <a href="movieList.do?page=${endBlock + 1 }" aria-label="Next">
+				        <span aria-hidden="true">&raquo;</span>
+				      </a>
+				    </li>
+			    </c:if>
+			  </ul>
+			</nav>
+	</div>
+<jsp:include page="../include/mfooter.jsp" />
 </body>
 </html>

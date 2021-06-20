@@ -6,6 +6,30 @@
 @import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
 @import url('https://cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css');
 
+.dropdown-menu {
+    border-radius: 10px;
+}
+
+select {
+    line-height: 1.5;
+    color: #444;
+    background-color: #fff;
+    padding: 0.2em 1.4em 0.2em 0.1em;
+    margin: 0;
+    border: 1px solid #aaa;
+    border-radius: 0.5em;
+    /* box-shadow: 0 1px 0 1px rgb(0 0 0 / 4%); */
+}
+
+input {
+	color: #444;
+    background-color: #fff;
+/*     padding: 0.1em 1.4em 0.1em 0.1em; */
+    margin: 0;
+    border: 1px solid #aaa;
+    border-radius: 0.5em;
+}
+
 body{
 	font-family: nanumbarungothic;
 	background-color: black;
@@ -374,6 +398,11 @@ body{
 	color: white;
 }
 
+.nav_a_color_p {
+	color: mediumpurple;
+	font-size: 16px;
+}
+
 .nav>li>a:focus, .nav>li>a:hover {
     text-decoration: none;
     color: mediumpurple;
@@ -592,12 +621,71 @@ a.menu:after, .dropdown-toggle:after {
     width: 500px;
     height: 300px;
     position: absolute;
-    top:50%;
+    top: 50%;
     left: 50%;
     margin: -250px 0 0 -250px;
-    background:#eee;
+    background: mediumpurple;
     z-index: 2;
     padding: 30px;
+    border-radius: 50px;
+    color: white;
+}
+
+.join_ready_all_div {
+	background-color: white;
+    width: 37%;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-top: 2%;
+}
+
+.login_td {
+	background-color: black;
+    border-radius: 30px;
+    color: white;
+}
+
+.join_btn {
+	background-color: mediumpurple;
+    color: white;
+    width: 100%;
+}
+
+.join_title_div {
+	background-color: mediumpurple;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    color: white;
+    font-size: 1.5em;
+    padding: 16px;
+}
+
+.join_all_div {
+	width: 23%;
+    height: 500px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 7px;
+    margin-top: 2%;
+}
+
+.res_all_div {
+	width: 23%;
+    height: 300px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 7px;
+    margin-top: 2%;
+}
+
+.res_in_div {
+	width: 91%;
+    padding-top: 21%;
+    font-size: 1.4em;
+}
+
+.memJoin {
+	margin-top: 4%;
 }
     
 .black_bg{
@@ -618,6 +706,8 @@ a.menu:after, .dropdown-toggle:after {
     position: absolute;
     top: -30px;
     right: 0;
+    background-color: white;
+    border-radius: 7px;
 }
 
 .modal_close> a{
@@ -1249,66 +1339,148 @@ textarea{
 
 #side_bar{
 	list-style-type: none;
-	border-right: 3px;
-	width: 15%;
-	height: 90%;
-	position: fixed;
-	overflow: auto;
-	text-align: center;
-	background-color: #ccc;
+    border-right: 3px;
+    width: 11%;
+    height: 60%;
+    position: fixed;
+    overflow: auto;
+    text-align: center;
+    background-color: mediumpurple;
+    border-radius: 88px;
+    color: white;
+    margin-top: 2%;
+    margin-left: 4%;
 }
 
 #side_bar .side_menu{
 	text-decoration: none;
 	display: block;
-	color: #000;
+	color: white;
 	padding: 80px 0px 80px 0px;
 	font-size: 20px;
 }
 
 #side_bar a:hover{
 	background-color: #eee;
-	color: white;
+	color: mediumpurple;
+}
+
+.my_all_div {
+	width: 66%;
+    margin: 0 auto;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    margin-top: 2%;
+    padding-bottom: 1%;
+    margin-bottom: 2%;
+}
+
+.my_title_div {
+	text-align: left;
+    /* margin-left: 500px; */
+    color: white;
+    background-color: mediumpurple;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    font-size: 1.5em;
+    padding-left: 3%;
+    height: 69px;
+    padding-top: 18px;
+}
+
+.my_title_div2 {
+	text-align: left;
+    /* margin-left: 500px; */
+    color: white;
+    background-color: mediumpurple;
+    font-size: 2em;
+    padding-left: 3%;
+    height: 69px;
+    padding-top: 1%;
+}
+
+.my_boo_div {
+	width: 90%;
+    margin-top: 2%;
+}
+
+.my_main_div {
+	height: 500px;
+}
+
+.name_div {
+	float: left;
+    width: 47%;
+    text-align: right;
+    padding-top: 2%;
+    margin-top: 2%;
+}
+
+.point_div {
+	float: left;
+    width: 49%;
+    text-align: left;
+    margin-top: 2%;
+    height: 142px;
+    padding-left: 7%;
+    padding-top: 3%;
+}
+
+.name_point_div {
+	background-color: #e7e7e7;
+    width: 93%;
+    border-radius: 10px;
+    margin-top: 2%;
 }
 
 .memname{
-	padding-left: 350px;
-	font-size: 50px;
-	font-weight: bold;
+	/*padding-left: 350px;*/
+    font-size: 50px;
+    font-weight: bold;
+/*     margin-top: 3%;
+    width: 300px;
+    margin-right: 33%; */
 }
 
 .memedit{
-	margin-left: 400px;
+/* 	margin-left: 400px; */
 	color: black;
+	font-size: 18px;
 }
 
 .mempoint{
-	padding-left: 100px;
-	font-size: 30px;
-	font-weight: bold;
+	/*padding-left: -100px;*/
+    font-size: 30px;
+    font-weight: bold;
+/*     width: 300px; */
+/*     margin-right: 26%; */
 }
 
 .mempoint1{
-	padding-left: 200px;
-	font-size: 20px;
+	/*padding-left: 200px;*/
+    font-size: 20px;
+/*     margin-right: 22%; */
 }
 
 .memleft{
 	float: left;
-	padding-left: 100px;
-	padding-top: 30px;
+	padding-left: 11%;
+    padding-top: 8%;
 }
 
 .memright{
 	float: right;
-	padding-right: 300px;
-	padding-top: 30px;
+	padding-right: 16%;
+    padding-top: 8%;
 }
 
 .mypage{
 	padding-left: 10px;
 	font-size: 20px;
 	font-weight: bold;
+	text-align: left;
+    color: mediumpurple;
 }
 
 .mypageinfo {
@@ -1338,8 +1510,26 @@ textarea{
 }
 
 .membooted{
-	margin-left: 950px;
+	margin-left: 95%;
 	color: black;
+}
+
+.boo_table {
+	width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    background-color: white;
+    border: 1px solid #474747;
+    border-radius: 10px;
+}
+
+.boo_table_tr {
+	background-color: mediumpurple;
+	color:white;
+}
+/* 부트스트랩 테이블 hover */
+.table-hover tbody tr:hover {
+    color: mediumpurple;
 }
 
 .mypagepwd{
@@ -1348,9 +1538,93 @@ textarea{
   	vertical-align: top;
 	line-height: 1.5;
 	margin : 20px 10px;
-	margin-left: 200px;
+/* 	margin-left: 200px; */
 }
 
 .pwd_btn{
 	width: 100px;
+}
+
+.man_all_div {
+	width: 68%;
+    background-color: white;
+    color: black;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-top: 1%;
+    padding-bottom: 1%;
+    margin-bottom: 1%;
+}
+
+.man_s_div {
+	width: 70%;
+    margin-left: 50%;
+    margin-top: 4%;
+}
+
+.table_btn {
+	background-color: mediumpurple;
+    color: white;
+    width: 60px;
+    height: 30px;
+}
+
+.icon_btn[type="submit"] {
+    background-color: transparent;
+    font-family: FontAwesome;
+    border-style: hidden;
+    color: mediumpurple;
+    font-size: 18px;
+}
+
+.foot_div {
+    width: 10%;
+    margin-right: -79%;
+}
+
+.man_all_div_sm {
+    width: 44%;
+    background-color: white;
+    color: black;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-top: 1%;
+    padding-bottom: 1%;
+    margin-bottom: 1%;
+}
+
+.cancle_btn {
+	background-color: white;
+    color: black;
+    width: 100%;
+    height: 30px;
+}
+
+.man_all_div_lg {
+	width: 72%;
+    background-color: white;
+    color: black;
+    margin: 0 auto;
+    border-radius: 10px;
+    margin-top: 1%;
+    padding-bottom: 1%;
+    margin-bottom: 1%;
+}
+
+.screen_div {
+	width: 92%;
+    margin-top: 2%;
+}
+
+.recent_btn {
+	background-color: mediumpurple;
+    color: white;
+    width: 80px;
+    height: 30px;
+}
+
+.screen_s_div {
+	width: 70%;
+    margin-left: 48%;
+    margin-top: 2%;
 }

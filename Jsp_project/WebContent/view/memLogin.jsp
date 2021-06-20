@@ -26,18 +26,18 @@
 				</tr>
 				
 				<tr>
-					<td align="center" colspan="2">
+					<td class="login_td" align="center" colspan="2">
 						<input type="hidden" id="loginValue" name="loginValue" value="###">
-						<button type="submit" class="btn btn-default btn-block">LOGIN</button>
+						<button type="submit" class="btn" style="color: white;">LOGIN</button>
 					</td>
 				</tr>
 				<tr>
 					<td align="center" colspan="2">
-						<a href="<%=request.getContextPath() %>/memberFindId.do">아이디 찾기</a>
+						<a href="<%=request.getContextPath() %>/memberFindId.do" class="nav_a_color">아이디 찾기</a>
 						&nbsp;&nbsp;
-						<a href="<%=request.getContextPath() %>/memberFindPwd.do">비밀번호 찾기</a>
+						<a href="<%=request.getContextPath() %>/memberFindPwd.do" class="nav_a_color">비밀번호 찾기</a>
 						&nbsp;&nbsp;
-						<a href="<%=request.getContextPath() %>/memberJoinReady.do">회원가입</a>
+						<a href="<%=request.getContextPath() %>/memberJoinReady.do" class="nav_a_color">회원가입</a>
 					</td>
 				</tr>
 			</table>

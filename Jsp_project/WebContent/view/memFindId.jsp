@@ -4,16 +4,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>쌍용박스</title>
+<title>쌍용박스 : 아이디 찾기</title>
 <link rel="stylesheet" href="./css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 </head>
 <body>
-	<div align="center">
+	
 	<jsp:include page="../include/mheader.jsp"/>
+	<div class="join_all_div" align="center">
 	<form method="post" action="<%=request.getContextPath()%>/memFindIdOk.do">
-		<table>
-			<tr><td colspan="2" align="center"><h4>아이디 찾기</h4></td></tr>
+		<div class="join_title_div">아이디 찾기</div>
+		<table class="memJoin">
 			<tr>
 				<td>이름</td>
 				<td><input name="name" class="form-control" placeholder="이름" required></td>
@@ -28,7 +29,7 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<button type="submit" class="btn btn-default">아이디 찾기</button>
+					<button type="submit" class="btn join_btn">아이디 찾기</button>
 				</td>
 			</tr>
 		</table>

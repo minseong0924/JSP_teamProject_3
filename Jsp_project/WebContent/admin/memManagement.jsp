@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>쌍용박스 : 사용자 관리</title>
 <link rel="stylesheet" href="./css/style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
 <script>
@@ -25,31 +25,27 @@ function getSelectValue(index)
 <body>
 	<jsp:include page="../include/mheader.jsp" />
 	
-	<div align="center">
-		<div class="title">
-			<h2>사용자 목록</h2>
-			<br>
-			<br>
+	<div class="man_all_div" align="center">
+		<div class="my_title_div">
+			<span>사용자 목록</span>
 		</div>
-		<form method="post" name="submit"
-			action="<%=request.getContextPath()%>/memberSearch.do">
-			<div class="search">
-				<select name="search_field">
-					<option value="member_id">ID</option>
-					<option value="member_name">이름</option>
-					<option value="member_phone">전화번호</option>
-				</select> <input name="search_name" placeholder="내용을 입력하세요">
-					 <input type="submit" value="검색">
-			</div>
-		</form>
-		<br>
-		<br>
-		<br>
+		<div class="man_s_div">
+			<form method="post" name="submit"
+				action="<%=request.getContextPath()%>/memberSearch.do">
+					<select name="search_field">
+						<option value="member_id">ID</option>
+						<option value="member_name">이름</option>
+						<option value="member_phone">전화번호</option>
+					</select> <input name="search_name" placeholder="내용을 입력하세요">
+						 <input class="icon_btn" type="submit" value="&#xf002;">
+						 
+			</form>
+		</div>
 		<form name="form" method="post"
 			action="<%=request.getContextPath()%>/memApply.do">
-		<div style="width:900px;" align="center">
-		<table class="table table-striped table-hover">
-			<tr >			
+		<div class="my_boo_div">
+		<table class="table table-hover boo_table">
+			<tr class="boo_table_tr">			
 				<th>ID</th>
 				<th>이름</th>
 				<th>전화번호</th>
@@ -75,14 +71,13 @@ function getSelectValue(index)
 									<option value="관리자">관리자</option>
 								</c:if>
 						</select></td>
-						<td><input type="button" onclick="getSelectValue(${status.index})" value="적용"></td>
-						<td><input type="button" value="삭제"
+						<td><input type="button" class="btn table_btn" onclick="getSelectValue(${status.index})" value="적용"></td>
+						<td><input type="button" value="삭제" class="btn table_btn"
 							onclick="if(confirm('정말 삭제하시겠습니까?')) {
 							location.href='memDelete.do?id=${dto.getId()}'}else{return;}"></td>
 					</tr>
 				</c:forEach>
 			</c:if>
-
 			
 			<c:if test="${empty List}">
 				<tr>
@@ -92,10 +87,8 @@ function getSelectValue(index)
 		</table>
 		</div>
 		</form>
-		
-		<br><br>
 
-				<c:if test="${page > block }">
+<%-- 				<c:if test="${page > block }">
 			      <a href="memberManagement.do?page=1">[맨처음]</a>
 			      <a href="memberManagement.do?page=${startBlock - 1 }">◀</a>
 			   </c:if>
@@ -113,7 +106,37 @@ function getSelectValue(index)
 			   <c:if test="${endBlock < allPage }">
 			      <a href="memberManagement.do?page=${endBlock + 1 }">▶</a>
 			      <a href="memberManagement.do?page=${allPage }">[마지막]</a>
-			   </c:if>
+			   </c:if> --%>
+			   
+			<nav>
+			  <ul class="pagination">
+			  	<c:if test="${page > block }">
+				    <li>
+				      <a href="memberManagement.do?page=${startBlock - 1 }" aria-label="Previous">
+				        <span aria-hidden="true">&laquo;</span>
+				      </a>
+				    </li>
+			    </c:if>
+			    
+			    <c:forEach begin="${startBlock }" end="${endBlock }" var="i">
+				    <c:if test="${i == page }">
+						<li class="active"><a href="memberManagement.do?page=${i }">${i }</a></li>
+					</c:if>
+					
+					<c:if test="${i != page }">
+						<li><a href="memberManagement.do?page=${i }">${i }</a></li>
+					</c:if>
+			    </c:forEach>
+			    
+			    <c:if test="${endBlock < allPage }">
+				    <li>
+				      <a href="memberManagement.do?page=${endBlock + 1 }" aria-label="Next">
+				        <span aria-hidden="true">&raquo;</span>
+				      </a>
+				    </li>
+			    </c:if>
+			  </ul>
+			</nav>
 		</div>
 		
 		<jsp:include page="../include/mfooter.jsp" />

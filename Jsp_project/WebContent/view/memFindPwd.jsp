@@ -4,16 +4,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>쌍용박스</title>
+<title>쌍용박스 : 비밀번호 찾기</title>
 <link rel="stylesheet" href="./css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 </head>
 <body>
-	<div align="center">
 	<jsp:include page="../include/mheader.jsp"/>
+	<div class="join_all_div" align="center">
 	<form method="post" action="<%=request.getContextPath()%>/memFindPwdOk.do">
-		<table>
-			<tr><td colspan="2" align="center"><h4>비밀번호 찾기</h4></td></tr>
+		<div class="join_title_div">비밀번호 찾기</div>
+		<table class="memJoin">
 			<tr>
 				<td>아이디</td>
 				<td><input name="id" class="form-control" placeholder="아이디" required></td>
@@ -32,7 +32,7 @@
 			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<button type="submit" class="btn btn-default">비밀번호 찾기</button>
+					<button type="submit" class="btn join_btn">비밀번호 찾기</button>
 				</td>
 			</tr>
 		</table>

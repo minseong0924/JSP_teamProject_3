@@ -9,7 +9,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>쌍용박스 : 영화 수정</title>
 <link rel="stylesheet" href="./css/style.css">
 <script>
 function fn_checkByte(obj){
@@ -45,12 +45,11 @@ function fn_checkByte(obj){
 <body>	
 	<jsp:include page="../include/mheader.jsp"/>
 	<br><br>
-	<div align="center">
-		<div class="title">
-			<h2>영화 정보 등록/수정</h2>
-			<br>
-			<br>
-			
+	<div class="man_all_div" align="center">
+		<div class="my_title_div">
+			<span>영화 정보 등록/수정</span>
+		</div>
+		<div class="my_boo_div">
 		<form name="movieInfo" method="post" enctype="multipart/form-data" 
 			action="<%=request.getContextPath() %>/movieEditOk.do" 
 			onsubmit="return checkValue()">
@@ -73,7 +72,7 @@ function fn_checkByte(obj){
 				<tr>
 					<th>대표   포스터 : </th>
 					<td><img src="" id="poster" alt="미리보기" width="200" height="200">
-					<input type="file"  id="upload" name="movie_poster" 
+					<input type="file"  id="upload" name="movie_poster"
 							accept="image/*" required>jpg,png 파일만 첨부가 가능합니다.</td>
 				</tr>
 				
@@ -170,8 +169,8 @@ function fn_checkByte(obj){
 				</tr>	
 				<tr>
 					  <td colspan="4" align="center">
-						<button type="submit" class="btn btn-success">등록</button>
-						<button type="button" class="btn btn-success" 
+						<button type="submit" class="btn join_btn">등록</button>
+						<button type="button" class="btn cancle_btn"
 							onclick="history.back()">취소</button>
 					</td>
 				</tr>

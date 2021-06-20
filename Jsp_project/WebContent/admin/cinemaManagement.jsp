@@ -6,42 +6,38 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>지점 관리</title>
+<title>쌍용박스 : 지점 관리</title>
 <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
-	<div align="center">
-		<div class="title">
-			<h2>지점 목록</h2>
-			<br>
-			<br>
+	<div class="man_all_div" align="center">
+		<div class="my_title_div">
+			<span>지점 목록</span>
 		</div>
-		<form method="post"
-			action="<%=request.getContextPath() %>/cinemaSearch.do">
-			<div class="search">
-				<select name="local_code" required>
-					<c:set var="llist" value="${List }" />
-					<c:if test="${empty llist }">
-						<option value="">:::저장된 지역 없음:::</option>
-					</c:if>
-	
-					<c:if test="${!empty llist }">
-						<c:forEach items="${llist }" var="dto">
-							<option value="${dto.localcode }">${dto.localname }</option>
-						</c:forEach>
-					</c:if>
-				</select>
-				&nbsp;&nbsp;
-				<input type="submit" value="검색">
-			</div>
-		</form>
-		<br>
-		<br>
-		<br>
-		<div style="width:900px;" align="center">
-			<table class="table table-striped table-hover">
-				<tr>
+		<div class="man_s_div">
+			<form method="post"
+				action="<%=request.getContextPath() %>/cinemaSearch.do">
+					<select name="local_code" required>
+						<c:set var="llist" value="${List }" />
+						<c:if test="${empty llist }">
+							<option value="">:::저장된 지역 없음:::</option>
+						</c:if>
+		
+						<c:if test="${!empty llist }">
+							<c:forEach items="${llist }" var="dto">
+								<option value="${dto.localcode }">${dto.localname }</option>
+							</c:forEach>
+						</c:if>
+					</select>
+					&nbsp;&nbsp;
+					<input class="icon_btn" type="submit" value="&#xf002;">
+			</form>
+		</div>
+		
+		<div class="my_boo_div">
+			<table class="table table-hover boo_table">
+				<tr class="boo_table_tr">
 					<th>지점이름</th>
 					<th>주소</th>
 					<th>수정</th>
@@ -54,8 +50,8 @@
 		</div>
 		
 		<br><br>
-		<div class="search">
-			<input type="button" value="지점등록"
+		<div class="foot_div">
+			<input type="button" value="지점등록" class="btn join_btn"
 				onclick="location.href='<%=request.getContextPath()%>/cinemaWrite.do'">
 		</div>
 	</div>

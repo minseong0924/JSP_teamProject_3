@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>지점 등록</title>
+<title>쌍용박스 : 지점 등록</title>
 <link rel="stylesheet" href="./css/style.css">
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script type="text/javascript">
@@ -109,12 +109,11 @@
 <body>
 	<jsp:include page="../include/mheader.jsp" />
 	<br><br>
-	<div align="center">
-		<div class="title">
-			<h2>지점 정보 등록/수정</h2>
-			<br>
-			<br>
-			
+	<div class="man_all_div_sm" align="center">
+		<div class="my_title_div">
+			<span>지점 정보 등록/수정</span>
+		</div>
+		<div class="my_boo_div">
 		<form method="post" action="<%=request.getContextPath() %>/cinemaWriteOk.do"
 			onsubmit="return test_checkbox()">
 			<table class="localWrite">
@@ -187,9 +186,8 @@
 				
 				<tr>
 					<td colspan="4" align="right">
-						<input type="submit" value="등록">
-						&nbsp;&nbsp;
-						<input type="submit" onclick="history.back()" value="취소">
+						<input type="submit" value="등록" class="btn join_btn">
+						<input type="submit" onclick="history.back()" value="취소" class="btn cancle_btn">
 					</td>
 				</tr>
 				

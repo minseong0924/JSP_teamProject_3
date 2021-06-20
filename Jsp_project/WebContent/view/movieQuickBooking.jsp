@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>빠른 예매</title>
+<title>쌍용박스 : 빠른 예매</title>
 <link href="./css/style.css" rel="stylesheet" type="text/css" />
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
