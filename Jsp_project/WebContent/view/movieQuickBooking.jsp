@@ -23,6 +23,7 @@
 	//상단바 날짜 설정
 	function daySetting(dayflag, day) {
 		var currentDay;
+		selectDay = "";
 		
 		if(dayflag =='open') {
 			currentDay = new Date();  
@@ -69,7 +70,7 @@
 			var thisday = new Date(thisWeek[j]);
 			thisday = thisday.toISOString().slice(0, 10);
 			
-			day += "<button type='button' class='list-group-item list-group-item-action list-group-item-info' "
+			day += "<button type='button' class='list-group-item list-group-item-action day_btn' "
 			        + "onclick=\"dayBaseScreenOpen('"+thisday+"','day"+(j+1)+"')\""
 					+ "id='day"+(j+1)+"' value='"+thisWeek[j]+"'>"
 					+ "<span>"
@@ -80,10 +81,10 @@
 					+ "</button>";
 		}
 		
-		day = "<button type='button' class='list-group-item list-group-item-action list-group-item-info' "
+		day = "<button type='button' class='list-group-item list-group-item-action day_btn' "
 				+ "onclick='dayBeforeSetting()' id='before_btn'><i class='glyphicon glyphicon-chevron-left'></i></button>"
 				+ day
-				+ "<button type='button' class='list-group-item list-group-item-action list-group-item-info' "
+				+ "<button type='button' class='list-group-item list-group-item-action day_btn' "
 				+ "onclick='dayAfterSetting()' id='after_btn'><i class='glyphicon glyphicon-chevron-right'></i> </button>";
 		
 		$("#header_day").html(day);
@@ -170,7 +171,7 @@
 						for(var i=0; i<screenlist.length; i++) {
 						
 							// 상영 정보 목록 초기화
-							$("#screen_div").empty();
+							$("#screen_div").html("날짜를 선택하신 후에<br>영화와 극장을 선택하시면 상영시간표를 비교하여 볼 수 있습니다.");
 							
 							// data로 받은 목록에  있는 영화만 활성화
 							$("#screenmovie"+screenlist[i].moviecode).attr('disabled', false);
@@ -211,9 +212,9 @@
 						$("#day1").addClass('active');
 						
 						// 선택 영화 포스터, 영화 제목 하단에 추가
-						var addHtml = "<img src='upload/"+movie_poster+"' alt='이미지가없습니다' width='60' height='90'>";
-						addHtml += "<font color='blue'> "+movie_name+"</font>";
-						addHtml += "<button type='button' class='btn btn-default' onclick='selectCancel()'>X</button>";
+						var addHtml = "<img class='sle_movie_img' src='upload/"+movie_poster+"' alt='이미지가없습니다' width='60' height='90'>";
+						addHtml += movie_name;
+						addHtml += "<button type='button' class='btn' onclick='selectCancel()'><i class='glyphicon glyphicon-remove'></i></button>";
 						$("#select_movie_under").html(addHtml);
 						
 					},
@@ -245,7 +246,7 @@
 					for(var i=0; i<screenlist.length; i++) {
 					
 						// 상영 정보 목록 초기화
-						$("#screen_div").empty();
+						$("#screen_div").html("날짜를 선택하신 후에<br>영화와 극장을 선택하시면 상영시간표를 비교하여 볼 수 있습니다.");
 						
 						// data로 받은 목록에  있는 영화만 활성화
 						$("#screenmovie"+screenlist[i].moviecode).attr('disabled', false);
@@ -265,9 +266,9 @@
 					}
 
 					// 선택 영화 포스터, 영화 제목 하단에 추가
-					var addHtml = "<img src='upload/"+movie_poster+"' alt='이미지가없습니다' width='60' height='90'>";
-					addHtml += "<font color='blue'> "+movie_name+"</font> ";
-					addHtml += "<button type='button' class='btn btn-default' onclick='selectCancel()'>X</button>";
+					var addHtml = "<img class='sle_movie_img' src='upload/"+movie_poster+"' alt='이미지가없습니다' width='60' height='90'>";
+					addHtml += movie_name;
+					addHtml += "<button type='button' class='btn' onclick='selectCancel()'><i class='glyphicon glyphicon-remove'></i></button>";
 					$("#select_movie_under").html(addHtml);
 				},
 				error: function(request,status,error){
@@ -299,7 +300,7 @@
 					for(var i=0; i<screenlist.length; i++) {
 					
 						// 상영 정보 목록 초기화
-						$("#screen_div").empty();
+						$("#screen_div").html("날짜를 선택하신 후에<br>영화와 극장을 선택하시면 상영시간표를 비교하여 볼 수 있습니다.");
 						
 						// data로 받은 목록에  있는 영화만 활성화
 						$("#screenmovie"+screenlist[i].moviecode).attr('disabled', false);
@@ -314,9 +315,9 @@
 					movie_name = screenlist[0].moviename;
 					
 					// 선택 영화 포스터, 영화 제목 하단에 추가
-					var addHtml = "<img src='upload/"+movie_poster+"' alt='이미지가없습니다' width='60' height='90'>";
-					addHtml += "<font color='blue'> "+movie_name+"</font> ";
-					addHtml += "<button type='button' class='btn btn-default' onclick='selectCancel()'>X</button>";
+					var addHtml = "<img class='sle_movie_img' src='upload/"+movie_poster+"' alt='이미지가없습니다' width='60' height='90'>";
+					addHtml += movie_name;
+					addHtml += "<button type='button' class='btn' onclick='selectCancel()'><i class='glyphicon glyphicon-remove'></i></button>";
 					$("#select_movie_under").html(addHtml);
 				},
 				error: function(request,status,error){
@@ -360,11 +361,12 @@
 				$("#header_day").children("button").removeClass('active');
 				$("#"+dayID).addClass('active');
 				$('#select_movie_under').empty();
+				$("#select_cinema_under").empty();
 				
 				for(var i=0; i<screenlist.length; i++) {
 					
 					// 상영 정보 목록 초기화
-					$("#screen_div").empty();
+					$("#screen_div").html("날짜를 선택하신 후에<br>영화와 극장을 선택하시면 상영시간표를 비교하여 볼 수 있습니다.");
 					
 					// data로 받은 목록에  있는 영화만 활성화
 					$("#screenmovie"+screenlist[i].moviecode).attr('disabled', false);
@@ -419,7 +421,7 @@
 					for(var i=0; i<screenlist.length; i++) {
 						
 						// 상영 정보 목록 초기화
-						$("#screen_div").empty();
+						$("#screen_div").html("날짜를 선택하신 후에<br>영화와 극장을 선택하시면 상영시간표를 비교하여 볼 수 있습니다.");
 						
 						// data로 받은 목록에  있는 영화만 활성화
 						$("#screenmovie"+screenlist[i].moviecode).attr('disabled', false);
@@ -455,7 +457,7 @@
 					for(var i=0; i<screenlist.length; i++) {
 						
 						// 상영 정보 목록 초기화
-						$("#screen_div").empty();
+						$("#screen_div").html("날짜를 선택하신 후에<br>영화와 극장을 선택하시면 상영시간표를 비교하여 볼 수 있습니다.");
 						
 						// data로 받은 목록에  있는 영화만 활성화
 						$("#screenmovie"+screenlist[i].moviecode).attr('disabled', false);
@@ -477,7 +479,7 @@
 	function cinemaSelect(cinemacode, cinemaname) {
 		console.log("cinemacode: "+cinemacode);
 		console.log("cinemaname: "+cinemaname);
-		$("#select_cinema_under").html("<font color='blue'>"+cinemaname+"</font>");
+		$("#select_cinema_under").html(cinemaname);
 		
 		var cinemaDay = "";
 		
@@ -508,7 +510,7 @@
 				var appendHtml = "";
 				
 				// 상영 정보 버튼 셋팅
-				appendHtml = "<ul class='list-group' style='list-style:none; padding-left: 5px;'>";
+				appendHtml = "<ul class='list-group' style='list-style:none;'>";
 				
 				for(var i=0; i<slist.length; i++) {
 					
@@ -594,8 +596,8 @@
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
-	<div align="center" style="min-width:1100px;">
-		<div id="header_day" align="center" class="list-group list-group-horizontal-md" role="group">
+	<div align="center" class="qbooking_all_div">
+		<div id="header_day" align="center" class="header_day list-group list-group-horizontal-md" role="group">
 		</div>
 		<c:if test="${moviecode != ''}">
 			<input type="hidden" id="movie_page" value="${moviecode }">
@@ -605,23 +607,23 @@
 		</c:if>
 		<table class="table">
 			<tr>
-				<td style="width:300px;"><span class="booking_title">영화</span>
-					<div class="booking_list panel panel-default" align="left">
-					  <div style="height:400px; overFlow : auto;" id="movielist_div" class="list-group list-group-flush" role="group">
+				<td style="width:330px; padding-left: 3%"><span class="booking_title_m">영화</span>
+					<div class="booking_list_m panel" align="left">
+					  <div style="height:475px; overFlow : auto;" id="movielist_div" class="list-group list-group-flush" role="group">
 					  	<c:if test="${!empty movielist }">
 		                   <c:forEach items="${movielist }" var="mdto">
 		                      <button type="button" 
 			                      id="screenmovie${mdto.moviecode }"
 			                      value="${mdto.moviecode }"
 			                      onclick="movieSelect(${mdto.moviecode })"
-			                      class="list-group-item list-group-item-action list-group-item-info">${mdto.title_ko }</button>
+			                      class="list_item_bg list-group-item list-group-item-action">${mdto.title_ko }</button>
 		                   </c:forEach>
 		                </c:if>
 					  </div>
 					</div>
 				</td>
-				<td style="width:150px;"><span class="booking_title">극장</span>
-					<div class="booking_list panel panel-default" align="left">
+				<td style="width:180px;"><span class="booking_title_c">극장</span>
+					<div class="booking_list_c panel" align="left">
 					  <div id="local_list" class="list-group">
 					  	<c:if test="${!empty locallist }">
 		                   <c:forEach items="${locallist }" var="ldto">
@@ -629,14 +631,14 @@
 			                      id="screenlocal${ldto.localcode }"
 			                      value="${ldto.localcode }"
 			                      onclick="selectLocal(${ldto.localcode })"
-			                      class="list-group-item list-group-item-action list-group-item-info">${ldto.localname }</button>
+			                      class="list_item_bg list-group-item list-group-item-action">${ldto.localname }</button>
 			               </c:forEach>
 		                </c:if>
 					  </div>
 					</div>
 				</td>
-				<td style="width:150px;"> <br>
-					<div class="booking_list panel panel-default" align="left">
+				<td style="width:180px;"> <br>
+					<div class="booking_list_cc panel" align="left">
 						<c:forEach items="${locallist }" var="local">
 							<div id="cinema_detail${local.localcode }" class="cinema_detail list-group">
 							<c:forEach items="${cinemalist }" var="cdto">
@@ -645,26 +647,26 @@
 				                      id="screencinema${cdto.cinemacode }"
 				                      value="${cdto.cinemacode }"
 				                      onclick="cinemaSelect(${cdto.cinemacode },'${cdto.cinemaname }')"
-				                      class="list-group-item list-group-item-action list-group-item-info">${cdto.cinemaname }</button>
+				                      class="list_item_bg list-group-item list-group-item-action">${cdto.cinemaname }</button>
 			                	</c:if>
 				            </c:forEach>
 				            </div>
 			            </c:forEach>
 		            </div>
 				</td>
-				<td style="width:500px;" rowspan="2"><span class="booking_title">시간</span>
-					<div class="booking_list panel panel-default">
-					  <div id="screen_div" class="list-group" style="height:400px; overFlow : auto;">
-					    	영화와 극장을 선택하시면 상영시간표를 비교하여 볼 수 있습니다.
+				<td><span class="booking_title_t">시간</span>
+					<div class="booking_list_b panel">
+					  <div id="screen_div" class="booking_list_gr list-group">
+					    	<span class="from_str">날짜를 선택하신 후에<br>영화와 극장을 선택하시면 상영시간표를 비교하여 볼 수 있습니다.</span>
 					  </div>
 					</div>
 				</td>
 			</tr>
-			<tr>
-				<td style="height:250px;" id="select_movie_under"></td>
-				<td style="height:250px;" id="select_cinema_under" colspan="2"></td>
-			</tr>
 		</table>
+		<div class="select_info_div">
+			<div id="select_movie_under" class="sle_movie_div"></div>
+			<div id="select_cinema_under" class="sle_cinema_div"></div>
+		</div>
 	</div>
 	<jsp:include page="../include/mfooter.jsp" />
 </body>

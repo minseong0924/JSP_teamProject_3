@@ -332,7 +332,7 @@ public class BookDAO {
 		return dto;
 	}
 	
-	public int bookingDelete(String code) {
+	/*public int bookingDelete(String code) {
 		int result = 0;
 		
 		try {
@@ -353,7 +353,7 @@ public class BookDAO {
 		}
 		
 		return result;
-	}
+	}*/
 	
 	
 	public int bookingDelete(String bookingcode) {

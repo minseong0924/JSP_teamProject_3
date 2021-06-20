@@ -35,10 +35,10 @@ function loadReview() {
 				$("div[name=review-list"+i+"]").append("<div class='review_text'><span>"+Rlist[i].content+"</span></div>");
 				$(".review").append("</div>");
 				if(Rlist[i].id == '${memSession.id}') {
-					$("div[name=review-list"+i+"]").append("<div class='review_update'><button onclick='update(`"+i+"`,`"+Rlist[i].no+"`,`"+Rlist[i].moviecode+"`)'>수정</button></div>");
+					$("div[name=review-list"+i+"]").append("<div class='review_update'><button class='btn btn-dark review_btn2' onclick='update(`"+i+"`,`"+Rlist[i].no+"`,`"+Rlist[i].moviecode+"`)'>수정</button></div>");
 					$("div[name=review-list"+i+"]").append("<div class='review_delete'>"
 					+ "<button onclick='if(confirm(`정말 삭제하시겠습니까?`)){location.href=`<%=request.getContextPath()%>/reviewDelete.do?no="+Rlist[i].no+"&moviecode="+Rlist[i].moviecode+"`}"
-					+ "else{return;}'>"
+					+ "else{return;}' class='btn btn-dark review_btn2'>"
 					+ "삭제</button>");
 				}
 			}
@@ -169,33 +169,35 @@ function check(id) {
 		</div>
 		<br><br>
 		<div class="review">
-			<h3>실관람평</h3>
-			<div class="memberName">
-				<span>box</span>
-			</div>
-			<form method="post" action="<%=request.getContextPath() %>/reviewWriteOk.do">
-				<div class="review_write" onclick="check('${memSession.id}')">
-					<input type="hidden" name="moviecode" value="${dto.getMoviecode() }">
-					<input type="hidden" name="title_ko" value="${dto.getTitle_ko() }">
-					<input type="hidden" name="id" value="${memSession.id}">
-					<div class="review_write_point">
-						<select class="point_area" name="point" required>
-									<option value="" selected disabled>:::평점:::</option>
-							<% for(int i=1; i<11; i++) { %>
-									<option value="<%=i%>"><%=i %>점</option>
-							<%} %>
-						</select>
-					</div>
-					<div class="review_write_text">
-						<textarea rows="7" cols="10" name="review-text" 
-							placeholder="${dto.getTitle_ko() }재미있게 보셨나요? 영화의 어떤점이 좋았는지 평가해주세요"
-							required></textarea>
-					</div>
-					<div class="review_write_button">
-						<input type="submit" value="관람평 쓰기">
-					</div>
+			<div class="review_in_div">
+				<h3 style="color:white;">실관람평</h3>
+				<div class="memberName">
+					<span>${memSession.id}:box</span>
 				</div>
-			</form>
+				<form method="post" action="<%=request.getContextPath() %>/reviewWriteOk.do">
+					<div class="review_write" onclick="check('${memSession.id}')">
+						<input type="hidden" name="moviecode" value="${dto.getMoviecode() }">
+						<input type="hidden" name="title_ko" value="${dto.getTitle_ko() }">
+						<input type="hidden" name="id" value="${memSession.id}">
+						<div class="review_write_point">
+							<select class="point_area" name="point" required>
+										<option value="" selected disabled>:::평점:::</option>
+								<% for(int i=1; i<11; i++) { %>
+										<option value="<%=i%>"><%=i %>점</option>
+								<%} %>
+							</select>
+						</div>
+						<div class="review_write_text">
+							<textarea rows="7" cols="10" name="review-text" 
+								placeholder="${dto.getTitle_ko() }재미있게 보셨나요? 영화의 어떤점이 좋았는지 평가해주세요"
+								required></textarea>
+						</div>
+						<div class="review_write_button">
+							<input type="submit" class="btn btn-dark review_btn" value="관람평 쓰기">
+						</div>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 	

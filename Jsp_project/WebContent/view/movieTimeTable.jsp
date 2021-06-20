@@ -832,8 +832,8 @@ function dayAfterSetting1() {
 	<div class="timetable">	
 		<div class="timetable-container">
 			<div class="movie-choise-area">
-				<ul>
-					<li><button id="list_movie" onclick="movie()" title="영화별 선택" class="btn" ><span>영화별</span></button></li>
+				<ul style="margin-left: -10%;">
+					<li class="choise_li"><button id="list_movie" onclick="movie()" title="영화별 선택" class="btn" ><span>영화별</span></button></li>
 					<li><button id="list_theater" onclick="theater()" title="극장별 선택" class="btn" ><span>극장별</span></button></li>
 				</ul>
 			</div>
@@ -845,14 +845,14 @@ function dayAfterSetting1() {
 				</div>
 				<br><br>
 				<div class="movie-choise1">
-					<ul>
+					<ul style="list-style: none;">
 
 					</ul>
 				</div>
 			</div>	
 			
 			<div class="movieposter">
-				<img id="img" src="<%=request.getContextPath() %>/upload/${list[0].getPoster() }" height="300px" >
+				<img id="img" src="<%=request.getContextPath() %>/upload/${list[0].getPoster() }">
 			</div>
 		</div>	
 			<div class="movie-tit-div">
@@ -881,7 +881,7 @@ function dayAfterSetting1() {
 				<div class="theater-list-box">
 					<div class="locationInfo">
 						<h3 class="localarea">강남</h3>
-						<hr width="70%" align="left">
+						<hr width="100%" align="left">
 					</div>
 					<div class="theater-list-box1">
 						

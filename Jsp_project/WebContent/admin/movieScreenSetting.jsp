@@ -618,50 +618,71 @@
 	<!-- 기본 페이징 -->
 	<c:if test="${empty search_name }">
 		<div id="pagingBlock" align="center">
-			<c:if test="${page > block }">
-				<a href="movieScreenSetting.do?page=1">◀◀</a>
-				<a href="movieScreenSetting.do?page=${startBlock - 1 }">◀</a>
-			</c:if>
-			
-			<c:forEach begin="${startBlock }" end="${endBlock }" var="i">
-				<c:if test="${i == page }">
-					<b><a href="movieScreenSetting.do?page=${i }">[${i }]</a></b>
-				</c:if>
-				
-				<c:if test="${i != page }">
-					<a href="movieScreenSetting.do?page=${i }">[${i }]</a>
-				</c:if>
-			</c:forEach>
-			
-			<c:if test="${endBlock < allPage }">
-				<a href="movieScreenSetting.do?page=${endBlock + 1 }">▶</a>
-				<a href="movieScreenSetting.do?page=${allPage }">▶▶</a>
-			</c:if>
+			<nav>
+			  <ul class="pagination">
+			  	<c:if test="${page > block }">
+				    <li>
+				      <a href="movieScreenSetting.do?page=${startBlock - 1 }" aria-label="Previous">
+				        <span aria-hidden="true">&laquo;</span>
+				      </a>
+				    </li>
+			    </c:if>
+			    
+			    <c:forEach begin="${startBlock }" end="${endBlock }" var="i">
+				    <c:if test="${i == page }">
+						<li class="active"><a href="movieScreenSetting.do?page=${i }">${i }</a></li>
+					</c:if>
+					
+					<c:if test="${i != page }">
+						<li><a href="movieScreenSetting.do?page=${i }">${i }</a></li>
+					</c:if>
+			    </c:forEach>
+			    
+			    <c:if test="${endBlock < allPage }">
+				    <li>
+				      <a href="movieScreenSetting.do?page=${endBlock + 1 }" aria-label="Next">
+				        <span aria-hidden="true">&raquo;</span>
+				      </a>
+				    </li>
+			    </c:if>
+			  </ul>
+			</nav>
 		</div>
 	</c:if>
+
 	
 	<!-- 검색 페이징 -->
 	<c:if test="${!empty search_name }">
 		<div id="pagingBlock" align="center">
-			<c:if test="${page > block }">
-				<a href="movieScreenSearch.do?page=1&search_field=${search_field }&search_name=${search_name}">◀◀</a>
-				<a href="movieScreenSearch.do?page=${startBlock - 1 }&search_field=${search_field }&search_name=${search_name}">◀</a>
-			</c:if>
-			
-			<c:forEach begin="${startBlock }" end="${endBlock }" var="i">
-				<c:if test="${i == page }">
-					<b><a href="movieScreenSearch.do?page=${i }&search_field=${search_field }&search_name=${search_name}">[${i }]</a></b>
-				</c:if>
-				
-				<c:if test="${i != page }">
-					<a href="movieScreenSearch.do?page=${i }&search_field=${search_field }&search_name=${search_name}">[${i }]</a>
-				</c:if>
-			</c:forEach>
-			
-			<c:if test="${endBlock < allPage }">
-				<a href="movieScreenSearch.do?page=${endBlock + 1 }&search_field=${search_field }&search_name=${search_name}">▶</a>
-				<a href="movieScreenSearch.do?page=${allPage }&search_field=${search_field }&search_name=${search_name}">▶▶</a>
-			</c:if>
+			<nav>
+			  <ul class="pagination">
+			  	<c:if test="${page > block }">
+				    <li>
+				      <a href="movieScreenSearch.do?page=${startBlock - 1 }&search_field=${search_field }&search_name=${search_name}" aria-label="Previous">
+				        <span aria-hidden="true">&laquo;</span>
+				      </a>
+				    </li>
+			    </c:if>
+			    
+			    <c:forEach begin="${startBlock }" end="${endBlock }" var="i">
+				    <c:if test="${i == page }">
+						<li class="active"><a href="movieScreenSearch.do?page=${i }&search_field=${search_field }&search_name=${search_name}">${i }</a></li>
+					</c:if>
+					
+					<c:if test="${i != page }">
+						<li><a href="movieScreenSearch.do?page=${i }&search_field=${search_field }&search_name=${search_name}">${i }</a></li>
+					</c:if>
+			    </c:forEach>
+			    
+			    <c:if test="${endBlock < allPage }">
+				    <li>
+				      <a href="movieScreenSearch.do?page=${endBlock + 1 }&search_field=${search_field }&search_name=${search_name}" aria-label="Next">
+				        <span aria-hidden="true">&raquo;</span>
+				      </a>
+				    </li>
+			    </c:if>
+			  </ul>
+			</nav>
 		</div>
 	</c:if>
 </body>

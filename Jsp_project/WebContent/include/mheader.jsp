@@ -23,50 +23,19 @@
 	}
 </script>
 
-<div style="margin:20px;">
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-			<!-- 네비게이션(nav)의 기본 설정으로 모바일일 때, 메뉴 버튼이 나온다. -->
-			<div class="navbar-header">
-				<button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".navbar-collapse">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<!-- 타이틀임. -->
-				<a class="navbar-brand" href="#">
-					<img src="https://ifh.cc/g/d9o1KQ.png" width="25" height="25">
-				</a>
-			</div>
-			
-			<!-- 메뉴 설정 -->
+<div style="border-bottom: 1px solid #474747;">
+	
+	<div align="right">
+		<nav class="navbar navbar-expand-sm">
 			<div class="collapse navbar-collapse">
-				<!-- 메뉴는 왼쪽으로 두개 설정 -->
-				<ul class="nav navbar-nav">
-					<li class="nav-item"> 
-						<a class="nav-link active" href="<%=request.getContextPath()%>/mainList.do">홈</a> 
-					</li> 
-					
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="<%=request.getContextPath() %>/movieChart.do">전체영화 </a> 
-					</li>
-					
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="<%=request.getContextPath()%>/movieQuickBooking.do">예매</a>  
-					</li>
-					
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="<%=request.getContextPath() %>/timeTable.do">상영시간표 </a> 
-					</li>
-					
-					
+				<ul class="nav navbar-nav navbar-right">
 					<c:if test="${memSession.permission == '관리자'}">
 						<li class="nav-item">
-							<a class="nav-link" href="<%=request.getContextPath() %>/memberManagement.do">사용자관리</a> 
+							<a class="nav-link nav_a_color" href="<%=request.getContextPath() %>/memberManagement.do">사용자관리</a> 
 						</li>
 						
 						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">홈페이지관리</a> 
+							<a class="nav-link dropdown-toggle nav_a_color" href="#" data-toggle="dropdown">홈페이지관리</a> 
 							<ul class="dropdown-menu">
 								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/cinemaList.do">전체 지점 목록</a></li>
 								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/cinemaWrite.do">지점 등록</a></li>
@@ -76,45 +45,58 @@
 							</ul> 
 						</li>
 					</c:if>
-
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown"> 홈페이지관리 </a> 
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/cinemaList.do">전체 지점 목록</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/cinemaWrite.do">지점 등록</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieList.do">전체 영화 목록</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/movieWrite.do">영화 등록</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath() %>/movieScreenSetting.do">영화 상영 설정</a></li>
-						</ul> 
-					</li>
-					
-					<li class="nav-item dropdown">
-						<a class="nav-link dropdown-toggle" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }" data-toggle="dropdown"> 마이페이지 </a> 
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역 관리</a></li>
-							<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }" onclick="pwdCheck()">개인정보 수정</a></li>
-						</ul> 
-					</li>
-				</ul>
-				
-				
-				
-				<!-- 메뉴를 오른쪽 정렬로 설정 가능 -->
-				<ul class="nav navbar-nav navbar-right">
-
+	
 					<c:if test="${!empty memSession }">
-			   			<li class="nav-item"><a href="#">${memSession.name }님 환영합니다.</a></li>
-			   			<li class="nav-item"><a href="javascript:goLogout()">로그아웃</a><li>
+			   			<li class="nav-item"><a href="#" class="nav_a_color">${memSession.name }님 환영합니다.</a></li>
+			   			<li class="nav-item"><a href="javascript:goLogout()" class="nav_a_color">로그아웃</a><li>
 			   		</c:if>
 			   		
-
+	
 			   		<c:if test="${empty memSession }">
-			   			<li class="nav-item"><a href="javascript:onClick()">로그인</a></li>
-			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberJoinReady.do">회원가입</a></li>
+			   			<li class="nav-item"><a href="javascript:onClick()" class="nav_a_color">로그인</a></li>
+			   			<li class="nav-item"><a href="<%=request.getContextPath() %>/memberJoinReady.do" class="nav_a_color">회원가입</a></li>
 			   		</c:if>
 				</ul>
 			</div>
-	</nav>
+		</nav>
+	</div>
+	
+	<div align="center" class="nav_bg">
+		<nav class="navbar navbar-expand-sm">
+			<!-- 메뉴 설정 -->
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="nav-item"> 
+						<a class="nav-link nav_a" href="<%=request.getContextPath()%>/mainList.do">홈</a> 
+					</li> 
+					
+					<li class="nav-item dropdown">
+						<a class="nav-link nav_a" href="<%=request.getContextPath() %>/movieChart.do">전체영화 </a> 
+					</li>
+					
+					<li class="nav-item dropdown">
+						<a class="nav-link nav_a" href="<%=request.getContextPath()%>/movieQuickBooking.do">예매</a>  
+					</li>
+					
+					<li class="nav-item dropdown">
+						<a class="nav-link nav_a" href="<%=request.getContextPath() %>/timeTable.do">상영시간표 </a> 
+					</li>
+				</ul>
+				
+				<ul class="nav navbar-nav navbar-right">
+					<c:if test="${!empty memSession }">
+						<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle nav_a" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }" data-toggle="dropdown"><i class='glyphicon glyphicon-user'></i> MY</a> 
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageMain.do?memid=${memSession.id }">마이페이지</a></li>
+								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageBooked.do?memid=${memSession.id }">예매내역 관리</a></li>
+								<li><a class="dropdown-item" href="<%=request.getContextPath()%>/myPageEdit.do?memid=${memSession.id }" onclick="pwdCheck()">개인정보 수정</a></li>
+							</ul> 
+						</li>
+					</c:if>
+				</ul>
+			</div>
+		</nav>
+	</div>
 </div>
 <jsp:include page="../view/memLogin.jsp"/>

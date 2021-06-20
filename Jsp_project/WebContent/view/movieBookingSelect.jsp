@@ -270,14 +270,15 @@
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
+	<div class="select_all_div">
 	<form>
-		<div id="top_title_div" align="center">
+		<div id="top_title_div" align="center" style="font-size: 1.8em; padding-top: 1%;">
 			인원/좌석
 		</div>
 		<!-- 상단 인원 선택 / 영화 상영 일시 -->
-		<div id="person_seat_div" align="center">
+		<div id="person_seat_div" align="center" style="margin-top: -1%;">
 			<div align="center" class="booking_person" style="display: inline-block;">
-				<div id="adult_gr" class="top_div btn-group" role="group" align="left">
+				<div id="adult_gr" class="top_seat_div top_div btn-group" role="group" align="left">
 					<span>일반</span><br>
 					<button
 					  	onclick="selectPerson(this)"
@@ -300,7 +301,7 @@
 					  	class="adult_btn btn btn-secondary"
 					  	type="button" id="adult4" value="4">4</button>
 				</div>&nbsp;&nbsp;
-				<div id="junior_gr" class="top_div btn-group" role="group" align="left">
+				<div id="junior_gr" class="top_seat_div top_div btn-group" role="group" align="left">
 					<span>청소년</span><br>
 					<button
 					  	onclick="selectPerson(this)"
@@ -325,7 +326,7 @@
 				</div>
 	   		</div>
 	   		
-	   		<div id="top_movie_info_div" class="top_div" align="left">
+	   		<div id="top_movie_info_div" class="top_div" align="left" style="margin-left: 1%; font-weight: bolder;">
 	   			<span>${sdto.cinemaname }</span>&nbsp;│&nbsp;
 	   			<span>${sdto.cincode }관</span>&nbsp;│&nbsp;
 	   			<span style="color: orange; font-weight: bold;">
@@ -350,7 +351,7 @@
 				</h4>
 				<img id="seat_info_img"
 					 src="<%=request.getContextPath() %>/image/seat_info2.jpg"
-		 		     width="110px" height="75px" >
+		 		     class="seat_img">
 			</div>
 		</div>
 		
@@ -367,7 +368,6 @@
 				<c:forEach var="seatno" begin="1" end="${seat.allseat }" >
 					<button 
 						type="button"
-						style="width: 30px; height: 30px; border: 0px;"
 						id="seat${seatno }"
 						value="${seatno }"
 						class="seat_btn"
@@ -388,12 +388,12 @@
 		
 		<hr>
 		<!-- 하단 영화정보 / 좌석 선택 정보 / 결제 금액 -->
-		<div id="movie_div" align="center">
-			<div id="before_btn_div" class="bottm_div">
+		<div id="movie_div" class="seat_movie_div" align="center">
+			<div id="before_btn_div" class="bottm_left_div">
 				<button 
 					type="button"
 					id="before"
-					class="btn btn-light btn-block"
+					class="btn"
 					onclick="history.back()"
 					style="width:150px; height:150px;">
 					<i class='glyphicon glyphicon-backward'></i>
@@ -429,11 +429,11 @@
 				<span id="total_price_span">총금액</span>
 			</div>
 			
-			<div id="next_btn_div" class="bottm_div">
+			<div id="next_btn_div" class="bottm_right_div">
 				<button 
 					type="button"
 					id="next"
-					class="btn btn-light btn-block"
+					class="btn"
 					onclick="payment('${memSession.id }','${sdto.screencode}', '${seat.allseat }')"
 					style="width:150px; height:150px;">
 				<i class='glyphicon glyphicon-credit-card'></i>
@@ -442,5 +442,6 @@
 		</div>
 
 	</form>
+	</div>
 </body>
 </html>

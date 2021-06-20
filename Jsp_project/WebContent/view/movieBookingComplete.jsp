@@ -47,33 +47,32 @@
 </head>
 <body>
 	<jsp:include page="../include/mheader.jsp" />
-	<div align="center">
-		<p><font color="purple">예매가 성공적으로 완료되었습니다!</font></p>
-		<hr>
-		<p>예매 번호 : ${booking.bookingcode }</p>
-		<div align="center">
-			<table align="center" border="0">
+	<div class="com_all_div" align="center">
+		<div class="pay_title_div">예매 번호 : ${booking.bookingcode }</div>
+		<div align="center" class="pay_table_div">
+			<table>
 				<tr><td rowspan="9">
 						<img src="<%=request.getContextPath() %>/upload/${screen.poster }"
-				 		width="250px" height="400px" >
+				 		class="pay_img" >
 					</td>
-					<td>영화 : ${booking.title_ko }(${screen.mtype })</td>
+					<td class="pay_td"><b>영화&nbsp;&nbsp;&nbsp;</b>${booking.title_ko }(${screen.mtype })</td>
 				</tr>
 				<tr>
-					<td>관람가 : ${screen.age }</td>
+					<td class="pay_td"><b>관람가&nbsp;&nbsp;&nbsp;</b>${screen.age }</td>
 				</tr>
 				<tr>
-					<td>일시 : 
+					<td class="pay_td">
+					    <b>일시&nbsp;&nbsp;&nbsp;</b> 
 					    ${booking.start_date },&nbsp;${booking.start_time } ~ 
 					    ${booking.end_date },&nbsp;${booking.end_time }
 	               	</td>
 				</tr>
 				<tr>
-					<td>극장 : ${booking.cinemaname } │ ${booking.cincode }관</td>
+					<td class="pay_td"><b>극장&nbsp;&nbsp;&nbsp;</b>${booking.cinemaname } │ ${booking.cincode }관</td>
 				</tr>
 				<tr>
 					<td>
-						좌석 : 
+						<b>좌석&nbsp;&nbsp;&nbsp;</b>  
 						<c:set var="seat" value="${fn:split(booking.seat_no ,'/')}" />
 						<c:forEach var="seatno" items="${seat}" varStatus="i">
 							${seatno} 번 좌석 │
@@ -83,22 +82,32 @@
 					</td>
 				</tr>
 				<tr>
-					<td>
+					<td class="pay_total_td" style="text-align: right;">
 						총 결제 금액 : <fmt:formatNumber type="number" maxFractionDigits="3" value="${price}" />원
 					</td>
 				</tr>
 				<tr>
 					<td>
-						결제수단 : ${booking.credit }
+						<b>결제수단&nbsp;&nbsp;&nbsp;</b> ${booking.credit }
 					</td>
 				</tr>
 			</table>
 		</div>
-		<div align="center">
-			<input type="button" onclick="goMain()" value="메인으로" class="btn btn-default">
-			<input type="button" onclick="resetBooking('${booking.bookingcode }', '${booking.id }')" value="예매취소" class="btn btn-danger">
-			<input type="button" onclick="goMypage('${booking.id}')" value="나의 예매내역 확인" class="btn btn-info">
-		</div>
+		<p class="com_end_div">예매가 성공적으로 완료되었습니다!</p>
+	</div>
+	<div class="bottom_box2">
+			<div class="center_line">
+				<a href="javascript:goMain()">
+					<i class='glyphicon glyphicon-home'></i><span>&nbsp;&nbsp;메인으로</span></a>
+			</div>
+			<div class="center_line">
+				<a href="javascript:resetBooking('${booking.bookingcode }', '${booking.id }')">
+					<i class='glyphicon glyphicon-eye-close'></i><span>&nbsp;&nbsp;예매 취소</span></a>
+			</div>
+			<div class="right_line">
+				<a href="javascript:goMypage('${booking.id}')">
+					<i class='glyphicon glyphicon-barcode'></i><span>&nbsp;&nbsp;나의 예매내역 확인</span></a>
+			</div>
 	</div>
 </body>
 </html>
