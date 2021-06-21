@@ -214,16 +214,18 @@ public class BookDAO {
 	}
 	
 	// 예매 좌석 조회
-	public String bookingSeatOpen(int screencode) {
+	public String bookingSeatOpen(int screencode, String cinemaname, int cincode) {
 		String result = "";
 		
 		try {
 			openConn();
 
-			sql = "select * from booking where screencode = ?";
+			sql = "select * from booking where screencode = ? and cinemaname = ? and cincode = ?";
 
 			pstmt = con.prepareStatement(sql);
 			pstmt.setInt(1, screencode);
+			pstmt.setString(2, cinemaname);
+			pstmt.setInt(3, cincode);
 
 			rs = pstmt.executeQuery();
 

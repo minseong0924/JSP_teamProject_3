@@ -372,7 +372,7 @@
 						value="${seatno }"
 						class="seat_btn"
 						onclick="seatCheck(this,${seat.allseat })"
-						<c:forEach var="i" begin="1" end="${fn:length(bookseat) }" >
+						<c:forEach var="i" begin="0" end="${fn:length(bookseat) }" >
 							<c:if test="${bookseat[i] == seatno}">
 								disabled="disabled"
 							</c:if>
