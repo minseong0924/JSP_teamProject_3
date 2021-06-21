@@ -20,6 +20,7 @@
 				action="<%=request.getContextPath() %>/cinemaSearch.do">
 					<select name="local_code" required>
 						<c:set var="llist" value="${List }" />
+						<c:set var="clist" value="${list }" />
 						<c:if test="${empty llist }">
 							<option value="">:::저장된 지역 없음:::</option>
 						</c:if>
@@ -43,9 +44,25 @@
 					<th>수정</th>
 					<th>삭제</th>
 				</tr>
-				<tr>
-					<td colspan="4" align="center">검색된 데이터가 없습니다.</td>
-				</tr>
+				<c:if test="${!empty clist}">
+					<c:forEach items="${clist }" var="dto">
+						<tr>
+							<td>${dto.cinemaname }</td>
+							<td>${dto.address }</td>
+							<td><input type="button" value="수정" class="btn table_btn"
+								onclick="location.href='cinemaEdit.do?cinemaCode=${dto.cinemacode }'"></td>
+							<td><input type="button" value="삭제" class="btn table_btn"
+								onclick="if(confirm('정말 삭제하시겠습니까?')){location.href='cinemaDelete.do?cinemaCode=${dto.cinemacode }'}
+										else{return false}"></td>
+						</tr>
+					</c:forEach>
+				</c:if>
+				
+				<c:if test="${empty clist}">
+					<tr>
+						<td colspan="4" align="center">검색된 데이터가 없습니다.</td>
+					<tr>
+				</c:if>
 			</table>
 		</div>
 		

@@ -360,4 +360,29 @@ public class CinemaDAO {
 		}
 		return result;
 	}
+	
+	
+	public int firstLocalCode() {
+		int result = 0;
+		
+		try {
+			openConn();
+			
+			sql = "select localcode from (select localcode from cinema order by localcode asc) where rownum = 1";
+			
+			pstmt = con.prepareStatement(sql);
+			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				result = rs.getInt("localcode");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return result;
+	}
 }

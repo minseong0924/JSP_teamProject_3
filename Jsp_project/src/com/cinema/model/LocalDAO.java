@@ -84,7 +84,7 @@ public class LocalDAO {
 		try {
 			openConn();
 			
-			sql = "select * from local order by localcode desc";
+			sql = "select * from local order by localcode asc";
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -170,6 +170,39 @@ public class LocalDAO {
 		}
 		return result;
 	}
+	
+	
+	// 지역리스트 전체 검색
+	public List<LocalDTO> firstlocalOpen(int localcode) {
+		List<LocalDTO> list = new ArrayList<>();
+
+		try {
+			openConn();
+
+			sql = "select * from local order by decode(localcode, ?, 1), localcode asc";
+
+			pstmt = con.prepareStatement(sql);
+			pstmt.setInt(1, localcode);
+			
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				LocalDTO dto = new LocalDTO();
+
+				dto.setLocalcode(rs.getInt("localcode"));
+				dto.setLocalname(rs.getString("localname"));
+
+				list.add(dto);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			closeConn(rs, pstmt, con);
+		}
+		return list;
+	} // localOpen() 메서드 end
 }
 
 
