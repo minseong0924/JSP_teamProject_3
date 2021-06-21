@@ -26,7 +26,7 @@ public class MovieBookingReadyAction implements Action {
 		SeatDTO tdto = tdao.seatOpen(sdto.getCinemacode(), sdto.getCincode());
 		
 		BookDAO bdao = BookDAO.getInstance();
-		String bookingSeat = bdao.bookingSeatOpen(screencode);
+		String bookingSeat = bdao.bookingSeatOpen(screencode, sdto.getCinemaname(), sdto.getCincode());
 		String[] bookingSeatarr = bookingSeat.split("/");
 		
 		request.setAttribute("sdto", sdto);
