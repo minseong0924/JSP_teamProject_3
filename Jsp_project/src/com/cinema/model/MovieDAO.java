@@ -727,7 +727,7 @@ public class MovieDAO {
 					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate \n" + 
 					"from movie m, booking b \n" + 
 					"where m.title_ko like ? or m.title_en like ?\n" + 
-					"order by rate desc;";
+					"order by rate desc";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, "%"+title+"%");

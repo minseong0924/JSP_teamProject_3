@@ -26,7 +26,7 @@ let tym = yearmonth+"-"+today.getDate();
 // 페이지 시작 시 
 $(document).ready(function(){	
 		movie();
-		movie();
+		setTimeout(function() { movie() }, 10);
 }); 
 
 //영화별 start
@@ -288,7 +288,11 @@ function dateButtonDisabled() {
 function dateButton(date) {
 		$(".wrap").find(".bk").attr("class", "on");
 		$("button[value='"+date+"']").attr("class", "on bk");
-		
+		if(date == null) {
+			var dat1 = new Date();
+			date = dat1.toISOString().slice(0, 10);
+		}
+		console.log(date);
 		load('서울',date);
 }
 
