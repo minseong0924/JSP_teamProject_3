@@ -641,7 +641,7 @@ public class MovieDAO {
 			
 			sql = "select distinct m.*,\n" + 
 					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate,\n" + 
-					"(select count(*) from booking where b.title_ko = m.title_ko) as stack\n" + 
+					"(select count(*) from booking where title_ko = m.title_ko) as stack\n" + 
 					"from movie m, booking b where moviecode = ?";
 			
 			pstmt = con.prepareStatement(sql);
