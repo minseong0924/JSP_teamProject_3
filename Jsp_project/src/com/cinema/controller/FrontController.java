@@ -54,7 +54,7 @@ public class FrontController extends HttpServlet {
 		 */
 		
 		FileInputStream fis = 
-				new FileInputStream("C:\\Users\\rnfls\\git\\JSP_teamProject_3\\Jsp_project\\src\\com\\cinema\\controller\\mapping.properties");
+				new FileInputStream("C:\\Users\\kmsol\\git\\repository\\Jsp_project\\src\\com\\cinema\\controller\\mapping.properties");
 		
 		prop.load(fis);
 		

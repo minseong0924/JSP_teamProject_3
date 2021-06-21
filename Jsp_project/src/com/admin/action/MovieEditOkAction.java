@@ -78,7 +78,7 @@ public class MovieEditOkAction implements Action {
 			
 			// 파일 폴더를 만들어 보자. ==> 예) 홍길동_파일명
 			// ........../upload/2021-05-21/홍길동_파일명
-			String reFileName = movie_title_kor+"_"+fileName;
+			String reFileName = fileName;
 			
 			movie_poster.renameTo(new File(homedir+"/"+reFileName));
 			

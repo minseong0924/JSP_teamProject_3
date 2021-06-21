@@ -506,8 +506,8 @@ public class MovieDAO {
 			openConn();
 			
 			sql = "select distinct m.*,\n" + 
-					"trunc(((select count(*) from booking where b.title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate\n" + 
-					"from movie m, booking b \n" + 
+					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate\n" + 
+					"from movie m, booking b where m.mstate='상영중'\n" + 
 					"order by rate desc"; 
 			
 			pstmt = con.prepareStatement(sql);
@@ -550,9 +550,10 @@ public class MovieDAO {
 			openConn();
 			
 			sql = "select distinct m.*,\n" + 
-					"trunc(((select count(*) from booking where b.title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate\n" + 
-					"from movie m, booking b  \n" + 
-					"where m.mstate='상영중'"; 
+					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate \n" + 
+					"from movie m, booking b \n" + 
+					"where m.mstate='상영중'\n" + 
+					"order by rate desc"; 
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -594,9 +595,10 @@ public class MovieDAO {
 			openConn();
 			
 			sql = "select distinct m.*,\n" + 
-					"trunc(((select count(*) from booking where b.title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate\n" + 
-					"from movie m, booking b  \n" + 
-					"where m.mstate='개봉 예정'"; 
+					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate \n" + 
+					"from movie m, booking b \n" + 
+					"where m.mstate='개봉 예정'\n" + 
+					"order by rate desc"; 
 			
 			pstmt = con.prepareStatement(sql);
 			
@@ -638,7 +640,7 @@ public class MovieDAO {
 			openConn();
 			
 			sql = "select distinct m.*,\n" + 
-					"trunc(((select count(*) from booking where b.title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate,\n" + 
+					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate,\n" + 
 					"(select count(*) from booking where b.title_ko = m.title_ko) as stack\n" + 
 					"from movie m, booking b where moviecode = ?";
 			
@@ -722,9 +724,10 @@ public class MovieDAO {
 			openConn();
 
 			sql = "select distinct m.*,\n" + 
-					"trunc(((select count(*) from booking where b.title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate\n" + 
-					"from movie m, booking b  \n" + 
-					"where m.title_ko like ? or m.title_en like ?";
+					"trunc(((select count(*) from booking where title_ko = m.title_ko)/(select count(*) from booking)*100),1)||'%' as rate \n" + 
+					"from movie m, booking b \n" + 
+					"where m.title_ko like ? or m.title_en like ?\n" + 
+					"order by rate desc;";
 			
 			pstmt = con.prepareStatement(sql);
 			pstmt.setString(1, "%"+title+"%");

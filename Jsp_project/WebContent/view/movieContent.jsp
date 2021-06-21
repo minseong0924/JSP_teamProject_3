@@ -146,7 +146,7 @@ function check(id) {
 	 			<img src="upload/${dto.getPoster() }" height="350">
 	 		</div>
 	 		<div class="reserve">
-	 			<a href='booking.do?moviecode=${dto.getMoviecode()}'>예매</a>
+	 			<a href='movieQuickBooking.do?moviecode=${dto.getMoviecode()}'>예매</a>
 	 		</div>
  		</div>
 	</div>

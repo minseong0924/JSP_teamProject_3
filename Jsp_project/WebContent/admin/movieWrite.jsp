@@ -9,7 +9,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
 function fn_checkByte(obj){
-    var maxByte = 800; //최대 800바이트
+    var maxByte = 1000; //최대 1000바이트
     var text_val = obj.value; //입력한 문자
     var text_len = text_val.length; //입력한 문자수
     
@@ -100,7 +100,7 @@ function fn_checkByte(obj){
 				</tr>
 				
 				<tr>
-					<th>줄 거 리 : <br><span id="nowByte">0</span>/800bytes</th>
+					<th>줄 거 리 : <br><span id="nowByte">0</span>/1000bytes</th>
 					<td> <textarea id="summary" rows="7" cols="30" name="movie_summary" 
 						placeholder="내용을 입력하세요" onkeyup="fn_checkByte(this)" required></textarea></td>
 				</tr>

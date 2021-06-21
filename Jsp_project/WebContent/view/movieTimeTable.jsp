@@ -26,7 +26,7 @@ let tym = yearmonth+"-"+today.getDate();
 // 페이지 시작 시 
 $(document).ready(function(){	
 		movie();
-
+		movie();
 }); 
 
 //영화별 start
@@ -224,7 +224,7 @@ function dateButtonDisabled() {
 				 today = new Date($(".wrap").find(".bk").val());
 			 } */
 			 var srt_time = "";
-			 
+			 console.log(slist.length);
 			if(slist.length != 0) {
 				 for(var i=0; i<slist.length; i++) {
 					var starttime = slist[i].start_time;
@@ -273,7 +273,7 @@ function dateButtonDisabled() {
 						ymd = mYear + '-' + mMonth + '-' + mDate;
 						$(".wrap").find(".bk").attr("class", "on");
 						$("button[value="+ymd+"]").attr("class", "on bk");
-
+							console.log(ymd);
 						dateButton(ymd);
 				} 
 			}
@@ -288,7 +288,7 @@ function dateButtonDisabled() {
 function dateButton(date) {
 		$(".wrap").find(".bk").attr("class", "on");
 		$("button[value='"+date+"']").attr("class", "on bk");
-		console.log(date);
+		
 		load('서울',date);
 }
 
@@ -385,6 +385,7 @@ function load(location, date_data) {
 			}
 				$(".btn-group1").find(".bk").attr("class","btn btn1");
 				$("button[name='"+location+"']").attr("class", "btn btn1 bk");
+				
 				dateButtonDisabled();
 		},
 		error:function(request, status, error){
@@ -615,7 +616,8 @@ function load1(cinemaname, chandate) {
 			var mMonth = moviedate.getMonth();
 			var mDate = moviedate.getDate();
 			var moviedate1 = new Date(mYear, mMonth, mDate+1);
-			
+			console.log(moviedate1.toISOString().slice(0, 10));
+			console.log(nowdate.toISOString().slice(0, 10));
 			if(moviedate1.toISOString().slice(0, 10) == nowdate.toISOString().slice(0, 10))	{
 				//영화명 뿌리기
 				for(var i=0; i<slist.length; i++) {
@@ -631,7 +633,7 @@ function load1(cinemaname, chandate) {
 					if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())){
 						
 						if(slist[i].moviename != pre) {
-							$(".theater-list").append("<div id='"+slist[i].moviename+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+slist[i].moviename+"</h3></div>"
+							$(".theater-list").append("<div id='"+slist[i].moviecode+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+slist[i].moviename+"</h3></div>"
 									+"<hr width='70%' align='left'></div>");
 						}
 							pre = slist[i].moviename;
@@ -646,15 +648,16 @@ function load1(cinemaname, chandate) {
 					} else {
 						srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
 					}
-				
+			
 					// 관이 중복되지 않게하는 조건문
 					if(srt_time.substring(0,2)>today.getHours() || (srt_time.substring(0,2)==today.getHours()&&srt_time.substring(3,5)>today.getMinutes())) {
-						if(slist[i].moviename != pre ||slist[i].cincode != cincode){
-							$("#"+slist[i].moviename).append("<div id='"+slist[i].cincode+"'class='theater-list-box1'><span class='localscreen'>"+slist[i].cincode+"관</span>" +
+						if(slist[i].moviename != pre || slist[i].cincode != cincode){
+							$("#"+slist[i].moviecode).append("<div id='"+slist[i].cincode+"'class='theater-list-box1'><span class='localscreen'>"+slist[i].cincode+"관</span>" +
 								"<div class='movietype'><span class='movietype-text'>"+slist[i].mtype+"</span></div>"+
-								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div></div>");
+								"<div class='movietime-box'><a href='<%=request.getContextPath()%>/movieBookingReady.do?screencode="+slist[i].screencode+"' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div></div>");
+							console.log('돌아감');
 						}else {
-							$("#"+slist[i].moviename).find("#"+slist[i].cincode).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div>");
+							$("#"+slist[i].moviecode).find("#"+slist[i].cincode).append("<div class='movietime-box'><a href='<%=request.getContextPath()%>/movieBookingReady.do?screencode="+slist[i].screencode+"' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div>");
 						}
 							cincode = slist[i].cincode;
 							pre = slist[i].moviename;
@@ -664,7 +667,7 @@ function load1(cinemaname, chandate) {
 				for(var i=0; i<slist.length; i++) {
 					
 					if(slist[i].moviename != pre) {
-						$(".theater-list").append("<div id='"+slist[i].moviename+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+slist[i].moviename+"</h3></div>"
+						$(".theater-list").append("<div id='"+slist[i].moviecode+"'class='theater-list-box'><div class='locationInfo'><h3 class='localarea' >"+slist[i].moviename+"</h3></div>"
 								+"<hr width='70%' align='left'></div>");
 					}
 						pre = slist[i].moviename;
@@ -680,13 +683,14 @@ function load1(cinemaname, chandate) {
 						srt_time = Math.floor(starttime / 60) + ":" + Math.floor(starttime % 60);
 					}
 				
-					// 관이 중복되지 않게하는 조건문
-						if(slist[i].moviename != pre ||slist[i].cincode != cincode){
-							$("#"+slist[i].moviename).append("<div id='"+slist[i].cincode+"'class='theater-list-box1'><span class='localscreen'>"+slist[i].cincode+"관</span>" +
+					// 관이 중복되지 않게하는 조건문					
+						if(slist[i].moviename != pre || slist[i].cincode != cincode){
+							$("#"+slist[i].moviecode).append("<div id='"+slist[i].cincode+"'class='theater-list-box1'><span class='localscreen'>"+slist[i].cincode+"관</span>" +
 								"<div class='movietype'><span class='movietype-text'>"+slist[i].mtype+"</span></div>"+
-								"<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div></div>");
+								"<div class='movietime-box'><a href='<%=request.getContextPath()%>/movieBookingReady.do?screencode="+slist[i].screencode+"' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div></div>");
+							console.log($("#"+slist[i].moviename).val());
 						}else {
-							$("#"+slist[i].moviename).find("#"+slist[i].cincode).append("<div class='movietime-box'><a href='#' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div>");
+							$("#"+slist[i].moviecode).find("#"+slist[i].cincode).append("<div class='movietime-box'><a href='<%=request.getContextPath()%>/movieBookingReady.do?screencode="+slist[i].screencode+"' class='movietime'>"+srt_time+"</a><br><span>"+slist[i].remaining_seats+"석</span></div>");
 						}
 					
 							cincode = slist[i].cincode;

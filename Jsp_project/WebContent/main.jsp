@@ -28,7 +28,8 @@
 				<tr>
 				<c:forEach begin="0" end="3" step="1" items="${list }" var="dto">
 					<td class="td_img"><img src="upload/${dto.getPoster() }" alt="이미지가없습니다"
-						width="250" height="370"><br>
+						width="250" height="370" onclick="location.href='movieContent.do?moviecode=${dto.getMoviecode()}'" 
+						title="${dto.getTitle_ko() } 상세보기"><br>
 					<button onclick="location.href='movieQuickBooking.do?moviecode=${dto.getMoviecode()}'" class="btn btn-dark btn_bg">예매</button></td>
 				</c:forEach>
 				</tr>

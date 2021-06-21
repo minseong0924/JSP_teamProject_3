@@ -281,9 +281,10 @@ public class MemberDAO {
 		try {
 			openConn();
 			
-			sql = "select * from member1 where id = " + id;
+			sql = "select * from member1 where id = ?";
 			
 			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, id);
 			
 			rs = pstmt.executeQuery();
 			
